@@ -1,0 +1,29 @@
+{
+  "name": "nodsjs-ipinfo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ipinfo/node.git"
+  },
+  "author": "Ryan Efendy <ryanefendy95@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ipinfo/node/issues"
+  },
+  "homepage": "https://ipinfo.io/",
+  "dependencies": {
+    "axios": "^0.18.0"
+  },
+  "devDependencies": {
+    "prettier": "^1.14.2",
+    "tslint": "^5.11.0",
+    "tslint-config-prettier": "^1.15.0",
+    "tslint-config-standard": "^8.0.1",
+    "typescript": "^3.0.3"
+  }
+}
