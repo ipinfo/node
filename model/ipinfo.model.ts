@@ -1,13 +1,8 @@
-import ASN from './asn.model';
-import Carrier from './carrier.model';
-import Company from './company.model';
+import ASN from "./asn.model";
+import Carrier from "./carrier.model";
+import Company from "./company.model";
 
 export default class IPinfo {
-    public static Fqdn: string = "http://ipinfo.io/";
-    public static FqdnSSL: string = "https://ipinfo.io/";
-    public static TokenPrefixL: string = "?token=";
-    public static IpRegex = /^\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b$/;
-
     public constructor(
         private readonly ip: string,
         private readonly hostname: string,
