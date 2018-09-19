@@ -17,8 +17,7 @@
   },
   "homepage": "https://ipinfo.io/",
   "dependencies": {
-    "@types/request": "^2.47.1",
-    "request": "^2.88.0"
+    "axios": "^0.18.0"
   },
   "devDependencies": {
     "prettier": "^1.14.2",
