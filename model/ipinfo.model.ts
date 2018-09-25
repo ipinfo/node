@@ -3,21 +3,34 @@ import Carrier from "./carrier.model";
 import Company from "./company.model";
 
 export default class IPinfo {
-    public constructor(
-        private readonly ip: string,
-        private readonly hostname: string,
-        private readonly city: string,
-        private readonly region: string,
-        private readonly country: string,
-        private readonly loc: string,
-        private readonly postal: string,
-        private readonly org: string,
-        private readonly phone: string,
-        private readonly asn: ASN,
-        private readonly company: Company,
-        private readonly carrier?: Carrier
-        // private readonly context: Context;
-    ) { }
+    public static Fqdn: string = "http://ipinfo.io/";
+    public static FqdnSSL: string = "https://ipinfo.io/";
+
+    private readonly ip: string;
+    private readonly hostname: string;
+    private readonly city: string;
+    private readonly region: string;
+    private readonly country: string;
+    private readonly loc: string;
+    private readonly postal: string;
+    private readonly carrier: Carrier;
+    private readonly asn: ASN;
+    private readonly company: Company;
+    private readonly phone: string;
+
+    public constructor(data: any) {
+        this.ip = data.ip;
+        this.hostname = data.hostname;
+        this.city = data.city;
+        this.region = data.region;
+        this.country = data.country; // todo
+        this.loc = data.loc;
+        this.postal = data.postal;
+        this.asn = data.asn;
+        this.company = data.company;
+        this.carrier = data.carrier;
+        this.phone = data.phone
+    }
 
     /**
      * Getter ip
@@ -76,22 +89,6 @@ export default class IPinfo {
     }
 
     /**
-     * Getter org
-     * @return {string}
-     */
-    public getOrg(): string {
-        return this.org;
-    }
-
-    /**
-     * Getter phone
-     * @return {string}
-     */
-    public getPhone(): string {
-        return this.phone;
-    }
-
-    /**
      * Getter asn
      * @return {ASN}
      */
@@ -105,5 +102,13 @@ export default class IPinfo {
      */
     public getCompany(): Company {
         return this.company;
+    }
+
+    /**
+     * Getter carrier
+     * @return {Carrier}
+     */
+    public getCarrier(): Carrier {
+        return this.carrier;
     }
 } 
