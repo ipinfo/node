@@ -1,49 +1,55 @@
 export default class ASN {
-  public constructor(
-    private readonly asn: string,
-    private readonly name: string,
-    private readonly domain: string,
-    private readonly route: string,
-    private readonly type: string
-  ) {}
+    private _asn: string;
+    private _name: string;
+    private _domain: string;
+    private _route: string;
+    private _type: string;
 
-  /**
-   * Getter asn
-   * @return {string}
-   */
-  public getAsn(): string {
-    return this.asn
-  }
+    constructor(asn: string, name: string, domain: string, route: string, type: string) {
+        this._asn = asn;
+        this._name = name;
+        this._domain = domain;
+        this._route = route;
+        this._type = type;
+    }
 
-  /**
-   * Getter name
-   * @return {string}
-   */
-  public getName(): string {
-    return this.name
-  }
+    /**
+     * Getter asn
+     * @return {string}
+     */
+    public get asn(): string {
+        return this._asn;
+    }
 
-  /**
-   * Getter domain
-   * @return {string}
-   */
-  public getDomain(): string {
-    return this.domain
-  }
+    /**
+     * Getter name
+     * @return {string}
+     */
+    public get name(): string {
+        return this._name;
+    }
 
-  /**
-   * Getter route
-   * @return {string}
-   */
-  public getRoute(): string {
-    return this.route
-  }
+    /**
+     * Getter domain
+     * @return {string}
+     */
+    public get domain(): string {
+        return this._domain;
+    }
 
-  /**
-   * Getter type
-   * @return {string}
-   */
-  public getType(): string {
-    return this.type
-  }
+    /**
+     * Getter route
+     * @return {string}
+     */
+    public get route(): string {
+        return this._route;
+    }
+
+    /**
+     * Getter type
+     * @return {strin}
+     */
+    public get type(): string {
+        return this._type;
+    }
 }

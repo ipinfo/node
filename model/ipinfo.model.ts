@@ -6,109 +6,117 @@ export default class IPinfo {
     public static Fqdn: string = "http://ipinfo.io/";
     public static FqdnSSL: string = "https://ipinfo.io/";
 
-    private readonly ip: string;
-    private readonly hostname: string;
-    private readonly city: string;
-    private readonly region: string;
-    private readonly country: string;
-    private readonly loc: string;
-    private readonly postal: string;
-    private readonly carrier: Carrier;
-    private readonly asn: ASN;
-    private readonly company: Company;
-    private readonly phone: string;
+    private _ip: string;
+    private _hostname: string;
+    private _city: string;
+    private _region: string;
+    private _country: string;
+    private _loc: string;
+    private _postal: string;
+    private _carrier: Carrier;
+    private _asn: ASN;
+    private _company: Company;
+    private _phone: string;
 
-    public constructor(data: any) {
-        this.ip = data.ip;
-        this.hostname = data.hostname;
-        this.city = data.city;
-        this.region = data.region;
-        this.country = data.country; // todo
-        this.loc = data.loc;
-        this.postal = data.postal;
-        this.asn = data.asn;
-        this.company = data.company;
-        this.carrier = data.carrier;
-        this.phone = data.phone
+    constructor(data: any) {
+        this._ip = data.ip;
+        this._hostname = data.hostname;
+        this._city = data.city;
+        this._region = data.region;
+        this._country = data.country;
+        this._loc = data.loc;
+        this._postal = data.postal;
+        this._carrier = data.carrier;
+        this._asn = data.asn;
+        this._company = data.company;
+        this._phone = data.phone;
     }
 
     /**
      * Getter ip
      * @return {string}
      */
-    public getIp(): string {
-        return this.ip;
-    }
+	public get ip(): string {
+		return this._ip;
+	}
 
     /**
      * Getter hostname
      * @return {string}
      */
-    public getHostname(): string {
-        return this.hostname;
-    }
+	public get hostname(): string {
+		return this._hostname;
+	}
 
     /**
      * Getter city
      * @return {string}
      */
-    public getCity(): string {
-        return this.city;
-    }
+	public get city(): string {
+		return this._city;
+	}
 
     /**
      * Getter region
      * @return {string}
      */
-    public getRegion(): string {
-        return this.region;
-    }
+	public get region(): string {
+		return this._region;
+	}
 
     /**
      * Getter country
      * @return {string}
      */
-    public getCountry(): string {
-        return this.country;
-    }
+	public get country(): string {
+		return this._country;
+	}
 
     /**
      * Getter loc
      * @return {string}
      */
-    public getLoc(): string {
-        return this.loc;
-    }
+	public get loc(): string {
+		return this._loc;
+	}
 
     /**
      * Getter postal
      * @return {string}
      */
-    public getPostal(): string {
-        return this.postal;
-    }
-
-    /**
-     * Getter asn
-     * @return {ASN}
-     */
-    public getAsn(): ASN {
-        return this.asn;
-    }
-
-    /**
-     * Getter company
-     * @return {Company}
-     */
-    public getCompany(): Company {
-        return this.company;
-    }
+	public get postal(): string {
+		return this._postal;
+	}
 
     /**
      * Getter carrier
      * @return {Carrier}
      */
-    public getCarrier(): Carrier {
-        return this.carrier;
-    }
-} 
+	public get carrier(): Carrier {
+		return this._carrier;
+	}
+
+    /**
+     * Getter asn
+     * @return {ASN}
+     */
+	public get asn(): ASN {
+		return this._asn;
+	}
+
+    /**
+     * Getter company
+     * @return {Company}
+     */
+	public get company(): Company {
+		return this._company;
+	}
+
+    /**
+     * Getter phone
+     * @return {string}
+     */
+	public get phone(): string {
+		return this._phone;
+	}
+}

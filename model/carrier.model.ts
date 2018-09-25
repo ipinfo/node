@@ -1,31 +1,35 @@
 export default class Carrier {
-  public constructor(
-    private readonly name: string,
-    private readonly mcc: string,
-    private readonly mnc: string
-  ) {}
+    private _name: string;
+    private _mcc: string;
+    private _mnc: string;
 
-  /**
-   * Getter name
-   * @return {string}
-   */
-  public getName(): string {
-    return this.name
-  }
+    constructor(name: string, mcc: string, mnc: string) {
+        this._name = name;
+        this._mcc = mcc;
+        this._mnc = mnc;
+    }
 
-  /**
-   * Getter mcc
-   * @return {string}
-   */
-  public getMcc(): string {
-    return this.mcc
-  }
+    /**
+     * Getter name
+     * @return {string}
+     */
+    public get name(): string {
+        return this._name;
+    }
 
-  /**
-   * Getter mnc
-   * @return {string}
-   */
-  public getMnc(): string {
-    return this.mnc
-  }
+    /**
+     * Getter mcc
+     * @return {string}
+     */
+    public get mcc(): string {
+        return this._mcc;
+    }
+
+    /**
+     * Getter mnc
+     * @return {string}
+     */
+    public get mnc(): string {
+        return this._mnc;
+    }
 }

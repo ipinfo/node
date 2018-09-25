@@ -1,41 +1,45 @@
 export default class Prefix {
-    public constructor(
-      private readonly netblock: string,
-      private readonly id: string,
-      private readonly name: string,
-      private readonly country: string,
-    ) {}
-  
+    private _netblock: string;
+    private _id: string;
+    private _name: string;
+    private _country: string;
+
+    constructor(netblock: string, id: string, name: string, country: string) {
+        this._netblock = netblock;
+        this._id = id;
+        this._name = name;
+        this._country = country;
+    }
+
     /**
      * Getter netblock
      * @return {string}
      */
-    public getNetblock(): string {
-      return this.netblock
+    public get netblock(): string {
+        return this._netblock;
     }
-  
+
     /**
      * Getter id
      * @return {string}
      */
-    public getId(): string {
-      return this.id
+    public get id(): string {
+        return this._id;
     }
-  
+
     /**
      * Getter name
      * @return {string}
      */
-    public getName(): string {
-      return this.name
+    public get name(): string {
+        return this._name;
     }
-  
+
     /**
-     * @return {string}
      * Getter country
+     * @return {string}
      */
-    public getCountry(): string {
-      return this.country
+    public get country(): string {
+        return this._country;
     }
-  }
-  
+}

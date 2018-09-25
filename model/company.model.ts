@@ -1,31 +1,35 @@
 export default class Company {
-  public constructor(
-    private readonly name: string,
-    private readonly domain: string,
-    private readonly type: string
-  ) {}
+    private _name: string;
+    private _domain: string;
+    private _type: string;
 
-  /**
-   * Getter name
-   * @return {string}
-   */
-  public getName(): string {
-    return this.name
-  }
+    constructor(name: string, domain: string, type: string) {
+        this._name = name;
+        this._domain = domain;
+        this._type = type;
+    }
 
-  /**
-   * Getter domain
-   * @return {string}
-   */
-  public getDomain(): string {
-    return this.domain
-  }
+    /**
+     * Getter name
+     * @return {string}
+     */
+    public get name(): string {
+        return this._name;
+    }
 
-  /**
-   * Getter type
-   * @return {string}
-   */
-  public getType(): string {
-    return this.type
-  }
+    /**
+     * Getter domain
+     * @return {string}
+     */
+    public get domain(): string {
+        return this._domain;
+    }
+
+    /**
+     * Getter type
+     * @return {string}
+     */
+    public get type(): string {
+        return this._type;
+    }
 }
