@@ -47,7 +47,7 @@ export default class ASN {
 
     /**
      * Getter type
-     * @return {strin}
+     * @return {string}
      */
     public get type(): string {
         return this._type;
