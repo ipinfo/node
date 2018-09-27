@@ -11,26 +11,16 @@ export default class ASNResponse {
     private _prefixes6: Prefix[];
     private _type: string;
 
-    constructor(
-        asn: string,
-        name: string,
-        country: string,
-        allocated: string,
-        registry: string,
-        domain: string,
-        prefixes: Prefix[],
-        prefixes6: Prefix[],
-        type: string
-    ) {
-        this._asn = asn;
-        this._name = name;
-        this._country = country;
-        this._allocated = allocated;
-        this._registry = registry;
-        this._domain = domain;
-        this._prefixes = prefixes;
-        this._prefixes6 = prefixes6;
-        this._type = type;
+    constructor(data: any) {
+        this._asn = data.asn;
+        this._name = data.name;
+        this._country = data.country;
+        this._allocated = data.allocated;
+        this._registry = data.registry;
+        this._domain = data.domain;
+        this._prefixes = data.prefixes;
+        this._prefixes6 = data.prefixes6;
+        this._type = data.type;
     }
 
     /**

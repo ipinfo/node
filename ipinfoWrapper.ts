@@ -9,6 +9,7 @@ import axios, {
     CancelToken,
     CancelTokenSource,
 } from "axios";
+import ASNResponse from "./model/asnResponse.model";
 import IPinfo from "./model/ipinfo.model";
 
 export default class IPinfoWrapper {
@@ -37,6 +38,40 @@ export default class IPinfoWrapper {
                 .then((response: AxiosResponse) => {
                     //   console.log(response.data);
                     resolve(new IPinfo(response.data));
+                })
+                .catch((error: AxiosError) => {
+                    if (error.response) {
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                        console.log(error.response.headers);
+                    } else {
+                        console.log(error.message);
+                    }
+                    reject(error);
+                });
+        });
+    }
+
+    public lookupASN(asn: string): Promise<any> {
+        // ipinfo.io/AS7922/json?token=$TOKEN
+        const url = `${IPinfo.Fqdn}${asn}/json`;
+
+        const config: AxiosRequestConfig = {
+            headers: {
+                Accept: "application/json",
+                Authorization: `Bearer ${this.token}`,
+                "Content-Type": "application/json",
+                "User-Agent": "IPinfoClient/nodejs/1.0",
+            },
+            method: "get",
+            url: `${url}`,
+        };
+
+        return new Promise((resolve, reject) => {
+            axios(config)
+                .then((response: AxiosResponse) => {
+                    console.log(response.data);
+                    resolve(new ASNResponse(response.data));
                 })
                 .catch((error: AxiosError) => {
                     if (error.response) {
