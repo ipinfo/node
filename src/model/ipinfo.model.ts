@@ -11,6 +11,7 @@ export default class IPinfo {
     private _city: string;
     private _region: string;
     private _country: string;
+    private _countryCode: string;
     private _loc: string;
     private _postal: string;
     private _carrier: Carrier;
@@ -18,12 +19,13 @@ export default class IPinfo {
     private _company: Company;
     private _phone: string;
 
-    constructor(data: any) {
+    constructor(data: any, countries: any) {
         this._ip = data.ip;
         this._hostname = data.hostname;
         this._city = data.city;
         this._region = data.region;
-        this._country = data.country;
+        this._country = countries[data.country]
+        this._countryCode = data.country;
         this._loc = data.loc;
         this._postal = data.postal;
         this._carrier = data.carrier;
@@ -71,6 +73,15 @@ export default class IPinfo {
 	public get country(): string {
 		return this._country;
 	}
+
+    /**
+     * Getter countryCode
+     * @return {string}
+     */
+	public get countryCode(): string {
+		return this._countryCode;
+	}
+
 
     /**
      * Getter loc

@@ -4,6 +4,7 @@ export default class ASNResponse {
     private _asn: string;
     private _name: string;
     private _country: string;
+    private _countryCode: string;
     private _allocated: string;
     private _registry: string;
     private _domain: string;
@@ -11,10 +12,11 @@ export default class ASNResponse {
     private _prefixes6: Prefix[];
     private _type: string;
 
-    constructor(data: any) {
+    constructor(data: any, countries: any) {
         this._asn = data.asn;
         this._name = data.name;
-        this._country = data.country;
+        this._country = countries[data.country]
+        this._countryCode = data.country;
         this._allocated = data.allocated;
         this._registry = data.registry;
         this._domain = data.domain;
@@ -46,6 +48,14 @@ export default class ASNResponse {
     public get country(): string {
         return this._country;
     }
+
+    /**
+     * Getter countryCode
+     * @return {string}
+     */
+	public get countryCode(): string {
+		return this._countryCode;
+	}
 
     /**
      * Getter allocated

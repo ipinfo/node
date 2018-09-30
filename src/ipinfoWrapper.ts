@@ -11,15 +11,25 @@ import axios, {
 } from "axios";
 import ASNResponse from "./model/asnResponse.model";
 import IPinfo from "./model/ipinfo.model";
+import countries from '../config/en_US.json';
+import LRU from "lru-cache"
 
 export default class IPinfoWrapper {
     private token: string;
+    private countries: any;
+    private lru: any;
 
     constructor(token: string) {
         this.token = token;
+        this.countries = countries;
+        this.lru = LRU();
     }
 
     public lookupIp(ip: string): Promise<any> {
+        if (!ip || typeof ip !== "string") {
+            throw new Error("ip is a required parameter");
+        }
+
         const url = `${IPinfo.Fqdn}${ip}`;
 
         const config: AxiosRequestConfig = {
@@ -36,16 +46,13 @@ export default class IPinfoWrapper {
         return new Promise((resolve, reject) => {
             axios(config)
                 .then((response: AxiosResponse) => {
-                    //   console.log(response.data);
-                    resolve(new IPinfo(response.data));
+                    resolve(new IPinfo(response.data, this.countries));
                 })
                 .catch((error: AxiosError) => {
-                    if (error.response) {
-                        console.log(error.response.data);
-                        console.log(error.response.status);
-                        console.log(error.response.headers);
-                    } else {
-                        console.log(error.message);
+                    if (error.response && error.response.status === 429) {
+                        throw new Error(
+                            "You have exceeded 1,000 requests a day. Visit https://ipinfo.io/account to see your API limits."
+                        );
                     }
                     reject(error);
                 });
@@ -53,9 +60,10 @@ export default class IPinfoWrapper {
     }
 
     public lookupASN(asn: string): Promise<any> {
-        // ipinfo.io/AS7922/json?token=$TOKEN
+        if (!asn || typeof asn !== "string") {
+            throw new Error("asn is a required parameter");
+        }
         const url = `${IPinfo.Fqdn}${asn}/json`;
-
         const config: AxiosRequestConfig = {
             headers: {
                 Accept: "application/json",
@@ -70,16 +78,13 @@ export default class IPinfoWrapper {
         return new Promise((resolve, reject) => {
             axios(config)
                 .then((response: AxiosResponse) => {
-                    console.log(response.data);
-                    resolve(new ASNResponse(response.data));
+                    resolve(new ASNResponse(response.data, this.countries));
                 })
                 .catch((error: AxiosError) => {
-                    if (error.response) {
-                        console.log(error.response.data);
-                        console.log(error.response.status);
-                        console.log(error.response.headers);
-                    } else {
-                        console.log(error.message);
+                    if (error.response && error.response.status === 429) {
+                        throw new Error(
+                            "You have exceeded 1,000 requests a day. Visit https://ipinfo.io/account to see your API limits."
+                        );
                     }
                     reject(error);
                 });
