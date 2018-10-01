@@ -75,3 +75,5 @@ typings/
 out/
 
 .vscode/
+
+src/index.ts

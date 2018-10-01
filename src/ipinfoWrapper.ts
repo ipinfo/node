@@ -1,93 +1,108 @@
 import axios, {
-    AxiosAdapter,
     AxiosError,
-    AxiosInstance,
     AxiosRequestConfig,
-    AxiosResponse,
-    Cancel,
-    Canceler,
-    CancelToken,
-    CancelTokenSource,
+    AxiosResponse
 } from "axios";
 import ASNResponse from "./model/asnResponse.model";
+import Cache from "./cache/cache";
+import countries from "../config/en_US.json";
 import IPinfo from "./model/ipinfo.model";
-import countries from '../config/en_US.json';
-import LRU from "lru-cache"
 
 export default class IPinfoWrapper {
     private token: string;
     private countries: any;
-    private lru: any;
+    private cache: Cache;
+    private limitErrorMessage: string = "You have exceeded 1,000 requests a day. Visit https://ipinfo.io/account to see your API limits.";
 
     constructor(token: string) {
         this.token = token;
         this.countries = countries;
-        this.lru = LRU();
+        this.cache = new Cache();
     }
 
-    public lookupIp(ip: string): Promise<any> {
+    public lookupIp(ip: string): Promise<IPinfo> {
         if (!ip || typeof ip !== "string") {
             throw new Error("ip is a required parameter");
         }
 
-        const url = `${IPinfo.Fqdn}${ip}`;
+        const data = this.cache.getIp(ip);
 
-        const config: AxiosRequestConfig = {
-            headers: {
-                Accept: "application/json",
-                Authorization: `Bearer ${this.token}`,
-                "Content-Type": "application/json",
-                "User-Agent": "IPinfoClient/nodejs/1.0",
-            },
-            method: "get",
-            url: `${url}`,
-        };
+        if (!data) {
+            const url = `${IPinfo.Fqdn}${ip}`;
 
+            const config: AxiosRequestConfig = {
+                headers: {
+                    Accept: "application/json",
+                    Authorization: `Bearer ${this.token}`,
+                    "Content-Type": "application/json",
+                    "User-Agent": "IPinfoClient/nodejs/1.0",
+                },
+                method: "get",
+                url: `${url}`,
+            };
+    
+            return new Promise((resolve, reject) => {
+                axios(config)
+                    .then((response: AxiosResponse) => {
+                        console.log(response);
+
+
+                        const ipinfo = new IPinfo(response.data, this.countries)
+                        this.cache.setIp(ip, ipinfo);
+                        resolve(ipinfo);
+                    })
+                    .catch((error: AxiosError) => {
+                        if (error.response && error.response.status === 429) {
+                            throw new Error(this.limitErrorMessage);
+                        }
+                        reject(error);
+                    });
+            });
+        }
+        
         return new Promise((resolve, reject) => {
-            axios(config)
-                .then((response: AxiosResponse) => {
-                    resolve(new IPinfo(response.data, this.countries));
-                })
-                .catch((error: AxiosError) => {
-                    if (error.response && error.response.status === 429) {
-                        throw new Error(
-                            "You have exceeded 1,000 requests a day. Visit https://ipinfo.io/account to see your API limits."
-                        );
-                    }
-                    reject(error);
-                });
+            resolve(data);
         });
     }
 
-    public lookupASN(asn: string): Promise<any> {
+    public lookupASN(asn: string): Promise<ASNResponse> {
         if (!asn || typeof asn !== "string") {
             throw new Error("asn is a required parameter");
         }
-        const url = `${IPinfo.Fqdn}${asn}/json`;
-        const config: AxiosRequestConfig = {
-            headers: {
-                Accept: "application/json",
-                Authorization: `Bearer ${this.token}`,
-                "Content-Type": "application/json",
-                "User-Agent": "IPinfoClient/nodejs/1.0",
-            },
-            method: "get",
-            url: `${url}`,
-        };
+
+        const data = this.cache.getAsn(asn);
+
+        if (!data) {
+            const url = `${IPinfo.Fqdn}${asn}/json`;
+            const config: AxiosRequestConfig = {
+                headers: {
+                    Accept: "application/json",
+                    Authorization: `Bearer ${this.token}`,
+                    "Content-Type": "application/json",
+                    "User-Agent": "IPinfoClient/nodejs/1.0",
+                },
+                method: "get",
+                url: `${url}`,
+            };
+    
+            return new Promise((resolve, reject) => {
+                axios(config)
+                    .then((response: AxiosResponse) => {
+                        const asnResponse = new ASNResponse(response.data, this.countries);
+                        this.cache.setAsn(asn, asnResponse);
+                        resolve(asnResponse);
+                    })
+                    .catch((error: AxiosError) => {
+                        if (error.response && error.response.status === 429) {
+                            throw new Error(this.limitErrorMessage);
+                        }
+                        reject(error);
+                    });
+            });
+        }
 
         return new Promise((resolve, reject) => {
-            axios(config)
-                .then((response: AxiosResponse) => {
-                    resolve(new ASNResponse(response.data, this.countries));
-                })
-                .catch((error: AxiosError) => {
-                    if (error.response && error.response.status === 429) {
-                        throw new Error(
-                            "You have exceeded 1,000 requests a day. Visit https://ipinfo.io/account to see your API limits."
-                        );
-                    }
-                    reject(error);
-                });
+            resolve(data);
         });
     }
 }
