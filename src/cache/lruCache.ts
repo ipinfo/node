@@ -9,10 +9,10 @@ const cacheOptions: Options = {
 };
 
 export default class LruCache implements IPCache {
-    cache: any;
+    private cache: any;
 
-    constructor(){
-        this.cache = new LRU(cacheOptions);
+    constructor(option: Options = cacheOptions){
+        this.cache = new LRU(option);
     }
 
     public getIp(ip: string): IPinfo {  

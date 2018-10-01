@@ -5,6 +5,7 @@ import axios, {
 } from "axios";
 import ASNResponse from "./model/asnResponse.model";
 import Cache from "./cache/cache";
+import LRUCache from "./cache/lruCache";
 import countries from "../config/en_US.json";
 import IPinfo from "./model/ipinfo.model";
 
@@ -17,7 +18,7 @@ export default class IPinfoWrapper {
     constructor(token: string) {
         this.token = token;
         this.countries = countries;
-        this.cache = new Cache();
+        this.cache = new LRUCache();
     }
 
     public lookupIp(ip: string): Promise<IPinfo> {
@@ -44,9 +45,6 @@ export default class IPinfoWrapper {
             return new Promise((resolve, reject) => {
                 axios(config)
                     .then((response: AxiosResponse) => {
-                        console.log(response);
-
-
                         const ipinfo = new IPinfo(response.data, this.countries)
                         this.cache.setIp(ip, ipinfo);
                         resolve(ipinfo);
