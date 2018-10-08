@@ -92,7 +92,8 @@ export default class IPinfoWrapper {
                     })
                     .catch((error: AxiosError) => {
                         if (error.response && error.response.status === 429) {
-                            throw new Error(this.limitErrorMessage);
+                            // throw new Error(this.limitErrorMessage);
+                            reject(Error(this.limitErrorMessage));
                         }
                         reject(error);
                     });

@@ -11,6 +11,7 @@ export default class ASNResponse {
     private _prefixes: Prefix[]; // serialize
     private _prefixes6: Prefix[];
     private _type: string;
+    private _num_ips: number;
 
     constructor(data: any, countries: any) {
         this._asn = data.asn;
@@ -23,6 +24,7 @@ export default class ASNResponse {
         this._prefixes = data.prefixes;
         this._prefixes6 = data.prefixes6;
         this._type = data.type;
+        this._num_ips = data.num_ips;
     }
 
     /**
@@ -104,4 +106,13 @@ export default class ASNResponse {
     public get type(): string {
         return this._type;
     }
+
+    /**
+     * Getter num_ips
+     * @return {string}
+     */
+    public get num_ips(): number {
+        return this._num_ips;
+    }
+    
 }

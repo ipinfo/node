@@ -1,8 +1,10 @@
+import * as dotenv from "dotenv";
 import IPinfoWrapper from "./ipinfoWrapper";
 import ASNResponse from "./model/asnResponse.model";
 import IPinfo from "./model/ipinfo.model";
 
-const token = "token";
+dotenv.config();
+const token = process.env.IPINFO_TOKEN;
 const ip = "8.8.8.8";
 const asn = "AS7922";
 

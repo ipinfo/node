@@ -4,7 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "tsc": "tsc --pretty --watch"
+    "build": "tsc",
+    "tsc": "tsc --pretty --watch",
+    "test": "jest --watchAll"
   },
   "repository": {
     "type": "git",
@@ -17,12 +19,17 @@
   },
   "homepage": "https://ipinfo.io/",
   "dependencies": {
+    "@types/dotenv": "^4.0.3",
     "@types/lru-cache": "^4.1.1",
     "axios": "^0.18.0",
     "lru-cache": "^4.1.3"
   },
   "devDependencies": {
+    "@types/jest": "^23.3.3",
+    "dotenv": "^6.0.0",
+    "jest": "^23.6.0",
     "prettier": "^1.14.2",
+    "ts-jest": "^23.10.4",
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.15.0",
     "tslint-config-standard": "^8.0.1",
