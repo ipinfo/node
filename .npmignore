@@ -1,0 +1,16 @@
+!*.d.ts
+.*
+.DS_Store
+.env
+.git/
+.prettierrc
+.prettierrc.json
+.vscode
+*.tgz
+*.ts
+jest.config.json
+node_modules/
+scratch.ts
+src/
+tsconfig.json
+tslint.json

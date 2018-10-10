@@ -1,13 +1,14 @@
 import * as dotenv from "dotenv";
-import IPinfoWrapper from "./ipinfoWrapper";
-import ASNResponse from "./model/asnResponse.model";
-import IPinfo from "./model/ipinfo.model";
+import ASNResponse from "../model/asnResponse.model";
+import IPinfo from "../model/ipinfo.model";
+import IPinfoWrapper from "../ipinfoWrapper";
 
-let ipinfoWrapper;
+let ipinfoWrapper: IPinfoWrapper;
 
 beforeEach(() => {
     dotenv.config();
-    ipinfoWrapper = new IPinfoWrapper(process.env.IPINFO_TOKEN);
+    const token = process.env.IPINFO_TOKEN || "token";
+    ipinfoWrapper = new IPinfoWrapper(token);
 });
 
 describe("IPinfoWrapper", () => {
