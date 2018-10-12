@@ -14,28 +14,28 @@ This is the official NodeJS Client library for the [IPinfo.io](https://ipinfo.io
 With your favorite package manager (npm or yarn) :
 
 ```sh
-yarn add node-ipinfo
-# or
 npm i -s node-ipinfo
+yarn add node-ipinfo
+bower install node-ipinfo --save
 ```
 
 ## Usage
-
-```javascript
-import IPinfo from "node-ipinfo";
+### TypeScript
+```typescript
+import IPinfoWrapper from "node-ipinfo";
 
 const token = "myToken"
 const ip = "8.8.8.8";
 const asn = "AS7922";
-const ipinfo = new IPinfo(token);
+const ipinfoWrapper = new IPinfoWrapper(token);
 
-ipinfo.lookupIp(ip).then((response: IPinfo) => {
+ipinfoWrapper.lookupIp(ip).then((response: IPinfo) => {
     console.log(response.asn); // { asn: 'AS15169', name: 'Google LLC', domain: 'google.com', route: '8.8.8.0/24', type: 'hosting' }
     console.log(response.hostname); // google-public-dns-a.google.com
     console.log(response.city); // Mountain View
 });
 
-ipinfo.lookupASN(asn).then((response: ASNResponse) => {
+ipinfoWrapper.lookupASN(asn).then((response: ASNResponse) => {
     console.log(response.asn); // AS7922
     console.log(response.name); // Comcast Cable Communications, LLC
     console.log(response.country); // United States
@@ -43,7 +43,7 @@ ipinfo.lookupASN(asn).then((response: ASNResponse) => {
 
 ```
 
-
+### JavaScript
 ```javascript
 var IPinfo = require("node-ipinfo");
 
@@ -62,6 +62,13 @@ ipinfo.lookupASN(asn).then((response) => {
     console.log(response.asn); // AS7922
     console.log(response.name); // Comcast Cable Communications, LLC
     console.log(response.country); // United States
+});
+```
+
+### AMD
+```javascript
+define(function(require,exports,module){
+  var ipinfo = require('node-ipinfo');
 });
 ```
 

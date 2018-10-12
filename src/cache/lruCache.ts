@@ -1,7 +1,7 @@
-import LRU, {Options} from "lru-cache";
-import IPinfo from "../model/ipinfo.model";
 import ASNResponse from "../model/asnResponse.model";
 import IPCache from "../cache/cache"
+import IPinfo from "../model/ipinfo.model";
+import LRU, {Options} from "lru-cache";
 
 const cacheOptions: Options = {
     max: 100, // The maximum number of items allowed in the cache (100 items max)

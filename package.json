@@ -1,6 +1,6 @@
 {
     "name": "node-ipinfo",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Official Node client library for IPinfo",
     "main": "index.js",
     "types": "dist/src/ipinfoWrapper.d.ts",
@@ -12,8 +12,7 @@
         "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
         "lint": "tslint -p tsconfig.json",
         "prepare": "npm run build",
-        "prepublishOnly": "npm test && npm run lint",
-        "preversion": "npm run lint",
+        "prepublishOnly": "npm test",
         "version": "npm run format && git add -A src",
         "postversion": "git push && git push --tags"
     },

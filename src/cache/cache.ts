@@ -1,5 +1,5 @@
-import IPinfo from "../model/ipinfo.model";
 import ASNResponse from "../model/asnResponse.model";
+import IPinfo from "../model/ipinfo.model";
 
 export default interface IPCache {
     getIp(ip: string): IPinfo;
