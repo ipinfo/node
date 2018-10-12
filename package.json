@@ -1,5 +1,5 @@
 {
-    "name": "nodejs-ipinfo",
+    "name": "node-ipinfo",
     "version": "1.0.0",
     "description": "Official Node client library for IPinfo",
     "main": "index.js",
