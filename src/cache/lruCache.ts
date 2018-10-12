@@ -5,7 +5,7 @@ import IPCache from "../cache/cache"
 
 const cacheOptions: Options = {
     max: 100, // The maximum number of items allowed in the cache (100 items max)
-    maxAge: 1000 * 60 * 60 // The maximum life of a cached item in milliseconds (1 hr)
+    maxAge: 24 * 1000 * 60 * 60 // The maximum life of a cached item in milliseconds (24 hr)
 };
 
 export default class LruCache implements IPCache {
