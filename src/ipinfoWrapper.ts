@@ -1,24 +1,24 @@
-import axios, {
-    AxiosError,
-    AxiosRequestConfig,
-    AxiosResponse
-} from "axios";
-import ASNResponse from "./model/asnResponse.model";
-import Cache from "./cache/cache";
-import LRUCache from "./cache/lruCache";
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import countries from "../config/en_US.json";
+import Cache from "./cache/cache";
+import LruCache from "./cache/lruCache";
+import ASNResponse from "./model/asnResponse.model";
 import IPinfo from "./model/ipinfo.model";
+
+export { Cache, LruCache };
+export { Options } from "lru-cache";
 
 export default class IPinfoWrapper {
     private token: string;
     private countries: any;
     private cache: Cache;
-    private limitErrorMessage: string = "You have exceeded 1,000 requests a day. Visit https://ipinfo.io/account to see your API limits.";
+    private limitErrorMessage: string =
+        "You have exceeded 1,000 requests a day. Visit https://ipinfo.io/account to see your API limits.";
 
-    constructor(token: string) {
+    constructor(token: string, cache?: Cache) {
         this.token = token;
         this.countries = countries;
-        this.cache = new LRUCache();
+        this.cache = cache ? cache : new LruCache();
     }
 
     public lookupIp(ip: string): Promise<IPinfo> {
@@ -26,7 +26,7 @@ export default class IPinfoWrapper {
             throw new Error("ip is a required parameter");
         }
 
-        const data = this.cache.getIp(ip);
+        const data = this.cache.get(ip);
 
         if (!data) {
             const url = `${IPinfo.Fqdn}${ip}`;
@@ -41,12 +41,12 @@ export default class IPinfoWrapper {
                 method: "get",
                 url: `${url}`,
             };
-    
+
             return new Promise((resolve, reject) => {
                 axios(config)
                     .then((response: AxiosResponse) => {
-                        const ipinfo = new IPinfo(response.data, this.countries)
-                        this.cache.setIp(ip, ipinfo);
+                        const ipinfo = new IPinfo(response.data, this.countries);
+                        this.cache.set(ip, ipinfo);
                         resolve(ipinfo);
                     })
                     .catch((error: AxiosError) => {
@@ -57,7 +57,7 @@ export default class IPinfoWrapper {
                     });
             });
         }
-        
+
         return new Promise((resolve) => {
             resolve(data);
         });
@@ -68,7 +68,7 @@ export default class IPinfoWrapper {
             throw new Error("asn is a required parameter");
         }
 
-        const data = this.cache.getAsn(asn);
+        const data = this.cache.get(asn);
 
         if (!data) {
             const url = `${IPinfo.Fqdn}${asn}/json`;
@@ -82,17 +82,16 @@ export default class IPinfoWrapper {
                 method: "get",
                 url: `${url}`,
             };
-    
+
             return new Promise((resolve, reject) => {
                 axios(config)
                     .then((response: AxiosResponse) => {
                         const asnResponse = new ASNResponse(response.data, this.countries);
-                        this.cache.setAsn(asn, asnResponse);
+                        this.cache.set(asn, asnResponse);
                         resolve(asnResponse);
                     })
                     .catch((error: AxiosError) => {
                         if (error.response && error.response.status === 429) {
-                            // throw new Error(this.limitErrorMessage);
                             reject(Error(this.limitErrorMessage));
                         }
                         reject(error);

@@ -16,7 +16,7 @@ export default class ASNResponse {
     constructor(data: any, countries: any) {
         this._asn = data.asn;
         this._name = data.name;
-        this._country = countries[data.country]
+        this._country = countries[data.country];
         this._countryCode = data.country;
         this._allocated = data.allocated;
         this._registry = data.registry;
@@ -55,9 +55,9 @@ export default class ASNResponse {
      * Getter countryCode
      * @return {string}
      */
-	public get countryCode(): string {
-		return this._countryCode;
-	}
+    public get countryCode(): string {
+        return this._countryCode;
+    }
 
     /**
      * Getter allocated
@@ -114,5 +114,4 @@ export default class ASNResponse {
     public get num_ips(): number {
         return this._num_ips;
     }
-    
 }
