@@ -1,22 +1,24 @@
-# node-ipinfo
+# [<img src="https://ipinfo.io/static/ipinfo-small.svg" alt="IPinfo" width="24"/>](https://ipinfo.io/) IPinfo NodeJS Client Library
 
-This is the official NodeJS Client library for the [IPinfo.io](https://ipinfo.io). Works with ES5, ES6+ and TypeScript. IP address API, allowing you to lookup your own IP address, or get any of the following details for an IP:
- - IP geolocation (city, region, country, postal code, latitude and longitude)
- - ASN details (ISP or network operator, associated domain name, and type, such as business, hosting or company)
- - Company details (the name and domain of the business that uses the IP address)
- - Carrier details (the name of the mobile carrier and MNC and MCC for that carrier if the IP is used exclusively for mobile traffic)
+This is the official NodeJS client library for the [IPinfo.io](https://ipinfo.io) IP address API, allowing you to lookup your own IP address, or get any of the following details for an IP:
 
-[![License](http://img.shields.io/:license-apache-blue.svg)](LICENSE)
-[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
+- IP geolocation (city, region, country, postal code, latitude and longitude)
+- ASN details (ISP or network operator, associated domain name, and type, such as business, hosting or company)
+- Company details (the name and domain of the business that uses the IP address)
+- Carrier details (the name of the mobile carrier and MNC and MCC for that carrier if the IP is used exclusively for mobile traffic)
+
+**Works with ES5, ES6+ and TypeScript.**
+
+## Getting Started
+
+You'll need an IPinfo API access token, which you can get by singing up for a free account at [https://ipinfo.io/signup](https://ipinfo.io/signup?ref=lib-nodejs).
+
+The free plan is limited to 1,000 requests a day, and doesn't include some of the data fields such as IP type and company data. To enable all the data fields and additional request volumes see [https://ipinfo.io/pricing](https://ipinfo.io/pricing?ref=lib-nodejs).
 
 ## Installation
 
-With your favorite package manager (npm or yarn):
-
 ```sh
-npm i -s node-ipinfo
-yarn add node-ipinfo
-bower install node-ipinfo --save
+npm install node-ipinfo
 ```
 
 ## Usage
@@ -135,7 +137,7 @@ Get great code completion for this package using the integrated typescript typin
 
 In order to run the tests, run:
 
-    $ npm test
+    $ npm run test
 
 If you want to check out the coverage, run:
 
