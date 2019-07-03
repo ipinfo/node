@@ -137,11 +137,15 @@ Get great code completion for this package using the integrated typescript typin
 
 In order to run the tests, run:
 
-    $ npm run test
+```bash
+$ npm run test
+```
 
 If you want to check out the coverage, run:
 
-    $ npm run test:coverage
+```bash
+$ npm run test:coverage
+```
 
 ### Other Libraries
 

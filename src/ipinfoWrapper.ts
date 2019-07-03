@@ -22,15 +22,12 @@ export default class IPinfoWrapper {
     }
 
     public lookupIp(ip: string): Promise<IPinfo> {
-        if (!ip || typeof ip !== "string") {
+        if (!ip || typeof ip !== "string")
             throw new Error("ip is a required parameter");
-        }
 
         const data = this.cache.get(ip);
-
         if (!data) {
             const url = `${IPinfo.Fqdn}${ip}`;
-
             const config: AxiosRequestConfig = {
                 headers: {
                     Accept: "application/json",
@@ -50,26 +47,21 @@ export default class IPinfoWrapper {
                         resolve(ipinfo);
                     })
                     .catch((error: AxiosError) => {
-                        if (error.response && error.response.status === 429) {
+                        if (error.response && error.response.status === 429)
                             throw new Error(this.limitErrorMessage);
-                        }
                         reject(error);
                     });
             });
         }
 
-        return new Promise((resolve) => {
-            resolve(data);
-        });
+        return new Promise((resolve) => resolve(data));
     }
 
     public lookupASN(asn: string): Promise<ASNResponse> {
-        if (!asn || typeof asn !== "string") {
+        if (!asn || typeof asn !== "string")
             throw new Error("asn is a required parameter");
-        }
 
         const data = this.cache.get(asn);
-
         if (!data) {
             const url = `${IPinfo.Fqdn}${asn}/json`;
             const config: AxiosRequestConfig = {
@@ -91,16 +83,13 @@ export default class IPinfoWrapper {
                         resolve(asnResponse);
                     })
                     .catch((error: AxiosError) => {
-                        if (error.response && error.response.status === 429) {
+                        if (error.response && error.response.status === 429)
                             reject(Error(this.limitErrorMessage));
-                        }
                         reject(error);
                     });
             });
         }
 
-        return new Promise((resolve) => {
-            resolve(data);
-        });
+        return new Promise((resolve) => resolve(data));
     }
 }
