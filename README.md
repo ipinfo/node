@@ -54,7 +54,7 @@ var IPinfo = require("node-ipinfo");
 var token = "myToken"
 var ip = "8.8.8.8"
 var asn = "AS7922";
-var ipinfo = new IPinfo.default(token);
+var ipinfo = new IPinfo (token);
 
 ipinfo.lookupIp(ip).then((response) => {
     console.log(response.asn); // { asn: 'AS15169', name: 'Google LLC', domain: 'google.com', route: '8.8.8.0/24', type: 'hosting' }
@@ -73,7 +73,7 @@ ipinfo.lookupASN(asn).then((response) => {
 
 ```javascript
 define(function(require,exports,module){
-  var ipinfo = require('node-ipinfo').default;
+  var ipinfo = require('node-ipinfo');
 });
 ```
 
@@ -108,7 +108,7 @@ var cacheOptions = {
     maxAge: 24 * 1000 * 60 * 60,
 };
 var cache = new IPinfo.LruCache(cacheOptions);
-var ipinfo = new IPinfo.default("myToken", cache);
+var ipinfo = new IPinfo("myToken", cache);
 ```
 
 ### Errors
