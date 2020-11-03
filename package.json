@@ -22,6 +22,9 @@
         "url": "https://github.com/ipinfo/node/issues"
     },
     "homepage": "https://ipinfo.io/",
+    "engines": {
+        "node": ">=10"
+    },
     "dependencies": {
         "axios": "^0.18.1",
         "lru-cache": "^4.1.3"
