@@ -5,6 +5,7 @@
 .prettierrc
 .prettierrc.json
 .vscode
+.vim
 *.tgz
 *.ts
 jest.config.json
@@ -12,4 +13,3 @@ node_modules/
 scratch.ts
 src/
 tsconfig.json
-tslint.json
