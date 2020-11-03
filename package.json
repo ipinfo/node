@@ -9,12 +9,9 @@
         "tsc": "tsc --pretty --watch",
         "test": "jest",
         "test --watch": "jest --watchAll",
-        "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
         "lint": "tslint -p tsconfig.json",
         "prepare": "npm run build",
-        "prepublishOnly": "npm test",
-        "version": "npm run format && git add -A src",
-        "postversion": "git push && git push --tags"
+        "prepublishOnly": "npm test"
     },
     "repository": {
         "type": "git",
@@ -38,10 +35,8 @@
         "@types/lru-cache": "^4.1.1",
         "dotenv": "^6.0.0",
         "jest": "^23.6.0",
-        "prettier": "^1.14.2",
         "ts-jest": "^23.10.4",
         "tslint": "^5.11.0",
-        "tslint-config-prettier": "^1.15.0",
         "tslint-config-standard": "^8.0.1",
         "typescript": "^3.0.3"
     }
