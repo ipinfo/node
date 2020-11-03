@@ -36,8 +36,8 @@ const asn = "AS7922";
 const ipinfoWrapper = new IPinfoWrapper(token);
 
 ipinfoWrapper.lookupIp(ip).then((response: IPinfo) => {
-    console.log(response.asn); // { asn: 'AS15169', name: 'Google LLC', domain: 'google.com', route: '8.8.8.0/24', type: 'hosting' }
-    console.log(response.hostname); // google-public-dns-a.google.com
+    console.log(response.asn); // { asn: 'AS15169', name: 'Google LLC', domain: 'google.com', route: '8.8.8.0/24', type: 'business' }
+    console.log(response.hostname); // dns.google
     console.log(response.city); // Mountain View
 });
 
@@ -59,8 +59,8 @@ var asn = "AS7922";
 var ipinfo = new IPinfo(token);
 
 ipinfo.lookupIp(ip).then((response) => {
-    console.log(response.asn); // { asn: 'AS15169', name: 'Google LLC', domain: 'google.com', route: '8.8.8.0/24', type: 'hosting' }
-    console.log(response.hostname); // google-public-dns-a.google.com
+    console.log(response.asn); // { asn: 'AS15169', name: 'Google LLC', domain: 'google.com', route: '8.8.8.0/24', type: 'business' }
+    console.log(response.hostname); // dns.google
     console.log(response.city); // Mountain View
 });
 
