@@ -2,8 +2,7 @@ import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import countries from "../config/en_US.json";
 import Cache from "./cache/cache";
 import LruCache from "./cache/lruCache";
-import ASNResponse from "./model/asnResponse.model";
-import IPinfo from "./model/ipinfo.model";
+import { FQDN, IPinfo, AsnResponse } from "./common";
 
 export { Cache, LruCache };
 export { Options } from "lru-cache";
@@ -13,7 +12,7 @@ export default class IPinfoWrapper {
     private countries: any;
     private cache: Cache;
     private limitErrorMessage: string =
-        "You have exceeded 1,000 requests a day. Visit https://ipinfo.io/account to see your API limits.";
+        "You have exceeded 50,000 requests a month. Visit https://ipinfo.io/account to see your API limits.";
 
     constructor(token: string, cache?: Cache) {
         this.token = token;
@@ -22,85 +21,94 @@ export default class IPinfoWrapper {
     }
 
     public lookupIp(ip: string): Promise<IPinfo> {
-        if (!ip || typeof ip !== "string") {
-            throw new Error("ip is a required parameter");
-        }
-
         const data = this.cache.get(ip);
-
-        if (!data) {
-            const url = `${IPinfo.Fqdn}${ip}`;
-
-            const config: AxiosRequestConfig = {
-                headers: {
-                    Accept: "application/json",
-                    Authorization: `Bearer ${this.token}`,
-                    "Content-Type": "application/json",
-                    "User-Agent": "IPinfoClient/nodejs/1.0",
-                },
-                method: "get",
-                url: `${url}`,
-            };
-
-            return new Promise((resolve, reject) => {
-                axios(config)
-                    .then((response: AxiosResponse) => {
-                        const ipinfo = new IPinfo(response.data, this.countries);
-                        this.cache.set(ip, ipinfo);
-                        resolve(ipinfo);
-                    })
-                    .catch((error: AxiosError) => {
-                        if (error.response && error.response.status === 429) {
-                            throw new Error(this.limitErrorMessage);
-                        }
-                        reject(error);
-                    });
+        if (data) {
+            return new Promise((resolve) => {
+                resolve(data);
             });
         }
 
-        return new Promise((resolve) => {
-            resolve(data);
+        const url = `${FQDN}/${ip}`;
+        const config: AxiosRequestConfig = {
+            headers: {
+                Accept: "application/json",
+                Authorization: `Bearer ${this.token}`,
+                "Content-Type": "application/json",
+                "User-Agent": "IPinfoClient/nodejs/2.0.0",
+            },
+            method: "get",
+            url: `${url}`,
+        };
+
+        return new Promise((resolve, reject) => {
+            axios(config)
+                .then((response: AxiosResponse) => {
+                    const ipinfo: IPinfo = response.data;
+
+                    /* convert country code to full country name */
+                    // NOTE: always do this _before_ setting cache.
+                    if (ipinfo.country) {
+                        ipinfo.countryCode = ipinfo.country;
+                        ipinfo.country = this.countries[ipinfo.countryCode];
+                    }
+                    if (ipinfo.abuse && ipinfo.abuse.country) {
+                        ipinfo.abuse.countryCode = ipinfo.abuse.country;
+                        ipinfo.abuse.country = this.countries[ipinfo.abuse.countryCode];
+                    }
+
+                    this.cache.set(ip, ipinfo);
+                    resolve(ipinfo);
+                })
+                .catch((error: AxiosError) => {
+                    if (error.response && error.response.status === 429) {
+                        throw new Error(this.limitErrorMessage);
+                    }
+                    reject(error);
+                });
         });
     }
 
-    public lookupASN(asn: string): Promise<ASNResponse> {
-        if (!asn || typeof asn !== "string") {
-            throw new Error("asn is a required parameter");
-        }
-
+    public lookupASN(asn: string): Promise<AsnResponse> {
         const data = this.cache.get(asn);
-
-        if (!data) {
-            const url = `${IPinfo.Fqdn}${asn}/json`;
-            const config: AxiosRequestConfig = {
-                headers: {
-                    Accept: "application/json",
-                    Authorization: `Bearer ${this.token}`,
-                    "Content-Type": "application/json",
-                    "User-Agent": "IPinfoClient/nodejs/1.0",
-                },
-                method: "get",
-                url: `${url}`,
-            };
-
-            return new Promise((resolve, reject) => {
-                axios(config)
-                    .then((response: AxiosResponse) => {
-                        const asnResponse = new ASNResponse(response.data, this.countries);
-                        this.cache.set(asn, asnResponse);
-                        resolve(asnResponse);
-                    })
-                    .catch((error: AxiosError) => {
-                        if (error.response && error.response.status === 429) {
-                            reject(Error(this.limitErrorMessage));
-                        }
-                        reject(error);
-                    });
+        if (data) {
+            return new Promise((resolve) => {
+                resolve(data);
             });
         }
 
-        return new Promise((resolve) => {
-            resolve(data);
+        const url = `${FQDN}/${asn}/json`;
+        const config: AxiosRequestConfig = {
+            headers: {
+                Accept: "application/json",
+                Authorization: `Bearer ${this.token}`,
+                "Content-Type": "application/json",
+                "User-Agent": "IPinfoClient/nodejs/2.0.0",
+            },
+            method: "get",
+            url: `${url}`,
+        };
+
+        return new Promise((resolve, reject) => {
+            axios(config)
+                .then((response: AxiosResponse) => {
+                    const asnResp: AsnResponse = response.data;
+
+                    /* convert country code to full country name */
+                    // NOTE: always do this _before_ setting cache.
+                    if (asnResp.country) {
+                        asnResp.countryCode = asnResp.country;
+                        asnResp.country = this.countries[asnResp.countryCode];
+                    }
+
+                    this.cache.set(asn, asnResp);
+                    resolve(asnResp);
+                })
+                .catch((error: AxiosError) => {
+                    if (error.response && error.response.status === 429) {
+                        reject(Error(this.limitErrorMessage));
+                    }
+                    reject(error);
+                });
         });
     }
 }

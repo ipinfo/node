@@ -1,10 +1,11 @@
 import LRU, { Options } from "lru-cache";
-import IPCache from "../cache/cache";
+import IPCache from "./cache";
 
 const cacheOptions: Options = {
-    // The maximum number of items allowed in the cache (100 items max)
+    // The maximum number of items allowed in the cache.
     max: 5000,
-    // The maximum life of a cached item in milliseconds (24 hr)
+
+    // The maximum life of a cached item in milliseconds.
     maxAge: 24 * 1000 * 60 * 60,
 };
 
