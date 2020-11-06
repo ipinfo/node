@@ -14,6 +14,12 @@ export interface Company {
     type: string;
 }
 
+export interface Carrier {
+    name: string;
+    mcc: string;
+    mnc: string;
+}
+
 export interface Privacy {
     vpn: boolean;
     proxy: boolean;
@@ -49,6 +55,7 @@ export interface IPinfo {
     timezone: string;
     asn: Asn;
     company: Company;
+    carrier: Carrier;
     privacy: Privacy;
     abuse: Abuse;
     domains: Domains;
