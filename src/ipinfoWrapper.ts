@@ -34,10 +34,10 @@ export default class IPinfoWrapper {
                 Accept: "application/json",
                 Authorization: `Bearer ${this.token}`,
                 "Content-Type": "application/json",
-                "User-Agent": "IPinfoClient/nodejs/2.0.0",
+                "User-Agent": "IPinfoClient/nodejs/2.0.0"
             },
             method: "get",
-            url: `${url}`,
+            url: `${url}`
         };
 
         return new Promise((resolve, reject) => {
@@ -53,7 +53,9 @@ export default class IPinfoWrapper {
                     }
                     if (ipinfo.abuse && ipinfo.abuse.country) {
                         ipinfo.abuse.countryCode = ipinfo.abuse.country;
-                        ipinfo.abuse.country = this.countries[ipinfo.abuse.countryCode];
+                        ipinfo.abuse.country = this.countries[
+                            ipinfo.abuse.countryCode
+                        ];
                     }
 
                     this.cache.set(ip, ipinfo);
@@ -82,10 +84,10 @@ export default class IPinfoWrapper {
                 Accept: "application/json",
                 Authorization: `Bearer ${this.token}`,
                 "Content-Type": "application/json",
-                "User-Agent": "IPinfoClient/nodejs/2.0.0",
+                "User-Agent": "IPinfoClient/nodejs/2.0.0"
             },
             method: "get",
-            url: `${url}`,
+            url: `${url}`
         };
 
         return new Promise((resolve, reject) => {

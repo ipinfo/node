@@ -30,7 +30,7 @@ describe("IPinfoWrapper", () => {
                 name: "Google LLC",
                 domain: "google.com",
                 route: "8.8.8.0/24",
-                type: "business",
+                type: "business"
             });
             expect(data.company).toEqual({
                 name: "Google LLC",
@@ -41,10 +41,11 @@ describe("IPinfoWrapper", () => {
                 vpn: false,
                 proxy: false,
                 tor: false,
-                hosting: false,
+                hosting: false
             });
             expect(data.abuse).toEqual({
-                address: "US, CA, Mountain View, 1600 Amphitheatre Parkway, 94043",
+                address:
+                    "US, CA, Mountain View, 1600 Amphitheatre Parkway, 94043",
                 country: "United States",
                 countryCode: "US",
                 email: "network-abuse@google.com",

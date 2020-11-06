@@ -5,10 +5,15 @@ ROOT=$DIR/..
 
 # Format code in project.
 
-find $ROOT \
+find \
+    $ROOT/src \
+    $ROOT/index.js \
+    $ROOT/jest.config.js \
+    $ROOT/package.json \
+    $ROOT/tsconfig.json \
     -not \( -path $ROOT/node_modules -prune \) \
     -name '*.js' -print0 \
-    -name '*.ts' -print0 \
+    -or -name '*.ts' -print0 \
     -or -name '*.css' -print0 \
     -or -name '*.scss' -print0 \
     -or -name '*.html' -print0 \
