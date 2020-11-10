@@ -51,6 +51,7 @@ export interface IPinfo {
     country: string;
     countryCode: string;
     loc: string;
+    org: string;
     postal: string;
     timezone: string;
     asn: Asn;
