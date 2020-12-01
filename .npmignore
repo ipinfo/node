@@ -12,4 +12,5 @@ jest.config.json
 node_modules/
 scratch.ts
 src/
+scripts/
 tsconfig.json
