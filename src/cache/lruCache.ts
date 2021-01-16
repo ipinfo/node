@@ -1,7 +1,7 @@
 import LRU, { Options } from "lru-cache";
 import IPCache from "./cache";
 
-const cacheOptions: Options = {
+const cacheOptions: Options<string, any> = {
     // The maximum number of items allowed in the cache.
     max: 5000,
 
@@ -12,7 +12,7 @@ const cacheOptions: Options = {
 export default class LruCache implements IPCache {
     private cache: any;
 
-    constructor(option: Options = cacheOptions) {
+    constructor(option: Options<string, any> = cacheOptions) {
         this.cache = new LRU(option);
     }
 
