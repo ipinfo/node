@@ -53,17 +53,9 @@ describe("IPinfoWrapper", () => {
                 network: "8.8.8.0/24",
                 phone: "+1-650-253-0000"
             });
-            expect(data.domains).toEqual({
-                ip: "8.8.8.8",
-                total: 12988,
-                domains: [
-                    "41.cn",
-                    "vrswebapps.com",
-                    "etempurl.com",
-                    "mtqnia.com",
-                    "iptvx.tv"
-                ]
-            });
+            expect(data.domains.ip).toEqual("8.8.8.8");
+            expect(data.domains.total).not.toBeFalsy();
+            expect(data.domains.domains.length).toEqual(5);
         });
     });
 
@@ -76,7 +68,7 @@ describe("IPinfoWrapper", () => {
             expect(data.allocated).toEqual("1997-02-14");
             expect(data.registry).toEqual("arin");
             expect(data.domain).toEqual("comcast.com");
-            expect(data.num_ips).toEqual(71324416);
+            expect(data.num_ips).not.toBeFalsy();
             expect(data.type).toEqual("isp");
         });
     });
