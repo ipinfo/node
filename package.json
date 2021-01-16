@@ -1,6 +1,6 @@
 {
     "name": "node-ipinfo",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "description": "Official Node client library for IPinfo",
     "main": "index.js",
     "types": "dist/src/ipinfoWrapper.d.ts",

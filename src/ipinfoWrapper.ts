@@ -3,9 +3,12 @@ import countries from "../config/en_US.json";
 import Cache from "./cache/cache";
 import LruCache from "./cache/lruCache";
 import { FQDN, IPinfo, AsnResponse } from "./common";
+import VERSION from "./version";
 
 export { Cache, LruCache };
 export { Options } from "lru-cache";
+
+const clientUserAgent = `IPinfoClient/nodejs/${VERSION}`;
 
 export default class IPinfoWrapper {
     private token: string;
@@ -34,7 +37,7 @@ export default class IPinfoWrapper {
                 Accept: "application/json",
                 Authorization: `Bearer ${this.token}`,
                 "Content-Type": "application/json",
-                "User-Agent": "IPinfoClient/nodejs/2.0.0"
+                "User-Agent": clientUserAgent
             },
             method: "get",
             url: `${url}`
@@ -84,7 +87,7 @@ export default class IPinfoWrapper {
                 Accept: "application/json",
                 Authorization: `Bearer ${this.token}`,
                 "Content-Type": "application/json",
-                "User-Agent": "IPinfoClient/nodejs/2.0.0"
+                "User-Agent": clientUserAgent
             },
             method: "get",
             url: `${url}`
