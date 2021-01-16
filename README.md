@@ -51,12 +51,12 @@ ipinfoWrapper.lookupASN(asn).then((response: ASNResponse) => {
 ### JavaScript
 
 ```javascript
-var IPinfo = require("node-ipinfo");
+let IPinfo = require("node-ipinfo");
 
-var token = "myToken"
-var ip = "8.8.8.8"
-var asn = "AS7922";
-var ipinfo = new IPinfo(token);
+let token = "myToken"
+let ip = "8.8.8.8"
+let asn = "AS7922";
+let ipinfo = new IPinfo(token);
 
 ipinfo.lookupIp(ip).then((response) => {
     console.log(response.asn); // { asn: 'AS15169', name: 'Google LLC', domain: 'google.com', route: '8.8.8.0/24', type: 'business' }
@@ -75,7 +75,7 @@ ipinfo.lookupASN(asn).then((response) => {
 
 ```javascript
 define(function(require,exports,module){
-  var ipinfo = require('node-ipinfo');
+    let ipinfo = require('node-ipinfo');
 });
 ```
 
@@ -92,25 +92,25 @@ The default cache length is 1 day and the defauly max number of items allowed in
 ```typescript
 import IPinfoWrapper, { LruCache, Options } from "node-ipinfo";
 
-const cacheOptions: Options = {
+const cacheOptions: Options<string, any> = {
     max: 5000,
     maxAge: 24 * 1000 * 60 * 60,
 };
-var cache = new LruCache(cacheOptions);
-var ipinfoWrapper = new IPinfoWrapper("token", cacheOptions);
+let cache = new LruCache(cacheOptions);
+let ipinfoWrapper = new IPinfoWrapper("token", cacheOptions);
 ```
 
 ##### JavaScript
 
 ```javascript
-var IPinfo = require("node-ipinfo");
+let IPinfo = require("node-ipinfo");
 
-var cacheOptions = {
+let cacheOptions = {
     max: 5000,
     maxAge: 24 * 1000 * 60 * 60,
 };
-var cache = new IPinfo.LruCache(cacheOptions);
-var ipinfo = new IPinfo("myToken", cache);
+let cache = new IPinfo.LruCache(cacheOptions);
+let ipinfo = new IPinfo("myToken", cache);
 ```
 
 ### Errors
