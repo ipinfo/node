@@ -10,6 +10,7 @@
         "test": "jest",
         "test --watch": "jest --watchAll"
     },
+    "prepublish": "tsc",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/ipinfo/node.git"
