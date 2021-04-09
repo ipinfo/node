@@ -22,7 +22,8 @@ export default class IPinfoWrapper {
         this.token = token;
         this.countries = countries;
         this.cache = cache ? cache : new LruCache();
-        this.timeout = timeout || 5000;
+        this.timeout =
+            timeout === null || timeout === undefined ? 5000 : timeout;
     }
 
     public lookupIp(ip: string): Promise<IPinfo> {

@@ -118,6 +118,8 @@ let ipinfo = new IPinfo("myToken", cache);
 The client constructor accepts a `timeout` parameter in milliseconds that
 controls the timeout of requests. It defaults to `5000` i.e. 5 seconds.
 
+A timeout of `0` disables the timeout feature.
+
 ##### TypeScript
 
 ```typescript
