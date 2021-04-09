@@ -113,6 +113,29 @@ let cache = new IPinfo.LruCache(cacheOptions);
 let ipinfo = new IPinfo("myToken", cache);
 ```
 
+### Timeouts
+
+The client constructor accepts a `timeout` parameter in milliseconds that
+controls the timeout of requests. It defaults to `5000` i.e. 5 seconds.
+
+##### TypeScript
+
+```typescript
+import IPinfoWrapper from "node-ipinfo";
+
+// 10 second timeout.
+let ipinfoWrapper = new IPinfoWrapper("token", null, 10000);
+```
+
+##### JavaScript
+
+```javascript
+let IPinfo = require("node-ipinfo");
+
+// 10 second timeout.
+let ipinfo = new IPinfo("token", null, 10000);
+```
+
 ### Errors
 
 ```javascript
