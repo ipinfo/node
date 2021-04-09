@@ -14,13 +14,15 @@ export default class IPinfoWrapper {
     private token: string;
     private countries: any;
     private cache: Cache;
+    private timeout: number;
     private limitErrorMessage: string =
         "You have exceeded 50,000 requests a month. Visit https://ipinfo.io/account to see your API limits.";
 
-    constructor(token: string, cache?: Cache) {
+    constructor(token: string, cache?: Cache, timeout?: number) {
         this.token = token;
         this.countries = countries;
         this.cache = cache ? cache : new LruCache();
+        this.timeout = timeout || 5000;
     }
 
     public lookupIp(ip: string): Promise<IPinfo> {
@@ -40,7 +42,8 @@ export default class IPinfoWrapper {
                 "User-Agent": clientUserAgent
             },
             method: "get",
-            url: `${url}`
+            url: `${url}`,
+            timeout: this.timeout
         };
 
         return new Promise((resolve, reject) => {
@@ -90,7 +93,8 @@ export default class IPinfoWrapper {
                 "User-Agent": clientUserAgent
             },
             method: "get",
-            url: `${url}`
+            url: `${url}`,
+            timeout: this.timeout
         };
 
         return new Promise((resolve, reject) => {
