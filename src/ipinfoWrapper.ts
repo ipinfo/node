@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import https from 'https';
 import countries from "../config/en_US.json";
 import Cache from "./cache/cache";
 import LruCache from "./cache/lruCache";
@@ -23,102 +23,122 @@ export default class IPinfoWrapper {
         this.countries = countries;
         this.cache = cache ? cache : new LruCache();
         this.timeout =
-            timeout === null || timeout === undefined ? 5000 : timeout;
+        timeout === null || timeout === undefined ? 5000 : timeout;
     }
-
+    
     public lookupIp(ip: string): Promise<IPinfo> {
-        const data = this.cache.get(ip);
+        const data = this.cache.get(ip + "_" +  VERSION);
         if (data) {
             return new Promise((resolve) => {
                 resolve(data);
             });
         }
-
-        const url = `${FQDN}/${ip}`;
-        const config: AxiosRequestConfig = {
+        
+        const config : any = {
             headers: {
                 Accept: "application/json",
                 Authorization: `Bearer ${this.token}`,
                 "Content-Type": "application/json",
                 "User-Agent": clientUserAgent
             },
-            method: "get",
-            url: `${url}`,
+            method: "GET",
+            host: `${FQDN.replace("https://", "")}`,
+            path: `/${ip}`,
             timeout: this.timeout
         };
 
         return new Promise((resolve, reject) => {
-            axios(config)
-                .then((response: AxiosResponse) => {
-                    const ipinfo: IPinfo = response.data;
-
-                    /* convert country code to full country name */
-                    // NOTE: always do this _before_ setting cache.
-                    if (ipinfo.country) {
-                        ipinfo.countryCode = ipinfo.country;
-                        ipinfo.country = this.countries[ipinfo.countryCode];
-                    }
-                    if (ipinfo.abuse && ipinfo.abuse.country) {
-                        ipinfo.abuse.countryCode = ipinfo.abuse.country;
-                        ipinfo.abuse.country = this.countries[
-                            ipinfo.abuse.countryCode
-                        ];
-                    }
-
-                    this.cache.set(ip, ipinfo);
-                    resolve(ipinfo);
-                })
-                .catch((error: AxiosError) => {
+           const req = https.request(config, (res: any) => {
+               
+                let data = '';
+                res.on('data', (chunk: any) => {
+                   data += chunk;
+                });
+                    
+                res.on('close', () => {
+                const ipinfo: IPinfo = JSON.parse(data);
+                
+                /* convert country code to full country name */
+                // NOTE: always do this _before_ setting cache.
+                if (ipinfo.country) {
+                    ipinfo.countryCode = ipinfo.country;
+                    ipinfo.country = this.countries[ipinfo.countryCode];
+                }
+                if (ipinfo.abuse && ipinfo.abuse.country) {
+                    ipinfo.abuse.countryCode = ipinfo.abuse.country;
+                    ipinfo.abuse.country = this.countries[
+                        ipinfo.abuse.countryCode
+                    ];
+                }
+                
+                this.cache.set(ip + "_" + VERSION, ipinfo);
+                resolve(ipinfo);
+                });
+                    
+                res.on('error', (error: any) => {
                     if (error.response && error.response.status === 429) {
                         throw new Error(this.limitErrorMessage);
                     }
                     reject(error);
-                });
+                })
+            })
+                    
+            req.end();
         });
     }
 
     public lookupASN(asn: string): Promise<AsnResponse> {
-        const data = this.cache.get(asn);
+        const data = this.cache.get(asn + "_" + VERSION);
         if (data) {
             return new Promise((resolve) => {
                 resolve(data);
             });
         }
 
-        const url = `${FQDN}/${asn}/json`;
-        const config: AxiosRequestConfig = {
+        const config : any = {
             headers: {
                 Accept: "application/json",
                 Authorization: `Bearer ${this.token}`,
                 "Content-Type": "application/json",
                 "User-Agent": clientUserAgent
             },
-            method: "get",
-            url: `${url}`,
+            method: "GET",
+            host: `${FQDN.replace("https://", "")}`,
+            path: `/${asn}/json`,
             timeout: this.timeout
         };
 
         return new Promise((resolve, reject) => {
-            axios(config)
-                .then((response: AxiosResponse) => {
-                    const asnResp: AsnResponse = response.data;
+            const req = https.request(config, (res: any) => {
+                
+                 let data = '';
+                 res.on('data', (chunk: any) => {
+                    data += chunk;
+                 });
+                     
+                 res.on('close', () => {
+                 const asnResp: AsnResponse = JSON.parse(data);
 
-                    /* convert country code to full country name */
-                    // NOTE: always do this _before_ setting cache.
-                    if (asnResp.country) {
-                        asnResp.countryCode = asnResp.country;
-                        asnResp.country = this.countries[asnResp.countryCode];
-                    }
+                 /* convert country code to full country name */
+                 // NOTE: always do this _before_ setting cache.
+                 if (asnResp.country) {
+                     asnResp.countryCode = asnResp.country;
+                     asnResp.country = this.countries[asnResp.countryCode];
+                 }
 
-                    this.cache.set(asn, asnResp);
-                    resolve(asnResp);
-                })
-                .catch((error: AxiosError) => {
-                    if (error.response && error.response.status === 429) {
-                        reject(Error(this.limitErrorMessage));
-                    }
-                    reject(error);
-                });
-        });
+                 this.cache.set(asn + "_" + VERSION, asnResp);
+                 resolve(asnResp);
+                 });
+                     
+                 res.on('error', (error: any) => {
+                     if (error.response && error.response.status === 429) {
+                         throw new Error(this.limitErrorMessage);
+                     }
+                     reject(error);
+                 })
+             })
+                     
+             req.end();
+         });
     }
 }
