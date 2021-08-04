@@ -85,88 +85,9 @@ describe("IPinfoWrapper", () => {
     test("lookupIps", async (done) => {
         let data = await ipinfoWrapper.lookupIps(ips);
         data = JSON.parse(data)
-        expect('8.8.8.8' in data).not.toBeFalsy();
-        expect('4.4.4.4' in data).not.toBeFalsy();
- 
-        expect(data['4.4.4.4']).toEqual({
-            ip: '4.4.4.4',
-            city: 'New York City',
-            region: 'New York',
-            country: 'US',
-            loc: '40.7143,-74.0060',
-            postal: '10004',
-            timezone: 'America/New_York',
-            asn: {
-              asn: 'AS3356',
-              name: 'Level 3 Parent, LLC',
-              domain: 'level3.com',
-              route: '4.0.0.0/9',
-              type: 'isp'
-            },
-            company: {
-              name: 'Level 3 Communications, Inc.',
-              domain: 'lumen.com',
-              type: 'isp'
-            },
-            privacy: { vpn: false, proxy: false, tor: false, hosting: false },
-            abuse: {
-              address: 'US, CO, Broomfield, 1025 Eldorado Blvd., 80021',
-              country: 'US',
-              email: 'abuse@level3.com',
-              name: 'Abuse POC LVLT',
-              network: '4.4.0.0/16',
-              phone: '+1-877-453-8353'
-            },
-            domains: {
-              ip: '4.4.4.4',
-              total: 224,
-              domains: [
-                'gf-clan.ch',
-                'cms3970.com',
-                'blue-buff.com',
-                'dc-scape.eu',
-                'www.guixf.cn'
-              ]
-        }})
-        expect(data['8.8.8.8']).toEqual({
-            ip: '8.8.8.8',
-            hostname: 'dns.google',
-            anycast: true,
-            city: 'Mountain View',
-            region: 'California',
-            country: 'US',
-            loc: '37.4056,-122.0775',
-            postal: '94043',
-            timezone: 'America/Los_Angeles',
-            asn: {
-              asn: 'AS15169',
-              name: 'Google LLC',
-              domain: 'google.com',
-              route: '8.8.8.0/24',
-              type: 'business'
-            },
-            company: { name: 'Google LLC', domain: 'google.com', type: 'business' },
-            privacy: { vpn: false, proxy: false, tor: false, hosting: false },
-            abuse: {
-              address: 'US, CA, Mountain View, 1600 Amphitheatre Parkway, 94043',
-              country: 'US',
-              email: 'network-abuse@google.com',
-              name: 'Abuse',
-              network: '8.8.8.0/24',
-              phone: '+1-650-253-0000'
-            },
-            domains: {
-              ip: '8.8.8.8',
-              total: 13196,
-              domains: [
-                '41.cn',
-                'peace-and-yummy.com',
-                'authrock.com',
-                'itempurl.com',
-                'nextroute.co.th'
-              ]
-            }
-        })
+
+        expect(data.status).toEqual("Report Generated");
+        expect(data.reportUrl?.includes("https://ipinfo.io/tools/map/")).toBeTruthy();
         done();
     });
 

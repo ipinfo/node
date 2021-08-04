@@ -145,7 +145,6 @@ export default class IPinfoWrapper {
     }
 
     public lookupIps(ips: string[]): Promise<any> {
-        // const ipsData : IPinfo[] = [];
         var ipsData = JSON.stringify(ips)
 
         const config : any = {
@@ -158,7 +157,7 @@ export default class IPinfoWrapper {
             },
             method: "POST",
             host: `${FQDN.replace("https://", "")}`,
-            path: `/batch?token=${this.token}`,
+            path: `/map?cli=1`,
             timeout: this.timeout
         };
 
@@ -167,9 +166,9 @@ export default class IPinfoWrapper {
                 const req = https.request(config, (res: any) => {
                     let data = '';
                     res.on('data', (chunk: any) => {
-                       data += chunk;
+                        data += chunk;
                     });
-                        
+                    
                     res.on('close', () => {
                        resolve(data);
                     });  
