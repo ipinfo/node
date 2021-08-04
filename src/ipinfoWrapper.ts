@@ -17,6 +17,8 @@ export default class IPinfoWrapper {
     private timeout: number;
     private limitErrorMessage: string =
         "You have exceeded 50,000 requests a month. Visit https://ipinfo.io/account to see your API limits.";
+    private mapLimitErrorMessage: string =
+        "You have exceeded maximum IP upload limit i.e 500,000 IPs per request.";
 
     constructor(token: string, cache?: Cache, timeout?: number) {
         this.token = token;
@@ -140,5 +142,57 @@ export default class IPinfoWrapper {
                      
              req.end();
          });
+    }
+
+    public lookupIps(ips: string[]): Promise<any> {
+        // const ipsData : IPinfo[] = [];
+        var ipsData = JSON.stringify(ips)
+
+        const config : any = {
+            headers: {
+                Accept: "application/json",
+                Authorization: `Bearer ${this.token}`,
+                "Content-Type": "application/json",
+                'Content-Length': ipsData.length,
+                "User-Agent": clientUserAgent
+            },
+            method: "POST",
+            host: `${FQDN.replace("https://", "")}`,
+            path: `/batch?token=${this.token}`,
+            timeout: this.timeout
+        };
+
+        return new Promise((resolve, reject) => {
+            if (ips?.length <= 500000) {
+                const req = https.request(config, (res: any) => {
+                    let data = '';
+                    res.on('data', (chunk: any) => {
+                       data += chunk;
+                    });
+                        
+                    res.on('close', () => {
+                       resolve(data);
+                    });  
+                    
+                    res.on('error', (error: any) => {
+                        if (error.response && error.response.status === 429) {
+                            throw new Error(this.limitErrorMessage);
+                        }
+                        reject(error);
+                    })
+                })
+                        
+                req.on('error', (error) => {
+                   reject(error)
+                });
+                 
+               req.write(ipsData);
+               req.end();
+
+            } else {
+                reject(this.mapLimitErrorMessage)
+            }
+
+         });        
     }
 }
