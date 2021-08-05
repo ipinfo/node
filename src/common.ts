@@ -1,5 +1,11 @@
 export const FQDN: string = "https://ipinfo.io";
 
+export const BATCH_MAX_SIZE: number = 1000;
+
+export const REQUEST_TIMEOUT_DEFAULT: number = 2000;
+
+export const BATCH_REQ_TIMEOUT_DEFAULT: number = 5000;
+
 export interface Asn {
     asn: string;
     name: string;
