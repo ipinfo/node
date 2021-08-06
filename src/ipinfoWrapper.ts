@@ -1,4 +1,5 @@
-import https from "https";
+import { IncomingMessage } from "http";
+import https, { RequestOptions } from "https";
 import countries from "../config/en_US.json";
 import Cache from "./cache/cache";
 import LruCache from "./cache/lruCache";
@@ -42,7 +43,7 @@ export default class IPinfoWrapper {
             });
         }
 
-        const config: any = {
+        const config: RequestOptions = {
             headers: {
                 Accept: "application/json",
                 Authorization: `Bearer ${this.token}`,
@@ -57,7 +58,7 @@ export default class IPinfoWrapper {
 
         return new Promise((resolve, reject) => {
             try {
-                const req = https.request(config, (res: any) => {
+                const req = https.request(config, (res: IncomingMessage) => {
                     let data = "";
                     res.on("data", (chunk: any) => {
                         data += chunk;
@@ -108,7 +109,7 @@ export default class IPinfoWrapper {
             });
         }
 
-        const config: any = {
+        const config: RequestOptions = {
             headers: {
                 Accept: "application/json",
                 Authorization: `Bearer ${this.token}`,
@@ -123,7 +124,7 @@ export default class IPinfoWrapper {
 
         return new Promise((resolve, reject) => {
             try {
-                const req = https.request(config, (res: any) => {
+                const req = https.request(config, (res: IncomingMessage) => {
                     let data = "";
                     res.on("data", (chunk: any) => {
                         data += chunk;
@@ -163,7 +164,7 @@ export default class IPinfoWrapper {
     public lookupIps(ips: string[]): Promise<any> {
         const ipsData = JSON.stringify(ips);
 
-        const config: any = {
+        const config: RequestOptions = {
             headers: {
                 Accept: "application/json",
                 Authorization: `Bearer ${this.token}`,
@@ -180,7 +181,7 @@ export default class IPinfoWrapper {
         return new Promise((resolve, reject) => {
             if (ips?.length <= 500000) {
                 try {
-                    const req = https.request(config, (res: any) => {
+                    const req = https.request(config, (res: IncomingMessage) => {
                         let data = "";
                         res.on("data", (chunk: any) => {
                             data += chunk;
@@ -222,7 +223,7 @@ export default class IPinfoWrapper {
         filter: boolean
     ): Promise<any> {
         const ipsData = JSON.stringify(ips);
-        const config: any = {
+        const config: RequestOptions = {
             headers: {
                 Accept: "application/json",
                 Authorization: `Bearer ${this.token}`,
@@ -238,7 +239,7 @@ export default class IPinfoWrapper {
 
         return new Promise((resolve, reject) => {
             try {
-                const req = https.request(config, (res: any) => {
+                const req = https.request(config, (res: IncomingMessage) => {
                     let data = "";
                     res.on("data", (chunk: any) => {
                         data += chunk;
