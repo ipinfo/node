@@ -112,3 +112,12 @@ export interface AsnResponse {
     upstreams: string[];
     downstreams: string[];
 }
+
+export interface MapResponse {
+    status: string;
+    reportUrl: string;
+}
+
+export interface IPobj {
+    [key: string]: object;
+}

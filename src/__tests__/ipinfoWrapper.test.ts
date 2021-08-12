@@ -82,9 +82,8 @@ describe("IPinfoWrapper", () => {
         done();
     });
 
-    test("lookupIps", async (done) => {
-        let data = await ipinfoWrapper.lookupIps(ips);
-        data = JSON.parse(data);
+    test("getMap", async (done) => {
+        let data = await ipinfoWrapper.getMap(ips);
 
         expect(data.status).toEqual("Report Generated");
         expect(

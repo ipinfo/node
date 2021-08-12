@@ -6,6 +6,8 @@ import LruCache from "./cache/lruCache";
 import {
     IPinfo,
     AsnResponse,
+    MapResponse,
+    IPobj,
     BATCH_MAX_SIZE,
     BATCH_REQ_TIMEOUT_DEFAULT,
     REQUEST_TIMEOUT_DEFAULT, 
@@ -163,7 +165,7 @@ export default class IPinfoWrapper {
         });
     }
 
-    public lookupIps(ips: string[]): Promise<any> {
+    public getMap(ips: string[]): Promise<MapResponse> {
         const ipsData = JSON.stringify(ips);
 
         const config: RequestOptions = {
@@ -176,45 +178,45 @@ export default class IPinfoWrapper {
             },
             method: "POST",
             host: HOST,
-            path: `/map?cli=1`,
+            path: `/tools/map?cli=1`,
             timeout: this.timeout
         };
 
         return new Promise((resolve, reject) => {
-            if (ips?.length <= 500000) {
-                try {
-                    const req = https.request(config, (res: IncomingMessage) => {
-                        let data = "";
-                        res.on("data", (chunk: any) => {
-                            data += chunk;
-                        });
+            if (ips.length > 500000) {
+                reject(this.mapLimitErrorMessage);
+            }
 
-                        res.on("close", () => {
-                            resolve(data);
-                        });
-
-                        res.on("error", (error: any) => {
-                            if (
-                                error.response &&
-                                error.response.status === 429
-                            ) {
-                                reject(this.limitErrorMessage);
-                            }
-                            reject(error);
-                        });
+            try {
+                const req = https.request(config, (res: IncomingMessage) => {
+                    let data = "";
+                    res.on("data", (chunk: any) => {
+                        data += chunk;
                     });
 
-                    req.on("error", (error) => {
+                    res.on("close", () => {
+                        resolve(JSON.parse(data));
+                    });
+
+                    res.on("error", (error: any) => {
+                        if (
+                            error.response &&
+                            error.response.status === 429
+                        ) {
+                            reject(this.limitErrorMessage);
+                        }
                         reject(error);
                     });
+                });
 
-                    req.write(ipsData);
-                    req.end();
-                } catch (error) {
+                req.on("error", (error) => {
                     reject(error);
-                }
-            } else {
-                reject(this.mapLimitErrorMessage);
+                });
+
+                req.write(ipsData);
+                req.end();
+            } catch (error) {
+                reject(error);
             }
         });
     }
@@ -272,13 +274,13 @@ export default class IPinfoWrapper {
     }
 
     public async getBatchDetails(
-        ips: string[] = [],
+        ips: string[],
         batchSize: number = BATCH_MAX_SIZE,
         batchTimeout: number = BATCH_REQ_TIMEOUT_DEFAULT,
         timeoutTotal: number = 0,
         filter: boolean = false
     ): Promise<any> {
-        let result = {};
+        let result: IPobj = {};
         if (!ips.length) {
             return new Promise((resolve) => {
                 resolve(result);
@@ -293,10 +295,7 @@ export default class IPinfoWrapper {
         ips.forEach((ip) => {
             const cachedIpAddr = this.cache.get(`${ip}:${CACHE_VSN}`);
             if (cachedIpAddr) {
-                result = {
-                    ...result,
-                    [ip]: cachedIpAddr
-                };
+                result[ip] = cachedIpAddr;
             } else {
                 lookupIps.push(ip);
             }
@@ -343,11 +342,7 @@ export default class IPinfoWrapper {
                                 `${key}:${CACHE_VSN}`,
                                 ipinfo
                             );
-
-                            result = {
-                                ...result,
-                                ...batchIpDetails
-                            };
+                            result[key] = batchIpDetails[key];
                         }
                     }
                 }
