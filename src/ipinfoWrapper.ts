@@ -4,11 +4,13 @@ import countries from "../config/en_US.json";
 import Cache from "./cache/cache";
 import LruCache from "./cache/lruCache";
 import {
-    FQDN,
     IPinfo,
     AsnResponse,
     BATCH_MAX_SIZE,
-    BATCH_REQ_TIMEOUT_DEFAULT
+    BATCH_REQ_TIMEOUT_DEFAULT,
+    REQUEST_TIMEOUT_DEFAULT, 
+    CACHE_VSN,
+    HOST
 } from "./common";
 import VERSION from "./version";
 
@@ -32,11 +34,11 @@ export default class IPinfoWrapper {
         this.countries = countries;
         this.cache = cache ? cache : new LruCache();
         this.timeout =
-            timeout === null || timeout === undefined ? 5000 : timeout;
+            timeout === null || timeout === undefined ? REQUEST_TIMEOUT_DEFAULT : timeout;
     }
 
     public lookupIp(ip: string): Promise<IPinfo> {
-        const data = this.cache.get(ip + "_" + VERSION);
+        const data = this.cache.get(`${ip}:${CACHE_VSN}`);
         if (data) {
             return new Promise((resolve) => {
                 resolve(data);
@@ -51,7 +53,7 @@ export default class IPinfoWrapper {
                 "User-Agent": clientUserAgent
             },
             method: "GET",
-            host: `${FQDN.replace("https://", "")}`,
+            host: HOST,
             path: `/${ip}`,
             timeout: this.timeout
         };
@@ -82,13 +84,13 @@ export default class IPinfoWrapper {
                             ];
                         }
 
-                        this.cache.set(ip + "_" + VERSION, ipinfo);
+                        this.cache.set(`${ip}:${CACHE_VSN}`, ipinfo);
                         resolve(ipinfo);
                     });
 
                     res.on("error", (error: any) => {
                         if (error.response && error.response.status === 429) {
-                            throw new Error(this.limitErrorMessage);
+                            reject(this.limitErrorMessage);
                         }
                         reject(error);
                     });
@@ -102,7 +104,7 @@ export default class IPinfoWrapper {
     }
 
     public lookupASN(asn: string): Promise<AsnResponse> {
-        const data = this.cache.get(asn + "_" + VERSION);
+        const data = this.cache.get(`${asn}:${CACHE_VSN}`);
         if (data) {
             return new Promise((resolve) => {
                 resolve(data);
@@ -117,7 +119,7 @@ export default class IPinfoWrapper {
                 "User-Agent": clientUserAgent
             },
             method: "GET",
-            host: `${FQDN.replace("https://", "")}`,
+            host: HOST,
             path: `/${asn}/json`,
             timeout: this.timeout
         };
@@ -142,13 +144,13 @@ export default class IPinfoWrapper {
                             ];
                         }
 
-                        this.cache.set(asn + "_" + VERSION, asnResp);
+                        this.cache.set(`${asn}:${CACHE_VSN}`, asnResp);
                         resolve(asnResp);
                     });
 
                     res.on("error", (error: any) => {
                         if (error.response && error.response.status === 429) {
-                            throw new Error(this.limitErrorMessage);
+                            reject(this.limitErrorMessage);
                         }
                         reject(error);
                     });
@@ -173,7 +175,7 @@ export default class IPinfoWrapper {
                 "User-Agent": clientUserAgent
             },
             method: "POST",
-            host: `${FQDN.replace("https://", "")}`,
+            host: HOST,
             path: `/map?cli=1`,
             timeout: this.timeout
         };
@@ -196,7 +198,7 @@ export default class IPinfoWrapper {
                                 error.response &&
                                 error.response.status === 429
                             ) {
-                                throw new Error(this.limitErrorMessage);
+                                reject(this.limitErrorMessage);
                             }
                             reject(error);
                         });
@@ -232,7 +234,7 @@ export default class IPinfoWrapper {
                 "User-Agent": clientUserAgent
             },
             method: "POST",
-            host: `${FQDN.replace("https://", "")}`,
+            host: HOST,
             path: `/batch${filter ? "?filter=1" : ""}`,
             timeout: batchTimeout
         };
@@ -246,43 +248,12 @@ export default class IPinfoWrapper {
                     });
 
                     res.on("close", () => {
-                        const batchIpDetails = JSON.parse(data);
-                        for (var key in batchIpDetails) {
-                            if (batchIpDetails.hasOwnProperty(key)) {
-                                const ipinfo = batchIpDetails[key];
-
-                                if (ipinfo.error) {
-                                    delete batchIpDetails[key];
-                                } else {
-                                    /* convert country code to full country name */
-                                    // NOTE: always do this _before_ setting cache.
-                                    if (ipinfo.country) {
-                                        ipinfo.countryCode = ipinfo.country;
-                                        ipinfo.country = this.countries[
-                                            ipinfo.countryCode
-                                        ];
-                                    }
-                                    if (ipinfo.abuse && ipinfo.abuse.country) {
-                                        ipinfo.abuse.countryCode =
-                                            ipinfo.abuse.country;
-                                        ipinfo.abuse.country = this.countries[
-                                            ipinfo.abuse.countryCode
-                                        ];
-                                    }
-                                    this.cache.set(
-                                        key + "_" + VERSION,
-                                        ipinfo
-                                    );
-                                }
-                            }
-                        }
-
-                        resolve(JSON.stringify(batchIpDetails));
+                        resolve(data);
                     });
 
                     res.on("error", (error: any) => {
                         if (error.response && error.response.status === 429) {
-                            throw new Error(this.limitErrorMessage);
+                            reject(this.limitErrorMessage);
                         }
                         reject(error);
                     });
@@ -307,17 +278,20 @@ export default class IPinfoWrapper {
         timeoutTotal: number = 0,
         filter: boolean = false
     ): Promise<any> {
-        let startTime: number = new Date().getTime(),
-            result = {};
+        let result = {};
         if (!ips.length) {
             return new Promise((resolve) => {
                 resolve(result);
             });
         }
 
+        if (batchSize <= 0 || batchSize > BATCH_MAX_SIZE) {
+            batchSize = BATCH_MAX_SIZE;
+        }
+
         const lookupIps: string[] = [];
         ips.forEach((ip) => {
-            const cachedIpAddr = this.cache.get(ip + "_" + VERSION);
+            const cachedIpAddr = this.cache.get(`${ip}:${CACHE_VSN}`);
             if (cachedIpAddr) {
                 result = {
                     ...result,
@@ -328,32 +302,72 @@ export default class IPinfoWrapper {
             }
         });
 
-        if (timeoutTotal) {
-            startTime = new Date().getTime();
-        }
-
-        let i, j;
-        for (i = 0, j = lookupIps.length; i < j; i = i + batchSize) {
-            if (
-                timeoutTotal &&
-                new Date().getTime() - startTime > timeoutTotal
-            ) {
-                throw new Error("Total timeout has been exceeded.");
-            }
-
-            const resDetails = await this.getSingleBatchDetails(
-                lookupIps.splice(0, batchSize),
+        let lookupIpsArr: string[] = [...lookupIps], 
+            promises: any = [];
+        for (let i = 0; i < lookupIps.length; i += batchSize) {
+            const resDetails = this.getSingleBatchDetails(
+                lookupIpsArr.splice(0, batchSize),
                 batchTimeout,
                 filter
             );
-            result = {
-                ...result,
-                ...JSON.parse(resDetails)
-            };
+            promises.push(resDetails)
         }
 
-        return new Promise((resolve) => {
-            resolve(result);
+        const batchPromise = Promise.all(promises).then((values) => {
+            values.forEach((el: any) => {
+                let batchIpDetails = JSON.parse(el);
+
+                for (var key in batchIpDetails) {
+                    if (batchIpDetails.hasOwnProperty(key)) {
+                        const ipinfo = batchIpDetails[key];
+
+                        if (ipinfo.error) {
+                            delete batchIpDetails[key];
+                        } else {
+                            /* convert country code to full country name */
+                            // NOTE: always do this _before_ setting cache.
+                            if (ipinfo.country) {
+                                ipinfo.countryCode = ipinfo.country;
+                                ipinfo.country = this.countries[
+                                    ipinfo.countryCode
+                                ];
+                            }
+                            if (ipinfo.abuse && ipinfo.abuse.country) {
+                                ipinfo.abuse.countryCode =
+                                    ipinfo.abuse.country;
+                                ipinfo.abuse.country = this.countries[
+                                    ipinfo.abuse.countryCode
+                                ];
+                            }
+                            this.cache.set(
+                                `${key}:${CACHE_VSN}`,
+                                ipinfo
+                            );
+
+                            result = {
+                                ...result,
+                                ...batchIpDetails
+                            };
+                        }
+                    }
+                }
+            })
+        });
+
+        const timeoutPromise = new Promise((resolve) => {
+            if (timeoutTotal) {
+                setTimeout(resolve, timeoutTotal, 'totalTimeoutReached');
+            }
+        });
+
+        return await Promise.race([batchPromise, timeoutPromise]).then((value) => {
+            return new Promise((resolve, reject) => {
+                if (value === "totalTimeoutReached") {
+                    reject("Total timeout has been exceeded.")
+                } else {
+                    resolve(result);
+                }
+            });
         });
     }
 }
