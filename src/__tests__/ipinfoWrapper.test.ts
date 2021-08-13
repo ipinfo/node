@@ -11,14 +11,10 @@ beforeEach(() => {
 });
 
 describe("IPinfoWrapper", () => {
-    const ip = "8.8.8.8";
-    const ips = ["8.8.8.8", "4.4.4.4"];
-    const asn = "AS7922";
-
     test("lookupIp", async (done) => {
         // test multiple times for cache.
         for (let i = 0; i < 5; i++) {
-            const data: IPinfo = await ipinfoWrapper.lookupIp(ip);
+            const data: IPinfo = await ipinfoWrapper.lookupIp("8.8.8.8");
             expect(data.ip).toEqual("8.8.8.8");
             expect(data.hostname).toEqual("dns.google");
             expect(data.city).toEqual("Mountain View");
@@ -67,7 +63,7 @@ describe("IPinfoWrapper", () => {
     test("lookupASN", async (done) => {
         // test multiple times for cache.
         for (let i = 0; i < 5; i++) {
-            const data: AsnResponse = await ipinfoWrapper.lookupASN(asn);
+            const data: AsnResponse = await ipinfoWrapper.lookupASN("AS7922");
             expect(data.asn).toEqual("AS7922");
             expect(data.name).toEqual("Comcast Cable Communications, LLC");
             expect(data.country).toEqual("United States");
@@ -83,7 +79,7 @@ describe("IPinfoWrapper", () => {
     });
 
     test("getMap", async (done) => {
-        let data = await ipinfoWrapper.getMap(ips);
+        let data = await ipinfoWrapper.getMap(["8.8.8.8", "4.4.4.4"]);
 
         expect(data.status).toEqual("Report Generated");
         expect(
@@ -93,17 +89,24 @@ describe("IPinfoWrapper", () => {
     });
 
     test("getBatchDetails", async (done) => {
-        const data = await ipinfoWrapper.getBatchDetails(ips);
+        const data = await ipinfoWrapper.getBatchDetails([
+            "8.8.8.8/hostname",
+            "4.4.4.4",
+            "AS123",
+        ]);
 
-        expect("8.8.8.8" in data).not.toBeFalsy();
+        expect("8.8.8.8/hostname" in data).not.toBeFalsy();
         expect("4.4.4.4" in data).not.toBeFalsy();
+        expect("AS123" in data).not.toBeFalsy();
 
+        expect(data["8.8.8.8/hostname"]).toEqual("dns.google");
         expect(data["4.4.4.4"]).toEqual({
             ip: "4.4.4.4",
             city: "New York City",
             region: "New York",
             country: "United States",
             loc: "40.7143,-74.0060",
+            org: "AS3356 Level 3 Parent, LLC",
             postal: "10004",
             timezone: "America/New_York",
             asn: {
@@ -141,51 +144,22 @@ describe("IPinfoWrapper", () => {
             },
             countryCode: "US"
         });
-        expect(data["8.8.8.8"]).toEqual({
-            ip: "8.8.8.8",
-            hostname: "dns.google",
-            anycast: true,
-            city: "Mountain View",
-            region: "California",
+
+        expect(data["AS123"]).toEqual({
+            asn: "AS123",
+            name: "Air Force Systems Networking",
             country: "United States",
-            loc: "37.4056,-122.0775",
-            postal: "94043",
-            timezone: "America/Los_Angeles",
-            asn: {
-                asn: "AS15169",
-                name: "Google LLC",
-                domain: "google.com",
-                route: "8.8.8.0/24",
-                type: "business"
-            },
-            company: {
-                name: "Google LLC",
-                domain: "google.com",
-                type: "business"
-            },
-            privacy: { vpn: false, proxy: false, tor: false, hosting: false },
-            abuse: {
-                address:
-                    "US, CA, Mountain View, 1600 Amphitheatre Parkway, 94043",
-                country: "United States",
-                email: "network-abuse@google.com",
-                name: "Abuse",
-                network: "8.8.8.0/24",
-                phone: "+1-650-253-0000",
-                countryCode: "US"
-            },
-            domains: {
-                ip: "8.8.8.8",
-                total: 13196,
-                domains: [
-                    "41.cn",
-                    "peace-and-yummy.com",
-                    "authrock.com",
-                    "itempurl.com",
-                    "nextroute.co.th"
-                ]
-            },
-            countryCode: "US"
+            countryCode: "US",
+            allocated: "1987-08-24",
+            registry: "arin",
+            domain: "af.mil",
+            num_ips: 0,
+            type: "inactive",
+            prefixes: [],
+            prefixes6: [],
+            peers: null,
+            upstreams: null,
+            downstreams: null
         });
 
         done();
