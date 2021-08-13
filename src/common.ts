@@ -1,5 +1,3 @@
-export const FQDN: string = "https://ipinfo.io";
-
 export const HOST: string = "ipinfo.io";
 
 // cache version
