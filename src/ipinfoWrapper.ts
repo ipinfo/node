@@ -301,7 +301,7 @@ export default class IPinfoWrapper {
         });
 
         let lookupIpsArr: string[] = [...lookupIps],
-            promises: any = [];
+            promises: Promise<any>[] = [];
         for (let i = 0; i < lookupIps.length; i += batchSize) {
             const resDetails = this.getSingleBatchDetails(
                 lookupIpsArr.splice(0, batchSize),
