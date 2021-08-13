@@ -221,7 +221,7 @@ export default class IPinfoWrapper {
         });
     }
 
-    public getSingleBatchDetails(
+    private getSingleBatchDetails(
         ips: string[],
         batchTimeout: number,
         filter: boolean
