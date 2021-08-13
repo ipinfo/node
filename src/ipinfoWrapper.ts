@@ -266,6 +266,10 @@ export default class IPinfoWrapper {
                     });
                 });
 
+                req.on("timeout", () => {
+                    reject("batch timeout reached");
+                });
+
                 req.on("error", (error) => {
                     reject(error);
                 });
@@ -365,18 +369,25 @@ export default class IPinfoWrapper {
             });
         });
 
+        const totalTimeoutReached = Symbol();
+        let totalTimeoutRef: any;
         const timeoutPromise = new Promise((resolve) => {
-            if (timeoutTotal) {
-                setTimeout(resolve, timeoutTotal, "totalTimeoutReached");
+            if (timeoutTotal > 0) {
+                totalTimeoutRef = setTimeout(resolve, timeoutTotal, totalTimeoutReached);
             }
         });
 
         return await Promise.race([batchPromise, timeoutPromise]).then(
             (value) => {
                 return new Promise((resolve, reject) => {
-                    if (value === "totalTimeoutReached") {
+                    if (value === totalTimeoutReached) {
                         reject("Total timeout has been exceeded.");
                     } else {
+                        // timeout may still be running; cancel it.
+                        if (totalTimeoutRef) {
+                            clearTimeout(totalTimeoutRef);
+                        }
+
                         resolve(result);
                     }
                 });
