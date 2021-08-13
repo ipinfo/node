@@ -7,7 +7,7 @@ import {
     IPinfo,
     AsnResponse,
     MapResponse,
-    IPobj,
+    BatchResponse,
     BATCH_MAX_SIZE,
     BATCH_REQ_TIMEOUT_DEFAULT,
     REQUEST_TIMEOUT_DEFAULT,
@@ -278,8 +278,8 @@ export default class IPinfoWrapper {
         batchTimeout: number = BATCH_REQ_TIMEOUT_DEFAULT,
         timeoutTotal: number = 0,
         filter: boolean = false
-    ): Promise<any> {
-        let result: IPobj = {};
+    ): Promise<BatchResponse> {
+        let result: BatchResponse = {};
         if (!ips.length) {
             return new Promise((resolve) => {
                 resolve(result);
