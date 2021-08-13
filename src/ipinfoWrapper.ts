@@ -66,6 +66,7 @@ export default class IPinfoWrapper {
             try {
                 const req = https.request(config, (res: IncomingMessage) => {
                     let data = "";
+
                     res.on("data", (chunk: any) => {
                         data += chunk;
                     });
@@ -132,6 +133,7 @@ export default class IPinfoWrapper {
             try {
                 const req = https.request(config, (res: IncomingMessage) => {
                     let data = "";
+
                     res.on("data", (chunk: any) => {
                         data += chunk;
                     });
@@ -168,6 +170,12 @@ export default class IPinfoWrapper {
     }
 
     public getMap(ips: string[]): Promise<MapResponse> {
+        if (ips.length > 500000) {
+            return new Promise((_resolve, reject) => {
+                reject(this.mapLimitErrorMessage);
+            });
+        }
+
         const ipsData = JSON.stringify(ips);
 
         const config: RequestOptions = {
@@ -185,13 +193,10 @@ export default class IPinfoWrapper {
         };
 
         return new Promise((resolve, reject) => {
-            if (ips.length > 500000) {
-                reject(this.mapLimitErrorMessage);
-            }
-
             try {
                 const req = https.request(config, (res: IncomingMessage) => {
                     let data = "";
+
                     res.on("data", (chunk: any) => {
                         data += chunk;
                     });
@@ -244,6 +249,7 @@ export default class IPinfoWrapper {
             try {
                 const req = https.request(config, (res: IncomingMessage) => {
                     let data = "";
+
                     res.on("data", (chunk: any) => {
                         data += chunk;
                     });
