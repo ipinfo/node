@@ -279,38 +279,52 @@ export default class IPinfoWrapper {
     }
 
     public async getBatchDetails(
-        ips: string[],
+        urls: string[],
         batchSize: number = BATCH_MAX_SIZE,
         batchTimeout: number = BATCH_REQ_TIMEOUT_DEFAULT,
         timeoutTotal: number = 0,
         filter: boolean = false
     ): Promise<BatchResponse> {
         let result: BatchResponse = {};
-        if (!ips.length) {
+
+        // no items?
+        if (urls.length == 0) {
             return new Promise((resolve) => {
                 resolve(result);
             });
         }
 
+        // clip batch size.
         if (batchSize <= 0 || batchSize > BATCH_MAX_SIZE) {
             batchSize = BATCH_MAX_SIZE;
         }
 
-        const lookupIps: string[] = [];
-        ips.forEach((ip) => {
-            const cachedIpAddr = this.cache.get(`${ip}:${CACHE_VSN}`);
-            if (cachedIpAddr) {
-                result[ip] = cachedIpAddr;
+        // filter out URLs already cached.
+        const lookupUrls: string[] = [];
+        urls.forEach((url) => {
+            const cachedUrl = this.cache.get(`${url}:${CACHE_VSN}`);
+            if (cachedUrl) {
+                result[url] = cachedUrl;
             } else {
-                lookupIps.push(ip);
+                lookupUrls.push(url);
             }
         });
 
-        let lookupIpsArr: string[] = [...lookupIps],
-            promises: Promise<any>[] = [];
-        for (let i = 0; i < lookupIps.length; i += batchSize) {
+        // everything cached? exit early.
+        if (lookupUrls.length == 0) {
+            return new Promise((resolve) => {
+                resolve(result);
+            });
+        }
+
+        const promises: Promise<any>[] = [];
+        for (let i = 0; i < lookupUrls.length; i += batchSize) {
+            let end = i+batchSize;
+            if (end > lookupUrls.length) {
+                end = lookupUrls.length;
+            }
             const resDetails = this.getSingleBatchDetails(
-                lookupIpsArr.splice(0, batchSize),
+                lookupUrls.slice(i, end),
                 batchTimeout,
                 filter
             );
@@ -319,14 +333,14 @@ export default class IPinfoWrapper {
 
         const batchPromise = Promise.all(promises).then((values) => {
             values.forEach((el: any) => {
-                let batchIpDetails = JSON.parse(el);
+                let batchResp = JSON.parse(el);
 
-                for (var key in batchIpDetails) {
-                    if (batchIpDetails.hasOwnProperty(key)) {
-                        const ipinfo = batchIpDetails[key];
+                for (var key in batchResp) {
+                    if (batchResp.hasOwnProperty(key)) {
+                        const ipinfo = batchResp[key];
 
                         if (ipinfo.error) {
-                            delete batchIpDetails[key];
+                            delete batchResp[key];
                         } else {
                             /* convert country code to full country name */
                             // NOTE: always do this _before_ setting cache.
@@ -344,7 +358,7 @@ export default class IPinfoWrapper {
                                 ];
                             }
                             this.cache.set(`${key}:${CACHE_VSN}`, ipinfo);
-                            result[key] = batchIpDetails[key];
+                            result[key] = batchResp[key];
                         }
                     }
                 }
