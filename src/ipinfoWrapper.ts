@@ -323,7 +323,7 @@ export default class IPinfoWrapper {
 
         const promises: Promise<any>[] = [];
         for (let i = 0; i < lookupUrls.length; i += batchSize) {
-            let end = i+batchSize;
+            let end = i + batchSize;
             if (end > lookupUrls.length) {
                 end = lookupUrls.length;
             }
@@ -373,7 +373,11 @@ export default class IPinfoWrapper {
         let totalTimeoutRef: any;
         const timeoutPromise = new Promise((resolve) => {
             if (timeoutTotal > 0) {
-                totalTimeoutRef = setTimeout(resolve, timeoutTotal, totalTimeoutReached);
+                totalTimeoutRef = setTimeout(
+                    resolve,
+                    timeoutTotal,
+                    totalTimeoutReached
+                );
             }
         });
 

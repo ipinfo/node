@@ -94,7 +94,7 @@ describe("IPinfoWrapper", () => {
             const data = await ipinfoWrapper.getBatchDetails([
                 "8.8.8.8/hostname",
                 "4.4.4.4",
-                "AS123",
+                "AS123"
             ]);
 
             expect("8.8.8.8/hostname" in data).not.toBeFalsy();
@@ -123,7 +123,12 @@ describe("IPinfoWrapper", () => {
                     domain: "lumen.com",
                     type: "isp"
                 },
-                privacy: { vpn: false, proxy: false, tor: false, hosting: false },
+                privacy: {
+                    vpn: false,
+                    proxy: false,
+                    tor: false,
+                    hosting: false
+                },
                 abuse: {
                     address: "US, CO, Broomfield, 1025 Eldorado Blvd., 80021",
                     country: "United States",

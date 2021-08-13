@@ -117,5 +117,15 @@ export interface MapResponse {
 }
 
 export interface BatchResponse {
-    [key: string]: IPinfo | AsnResponse | Asn | Company | Carrier | Privacy | Abuse | Domains | object | string;
+    [key: string]:
+        | IPinfo
+        | AsnResponse
+        | Asn
+        | Company
+        | Carrier
+        | Privacy
+        | Abuse
+        | Domains
+        | object
+        | string;
 }
