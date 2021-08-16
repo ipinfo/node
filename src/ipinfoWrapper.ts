@@ -82,15 +82,13 @@ export default class IPinfoWrapper {
                         // NOTE: always do this _before_ setting cache.
                         if (ipinfo.country) {
                             ipinfo.countryCode = ipinfo.country;
-                            ipinfo.country = this.countries[
-                                ipinfo.countryCode
-                            ];
+                            ipinfo.country =
+                                this.countries[ipinfo.countryCode];
                         }
                         if (ipinfo.abuse && ipinfo.abuse.country) {
                             ipinfo.abuse.countryCode = ipinfo.abuse.country;
-                            ipinfo.abuse.country = this.countries[
-                                ipinfo.abuse.countryCode
-                            ];
+                            ipinfo.abuse.country =
+                                this.countries[ipinfo.abuse.countryCode];
                         }
 
                         this.cache.set(IPinfoWrapper.cacheKey(ip), ipinfo);
@@ -149,9 +147,8 @@ export default class IPinfoWrapper {
                         // NOTE: always do this _before_ setting cache.
                         if (asnResp.country) {
                             asnResp.countryCode = asnResp.country;
-                            asnResp.country = this.countries[
-                                asnResp.countryCode
-                            ];
+                            asnResp.country =
+                                this.countries[asnResp.countryCode];
                         }
 
                         this.cache.set(IPinfoWrapper.cacheKey(asn), asnResp);
@@ -354,16 +351,14 @@ export default class IPinfoWrapper {
                             // NOTE: always do this _before_ setting cache.
                             if (ipinfo.country) {
                                 ipinfo.countryCode = ipinfo.country;
-                                ipinfo.country = this.countries[
-                                    ipinfo.countryCode
-                                ];
+                                ipinfo.country =
+                                    this.countries[ipinfo.countryCode];
                             }
                             if (ipinfo.abuse && ipinfo.abuse.country) {
                                 ipinfo.abuse.countryCode =
                                     ipinfo.abuse.country;
-                                ipinfo.abuse.country = this.countries[
-                                    ipinfo.abuse.countryCode
-                                ];
+                                ipinfo.abuse.country =
+                                    this.countries[ipinfo.abuse.countryCode];
                             }
                             this.cache.set(
                                 IPinfoWrapper.cacheKey(key),
