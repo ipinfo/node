@@ -88,10 +88,10 @@ describe("IPinfoWrapper", () => {
         done();
     });
 
-    test("getBatchDetails", async (done) => {
+    test("getBatch", async (done) => {
         // test multiple times for cache.
         for (let i = 0; i < 5; i++) {
-            const data = await ipinfoWrapper.getBatchDetails([
+            const data = await ipinfoWrapper.getBatch([
                 "8.8.8.8/hostname",
                 "4.4.4.4",
                 "AS123"

@@ -225,7 +225,7 @@ export default class IPinfoWrapper {
         });
     }
 
-    private getSingleBatchDetails(
+    private __getBatch(
         ips: string[],
         batchTimeout: number,
         filter: boolean
@@ -282,7 +282,7 @@ export default class IPinfoWrapper {
         });
     }
 
-    public async getBatchDetails(
+    public async getBatch(
         urls: string[],
         batchSize: number = BATCH_MAX_SIZE,
         batchTimeout: number = BATCH_REQ_TIMEOUT_DEFAULT,
@@ -327,7 +327,7 @@ export default class IPinfoWrapper {
             if (end > lookupUrls.length) {
                 end = lookupUrls.length;
             }
-            const resDetails = this.getSingleBatchDetails(
+            const resDetails = this.__getBatch(
                 lookupUrls.slice(i, end),
                 batchTimeout,
                 filter
