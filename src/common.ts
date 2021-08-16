@@ -1,4 +1,16 @@
-export const FQDN: string = "https://ipinfo.io";
+export const HOST: string = "ipinfo.io";
+
+// cache version
+export const CACHE_VSN: string = "1";
+
+// default max size for batch requests.
+export const BATCH_MAX_SIZE: number = 1000;
+
+// default timeout for single request in milliseconds.
+export const REQUEST_TIMEOUT_DEFAULT: number = 5000;
+
+// default timeout for batch requests in milliseconds.
+export const BATCH_REQ_TIMEOUT_DEFAULT: number = 5000;
 
 export interface Asn {
     asn: string;
@@ -97,4 +109,23 @@ export interface AsnResponse {
     peers: string[];
     upstreams: string[];
     downstreams: string[];
+}
+
+export interface MapResponse {
+    status: string;
+    reportUrl: string;
+}
+
+export interface BatchResponse {
+    [key: string]:
+        | IPinfo
+        | AsnResponse
+        | Asn
+        | Company
+        | Carrier
+        | Privacy
+        | Abuse
+        | Domains
+        | object
+        | string;
 }

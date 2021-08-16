@@ -11,13 +11,10 @@ beforeEach(() => {
 });
 
 describe("IPinfoWrapper", () => {
-    const ip = "8.8.8.8";
-    const asn = "AS7922";
-
     test("lookupIp", async (done) => {
         // test multiple times for cache.
         for (let i = 0; i < 5; i++) {
-            const data: IPinfo = await ipinfoWrapper.lookupIp(ip);
+            const data: IPinfo = await ipinfoWrapper.lookupIp("8.8.8.8");
             expect(data.ip).toEqual("8.8.8.8");
             expect(data.hostname).toEqual("dns.google");
             expect(data.city).toEqual("Mountain View");
@@ -66,7 +63,7 @@ describe("IPinfoWrapper", () => {
     test("lookupASN", async (done) => {
         // test multiple times for cache.
         for (let i = 0; i < 5; i++) {
-            const data: AsnResponse = await ipinfoWrapper.lookupASN(asn);
+            const data: AsnResponse = await ipinfoWrapper.lookupASN("AS7922");
             expect(data.asn).toEqual("AS7922");
             expect(data.name).toEqual("Comcast Cable Communications, LLC");
             expect(data.country).toEqual("United States");
@@ -76,6 +73,101 @@ describe("IPinfoWrapper", () => {
             expect(data.domain).toEqual("comcast.com");
             expect(data.num_ips).not.toBeFalsy();
             expect(data.type).toEqual("isp");
+        }
+
+        done();
+    });
+
+    test("getMap", async (done) => {
+        let data = await ipinfoWrapper.getMap(["8.8.8.8", "4.4.4.4"]);
+
+        expect(data.status).toEqual("Report Generated");
+        expect(
+            data.reportUrl?.includes("https://ipinfo.io/tools/map/")
+        ).toBeTruthy();
+        done();
+    });
+
+    test("getBatch", async (done) => {
+        // test multiple times for cache.
+        for (let i = 0; i < 5; i++) {
+            const data = await ipinfoWrapper.getBatch([
+                "8.8.8.8/hostname",
+                "4.4.4.4",
+                "AS123"
+            ]);
+
+            expect("8.8.8.8/hostname" in data).not.toBeFalsy();
+            expect("4.4.4.4" in data).not.toBeFalsy();
+            expect("AS123" in data).not.toBeFalsy();
+
+            expect(data["8.8.8.8/hostname"]).toEqual("dns.google");
+            expect(data["4.4.4.4"]).toEqual({
+                ip: "4.4.4.4",
+                city: "New York City",
+                region: "New York",
+                country: "United States",
+                loc: "40.7143,-74.0060",
+                org: "AS3356 Level 3 Parent, LLC",
+                postal: "10004",
+                timezone: "America/New_York",
+                asn: {
+                    asn: "AS3356",
+                    name: "Level 3 Parent, LLC",
+                    domain: "level3.com",
+                    route: "4.0.0.0/9",
+                    type: "isp"
+                },
+                company: {
+                    name: "Level 3 Communications, Inc.",
+                    domain: "lumen.com",
+                    type: "isp"
+                },
+                privacy: {
+                    vpn: false,
+                    proxy: false,
+                    tor: false,
+                    hosting: false
+                },
+                abuse: {
+                    address: "US, CO, Broomfield, 1025 Eldorado Blvd., 80021",
+                    country: "United States",
+                    email: "abuse@level3.com",
+                    name: "Abuse POC LVLT",
+                    network: "4.4.0.0/16",
+                    phone: "+1-877-453-8353",
+                    countryCode: "US"
+                },
+                domains: {
+                    ip: "4.4.4.4",
+                    total: 224,
+                    domains: [
+                        "gf-clan.ch",
+                        "cms3970.com",
+                        "blue-buff.com",
+                        "dc-scape.eu",
+                        "www.guixf.cn"
+                    ]
+                },
+                countryCode: "US"
+            });
+
+            expect(data["AS123"]).toEqual({
+                asn: "AS123",
+                name: "Air Force Systems Networking",
+                country: "United States",
+                countryCode: "US",
+                allocated: "1987-08-24",
+                registry: "arin",
+                domain: "af.mil",
+                num_ips: 0,
+                type: "inactive",
+                prefixes: [],
+                prefixes6: [],
+                peers: null,
+                upstreams: null,
+                downstreams: null
+            });
         }
 
         done();
