@@ -41,8 +41,12 @@ export default class IPinfoWrapper {
                 : timeout;
     }
 
+    public static cacheKey(k: string) {
+        return `${k}:${CACHE_VSN}`;
+    }
+
     public lookupIp(ip: string): Promise<IPinfo> {
-        const data = this.cache.get(`${ip}:${CACHE_VSN}`);
+        const data = this.cache.get(IPinfoWrapper.cacheKey(ip));
         if (data) {
             return new Promise((resolve) => {
                 resolve(data);
@@ -89,7 +93,7 @@ export default class IPinfoWrapper {
                             ];
                         }
 
-                        this.cache.set(`${ip}:${CACHE_VSN}`, ipinfo);
+                        this.cache.set(IPinfoWrapper.cacheKey(ip), ipinfo);
                         resolve(ipinfo);
                     });
 
@@ -109,7 +113,7 @@ export default class IPinfoWrapper {
     }
 
     public lookupASN(asn: string): Promise<AsnResponse> {
-        const data = this.cache.get(`${asn}:${CACHE_VSN}`);
+        const data = this.cache.get(IPinfoWrapper.cacheKey(asn));
         if (data) {
             return new Promise((resolve) => {
                 resolve(data);
@@ -150,7 +154,7 @@ export default class IPinfoWrapper {
                             ];
                         }
 
-                        this.cache.set(`${asn}:${CACHE_VSN}`, asnResp);
+                        this.cache.set(IPinfoWrapper.cacheKey(asn), asnResp);
                         resolve(asnResp);
                     });
 
@@ -306,7 +310,7 @@ export default class IPinfoWrapper {
         // filter out URLs already cached.
         const lookupUrls: string[] = [];
         urls.forEach((url) => {
-            const cachedUrl = this.cache.get(`${url}:${CACHE_VSN}`);
+            const cachedUrl = this.cache.get(IPinfoWrapper.cacheKey(url));
             if (cachedUrl) {
                 result[url] = cachedUrl;
             } else {
@@ -361,7 +365,7 @@ export default class IPinfoWrapper {
                                     ipinfo.abuse.countryCode
                                 ];
                             }
-                            this.cache.set(`${key}:${CACHE_VSN}`, ipinfo);
+                            this.cache.set(IPinfoWrapper.cacheKey(key), ipinfo);
                             result[key] = batchResp[key];
                         }
                     }
