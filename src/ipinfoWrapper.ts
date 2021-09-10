@@ -16,7 +16,22 @@ import {
 } from "./common";
 import VERSION from "./version";
 
-export { Cache, LruCache };
+export {
+    Asn,
+    Company,
+    Carrier,
+    Privacy,
+    Abuse,
+    Domains,
+    IPinfo,
+    Prefix,
+    Prefixes6,
+    AsnResponse,
+    MapResponse,
+    BatchResponse,
+    Cache,
+    LruCache
+};
 export { Options } from "lru-cache";
 
 const clientUserAgent = `IPinfoClient/nodejs/${VERSION}`;
