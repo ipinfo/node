@@ -17,3 +17,4 @@ scripts/
 tsconfig.json
 Session.*.vim
 Session.vim
+test-app/

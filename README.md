@@ -28,54 +28,32 @@ npm install node-ipinfo
 ### TypeScript
 
 ```typescript
-import IPinfoWrapper from "node-ipinfo";
+import IPinfoWrapper, { IPinfo, AsnResponse } from "node-ipinfo";
 
-const token = "myToken"
-const ip = "8.8.8.8";
-const asn = "AS7922";
-const ipinfoWrapper = new IPinfoWrapper(token);
+const ipinfoWrapper = new IPinfoWrapper("MY_TOKEN");
 
-ipinfoWrapper.lookupIp(ip).then((response: IPinfo) => {
-    console.log(response.asn); // { asn: 'AS15169', name: 'Google LLC', domain: 'google.com', route: '8.8.8.0/24', type: 'business' }
-    console.log(response.hostname); // dns.google
-    console.log(response.city); // Mountain View
+ipinfoWrapper.lookupIp("1.1.1.1").then((response: IPinfo) => {
+    console.log(response);
 });
 
-ipinfoWrapper.lookupASN(asn).then((response: ASNResponse) => {
-    console.log(response.asn); // AS7922
-    console.log(response.name); // Comcast Cable Communications, LLC
-    console.log(response.country); // United States
+ipinfoWrapper.lookupASN("AS7922").then((response: AsnResponse) => {
+    console.log(response);
 });
 ```
 
 ### JavaScript
 
 ```javascript
-let IPinfo = require("node-ipinfo");
+let { IPinfoWrapper } = require("node-ipinfo");
 
-let token = "myToken"
-let ip = "8.8.8.8"
-let asn = "AS7922";
-let ipinfo = new IPinfo(token);
+let ipinfo = new IPinfo("MY_TOKEN");
 
-ipinfo.lookupIp(ip).then((response) => {
-    console.log(response.asn); // { asn: 'AS15169', name: 'Google LLC', domain: 'google.com', route: '8.8.8.0/24', type: 'business' }
-    console.log(response.hostname); // dns.google
-    console.log(response.city); // Mountain View
+ipinfo.lookupIp("1.1.1.1").then((response) => {
+    console.log(response);
 });
 
-ipinfo.lookupASN(asn).then((response) => {
-    console.log(response.asn); // AS7922
-    console.log(response.name); // Comcast Cable Communications, LLC
-    console.log(response.country); // United States
-});
-```
-
-### AMD
-
-```javascript
-define(function(require,exports,module){
-    let ipinfo = require('node-ipinfo');
+ipinfo.lookupASN("AS7922").then((response) => {
+    console.log(response);
 });
 ```
 
@@ -97,20 +75,20 @@ const cacheOptions: Options<string, any> = {
     maxAge: 24 * 1000 * 60 * 60,
 };
 let cache = new LruCache(cacheOptions);
-let ipinfoWrapper = new IPinfoWrapper("token", cacheOptions);
+let ipinfoWrapper = new IPinfoWrapper("MY_TOKEN", cache);
 ```
 
 ##### JavaScript
 
 ```javascript
-let IPinfo = require("node-ipinfo");
+let { IPinfoWrapper, LruCache } = require("node-ipinfo");
 
 let cacheOptions = {
     max: 5000,
     maxAge: 24 * 1000 * 60 * 60,
 };
-let cache = new IPinfo.LruCache(cacheOptions);
-let ipinfo = new IPinfo("myToken", cache);
+let cache = new LruCache(cacheOptions);
+let ipinfo = new IPinfo("MY_TOKEN", cache);
 ```
 
 ### Timeouts
@@ -126,16 +104,16 @@ A timeout of `0` disables the timeout feature.
 import IPinfoWrapper from "node-ipinfo";
 
 // 10 second timeout.
-let ipinfoWrapper = new IPinfoWrapper("token", null, 10000);
+let ipinfoWrapper = new IPinfoWrapper("MY_TOKEN", null, 10000);
 ```
 
 ##### JavaScript
 
 ```javascript
-let IPinfo = require("node-ipinfo");
+let { IPinfoWrapper } = require("node-ipinfo");
 
 // 10 second timeout.
-let ipinfo = new IPinfo("token", null, 10000);
+let ipinfo = new IPinfoWrapper("MY_TOKEN", null, 10000);
 ```
 
 ### Errors

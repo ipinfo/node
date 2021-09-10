@@ -1,9 +1,12 @@
 {
     "name": "node-ipinfo",
-    "version": "2.2.0",
+    "version": "3.0.0",
     "description": "Official Node client library for IPinfo",
-    "main": "index.js",
-    "types": "dist/src/ipinfoWrapper.d.ts",
+    "main": "dist/src/index.js",
+    "types": "dist/src/index.d.ts",
+    "files": [
+        "/dist"
+    ],
     "scripts": {
         "build": "tsc",
         "tsc": "tsc --pretty --watch",

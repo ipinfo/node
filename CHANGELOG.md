@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## 3.0.0
+
+- Imports using CommonJS don't have a default anymore. You must import the
+  `IPinfoWrapper` name separately as follows:
+
+  ```js
+  const { IPinfoWrapper, LruCache } = require("node-ipinfo");
+  ```
+
 ## 2.2.0
 
 - Add `getMap` function for getting map URL for a list of IPs using
