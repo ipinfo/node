@@ -88,7 +88,7 @@ let cacheOptions = {
     maxAge: 24 * 1000 * 60 * 60,
 };
 let cache = new LruCache(cacheOptions);
-let ipinfo = new IPinfo("MY_TOKEN", cache);
+let ipinfo = new IPinfoWrapper("MY_TOKEN", cache);
 ```
 
 ### Timeouts
