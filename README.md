@@ -46,7 +46,7 @@ ipinfoWrapper.lookupASN("AS7922").then((response: AsnResponse) => {
 ```javascript
 let { IPinfoWrapper } = require("node-ipinfo");
 
-let ipinfo = new IPinfo("MY_TOKEN");
+let ipinfo = new IPinfoWrapper("MY_TOKEN");
 
 ipinfo.lookupIp("1.1.1.1").then((response) => {
     console.log(response);
@@ -88,7 +88,7 @@ let cacheOptions = {
     maxAge: 24 * 1000 * 60 * 60,
 };
 let cache = new LruCache(cacheOptions);
-let ipinfo = new IPinfo("MY_TOKEN", cache);
+let ipinfo = new IPinfoWrapper("MY_TOKEN", cache);
 ```
 
 ### Timeouts
