@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 3.0.1
+
+- Added `anycast` and `bogon` boolean fields to Core typescript definition.
+
 ## 3.0.0
 
 - Imports using CommonJS don't have a default anymore. You must import the

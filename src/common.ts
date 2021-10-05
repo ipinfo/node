@@ -58,6 +58,8 @@ export interface Domains {
 export interface IPinfo {
     ip: string;
     hostname: string;
+    bogon: boolean;
+    anycast: boolean;
     city: string;
     region: string;
     country: string;
