@@ -7,7 +7,6 @@ ROOT=$DIR/..
 
 find \
     $ROOT/src \
-    $ROOT/index.js \
     $ROOT/jest.config.js \
     $ROOT/package.json \
     $ROOT/tsconfig.json \
