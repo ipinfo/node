@@ -37,6 +37,8 @@ export interface Privacy {
     proxy: boolean;
     tor: boolean;
     hosting: boolean;
+    relay: boolean;
+    service: string;
 }
 
 export interface Abuse {
