@@ -40,6 +40,7 @@ describe("IPinfoWrapper", () => {
                 vpn: false,
                 proxy: false,
                 tor: false,
+                relay: false,
                 hosting: false
             });
             expect(data.abuse).toEqual({
@@ -127,6 +128,7 @@ describe("IPinfoWrapper", () => {
                     vpn: false,
                     proxy: false,
                     tor: false,
+                    relay: false,
                     hosting: false
                 },
                 abuse: {
