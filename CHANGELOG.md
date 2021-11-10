@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 3.0.2
+
+- Added `relay` and `service` fields to Privacy typescript definition.
+
 ## 3.0.1
 
 - Added `anycast` and `bogon` boolean fields to Core typescript definition.
