@@ -41,7 +41,8 @@ describe("IPinfoWrapper", () => {
                 proxy: false,
                 tor: false,
                 relay: false,
-                hosting: false
+                hosting: false,
+                service: ""
             });
             expect(data.abuse).toEqual({
                 address:
@@ -129,7 +130,8 @@ describe("IPinfoWrapper", () => {
                     proxy: false,
                     tor: false,
                     relay: false,
-                    hosting: false
+                    hosting: false,
+                    service: ""
                 },
                 abuse: {
                     address: "US, CO, Broomfield, 1025 Eldorado Blvd., 80021",
