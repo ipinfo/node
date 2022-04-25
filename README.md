@@ -124,7 +124,9 @@ let ipinfo = new IPinfoWrapper("MY_TOKEN", null, 10000);
 
 ### Country Name Lookup
 
-#### TypeScript
+`response.country` will return the country name. `response.countryCode` will return country code.
+
+##### TypeScript
 
 ```typescript
 import IPinfoWrapper, { IPinfo } from "node-ipinfo";
@@ -136,11 +138,11 @@ ipinfoWrapper.lookupIp("1.1.1.1").then((response: IPinfo) => {
     console.log(response.countryCode);
 
     // country name, e.g. 'United States'
-    console.log(response.countryCode);
+    console.log(response.country);
 });
 ```
 
-#### JavaScript
+##### JavaScript
 
 ```javascript
 let { IPinfoWrapper } = require("node-ipinfo");
@@ -152,13 +154,15 @@ ipinfo.lookupIp("1.1.1.1").then((response) => {
     console.log(response.countryCode);
 
     // country name, e.g. 'United States'
-    console.log(response.countryCode);
+    console.log(response.country);
 });
 ```
 
 ### Location Information
 
-#### TypeScript
+`response.loc` will return a composite string of latitude and longitude values as `'latitude,longitude'`.
+
+##### TypeScript
 
 ```typescript
 import IPinfoWrapper, { IPinfo } from "node-ipinfo";
@@ -166,12 +170,12 @@ import IPinfoWrapper, { IPinfo } from "node-ipinfo";
 const ipinfoWrapper = new IPinfoWrapper("MY_TOKEN");
 
 ipinfoWrapper.lookupIp("1.1.1.1").then((response: IPinfo) => {
-    // 'latitude,longitude' e.g. '34.0522,-118.2437'
+    // '34.0522,-118.2437'
     console.log(response.loc);
 });
 ```
 
-#### JavaScript
+##### JavaScript
 
 ```javascript
 let { IPinfoWrapper } = require("node-ipinfo");
@@ -179,7 +183,7 @@ let { IPinfoWrapper } = require("node-ipinfo");
 let ipinfo = new IPinfoWrapper("MY_TOKEN");
 
 ipinfo.lookupIp("1.1.1.1").then((response) => {
-    // 'latitude,longitude' e.g. '34.0522,-118.2437'
+    // '34.0522,-118.2437'
     console.log(response.loc);
 });
 ```
