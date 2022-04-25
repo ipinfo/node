@@ -124,14 +124,64 @@ let ipinfo = new IPinfoWrapper("MY_TOKEN", null, 10000);
 
 ### Country Name Lookup
 
+#### TypeScript
+
+```typescript
+import IPinfoWrapper, { IPinfo } from "node-ipinfo";
+
+const ipinfoWrapper = new IPinfoWrapper("MY_TOKEN");
+
+ipinfoWrapper.lookupIp("1.1.1.1").then((response: IPinfo) => {
+    // country code, e.g. US
+    console.log(response.countryCode);
+
+    // country name, e.g. United States
+    console.log(response.countryCode);
+
+});
+```
+
+#### JavaScript
+
 ```javascript
-// example coming soon
+let { IPinfoWrapper } = require("node-ipinfo");
+
+let ipinfo = new IPinfoWrapper("MY_TOKEN");
+
+ipinfo.lookupIp("1.1.1.1").then((response) => {
+    // country code, e.g. US
+    console.log(response.countryCode);
+
+    // country name, e.g. United States
+    console.log(response.countryCode);
+});
 ```
 
 ### Location Information
 
+#### TypeScript
+
+```typescript
+import IPinfoWrapper, { IPinfo } from "node-ipinfo";
+
+const ipinfoWrapper = new IPinfoWrapper("MY_TOKEN");
+
+ipinfoWrapper.lookupIp("1.1.1.1").then((response: IPinfo) => {
+    // 'latitude,longitude'
+    console.log(response.loc);
+});
+```
+
+#### JavaScript
+
 ```javascript
-// example coming soon
+let { IPinfoWrapper } = require("node-ipinfo");
+
+let ipinfo = new IPinfoWrapper("MY_TOKEN");
+
+ipinfo.lookupIp("1.1.1.1").then((response) => {
+    console.log(response.loc);
+});
 ```
 
 ## Integrated Typescript Typings
