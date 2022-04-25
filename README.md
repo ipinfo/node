@@ -132,12 +132,11 @@ import IPinfoWrapper, { IPinfo } from "node-ipinfo";
 const ipinfoWrapper = new IPinfoWrapper("MY_TOKEN");
 
 ipinfoWrapper.lookupIp("1.1.1.1").then((response: IPinfo) => {
-    // country code, e.g. US
+    // country code, e.g. 'US'
     console.log(response.countryCode);
 
-    // country name, e.g. United States
+    // country name, e.g. 'United States'
     console.log(response.countryCode);
-
 });
 ```
 
@@ -149,10 +148,10 @@ let { IPinfoWrapper } = require("node-ipinfo");
 let ipinfo = new IPinfoWrapper("MY_TOKEN");
 
 ipinfo.lookupIp("1.1.1.1").then((response) => {
-    // country code, e.g. US
+    // country code, e.g. 'US'
     console.log(response.countryCode);
 
-    // country name, e.g. United States
+    // country name, e.g. 'United States'
     console.log(response.countryCode);
 });
 ```
@@ -167,7 +166,7 @@ import IPinfoWrapper, { IPinfo } from "node-ipinfo";
 const ipinfoWrapper = new IPinfoWrapper("MY_TOKEN");
 
 ipinfoWrapper.lookupIp("1.1.1.1").then((response: IPinfo) => {
-    // 'latitude,longitude'
+    // 'latitude,longitude' e.g. '34.0522,-118.2437'
     console.log(response.loc);
 });
 ```
@@ -180,6 +179,7 @@ let { IPinfoWrapper } = require("node-ipinfo");
 let ipinfo = new IPinfoWrapper("MY_TOKEN");
 
 ipinfo.lookupIp("1.1.1.1").then((response) => {
+    // 'latitude,longitude' e.g. '34.0522,-118.2437'
     console.log(response.loc);
 });
 ```
