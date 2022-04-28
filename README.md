@@ -124,7 +124,7 @@ let ipinfo = new IPinfoWrapper("MY_TOKEN", null, 10000);
 
 ### Country Name Lookup
 
-`response.country` will return the country name. `response.countryCode` will return country code.
+`response.country` will return the country name, whereas `response.countryCode` can be used to fetch country code.
 
 ##### TypeScript
 
@@ -160,7 +160,7 @@ ipinfo.lookupIp("1.1.1.1").then((response) => {
 
 ### Location Information
 
-`response.loc` will return a composite string of latitude and longitude values as `'latitude,longitude'`.
+`response.loc` will return a composite string of latitude and longitude values in the `"latitude,longitude"` format.
 
 ##### TypeScript
 
