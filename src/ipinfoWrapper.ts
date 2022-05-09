@@ -94,14 +94,11 @@ export default class IPinfoWrapper {
                         });
 
                         res.on("error", (error: any) => {
-                            if (error.response && error.response.status === 429) {
-                                reject(this.limitErrorMessage);
-                            }
                             reject(error);
                         });
                     }
                     else{
-                        // cases when status code is in 400 range
+                        // error cases when status code is in 400 range
                         if (res.statusCode === 429) {
                             res.on("close", () => {
                                 let dataObj = JSON.parse(data);
