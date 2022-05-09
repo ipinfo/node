@@ -72,32 +72,49 @@ export default class IPinfoWrapper {
                         data += chunk;
                     });
 
-                    res.on("close", () => {
-                        const ipinfo: IPinfo = JSON.parse(data);
+                    if (res.statusCode && (res.statusCode < 400 || res.statusCode > 499)) {                    
+                        res.on("close", () => {
+                            const ipinfo: IPinfo = JSON.parse(data);
 
-                        /* convert country code to full country name */
-                        // NOTE: always do this _before_ setting cache.
-                        if (ipinfo.country) {
-                            ipinfo.countryCode = ipinfo.country;
-                            ipinfo.country =
-                                this.countries[ipinfo.countryCode];
-                        }
-                        if (ipinfo.abuse && ipinfo.abuse.country) {
-                            ipinfo.abuse.countryCode = ipinfo.abuse.country;
-                            ipinfo.abuse.country =
-                                this.countries[ipinfo.abuse.countryCode];
-                        }
+                            /* convert country code to full country name */
+                            // NOTE: always do this _before_ setting cache.
+                            if (ipinfo.country) {
+                                ipinfo.countryCode = ipinfo.country;
+                                ipinfo.country =
+                                    this.countries[ipinfo.countryCode];
+                            }
+                            if (ipinfo.abuse && ipinfo.abuse.country) {
+                                ipinfo.abuse.countryCode = ipinfo.abuse.country;
+                                ipinfo.abuse.country =
+                                    this.countries[ipinfo.abuse.countryCode];
+                            }
 
-                        this.cache.set(IPinfoWrapper.cacheKey(ip), ipinfo);
-                        resolve(ipinfo);
-                    });
+                            this.cache.set(IPinfoWrapper.cacheKey(ip), ipinfo);
+                            resolve(ipinfo);
+                        });
 
-                    res.on("error", (error: any) => {
-                        if (error.response && error.response.status === 429) {
-                            reject(this.limitErrorMessage);
+                        res.on("error", (error: any) => {
+                            if (error.response && error.response.status === 429) {
+                                reject(this.limitErrorMessage);
+                            }
+                            reject(error);
+                        });
+                    }
+                    else{
+                        // cases when status code is in 400 range
+                        if (res.statusCode === 429) {
+                            res.on("close", () => {
+                                let dataObj = JSON.parse(data);
+                                dataObj["error_message"] = this.limitErrorMessage;
+                                reject(new Error(JSON.stringify(dataObj)));
+                            });
                         }
-                        reject(error);
-                    });
+                        else {
+                            res.on("close", () => {
+                                reject(new Error(data));
+                            });
+                        }
+                    }
                 });
 
                 req.end();
