@@ -3,6 +3,7 @@ import https, { RequestOptions } from "https";
 import countries from "../config/en_US.json";
 import Cache from "./cache/cache";
 import LruCache from "./cache/lruCache";
+import { ApiLimitError } from "./errors/apiLimitError";
 import {
     IPinfo,
     AsnResponse,
@@ -72,7 +73,7 @@ export default class IPinfoWrapper {
                         data += chunk;
                     });
 
-                    if (res.statusCode && (res.statusCode < 400 || res.statusCode > 499)) {                    
+                    if (!this._isStatusCodeIn400Range(res.statusCode)) {
                         res.on("close", () => {
                             const ipinfo: IPinfo = JSON.parse(data);
 
@@ -100,11 +101,7 @@ export default class IPinfoWrapper {
                     else{
                         // error cases when status code is in 400 range
                         if (res.statusCode === 429) {
-                            res.on("close", () => {
-                                let dataObj = JSON.parse(data);
-                                dataObj["error_message"] = this.limitErrorMessage;
-                                reject(new Error(JSON.stringify(dataObj)));
-                            });
+                            reject(new ApiLimitError());
                         }
                         else {
                             res.on("close", () => {
@@ -151,27 +148,37 @@ export default class IPinfoWrapper {
                         data += chunk;
                     });
 
-                    res.on("close", () => {
-                        const asnResp: AsnResponse = JSON.parse(data);
+                    if (!this._isStatusCodeIn400Range(res.statusCode)) {
+                        res.on("close", () => {
+                            const asnResp: AsnResponse = JSON.parse(data);
 
-                        /* convert country code to full country name */
-                        // NOTE: always do this _before_ setting cache.
-                        if (asnResp.country) {
-                            asnResp.countryCode = asnResp.country;
-                            asnResp.country =
-                                this.countries[asnResp.countryCode];
+                            /* convert country code to full country name */
+                            // NOTE: always do this _before_ setting cache.
+                            if (asnResp.country) {
+                                asnResp.countryCode = asnResp.country;
+                                asnResp.country =
+                                    this.countries[asnResp.countryCode];
+                            }
+
+                            this.cache.set(IPinfoWrapper.cacheKey(asn), asnResp);
+                            resolve(asnResp);
+                        });
+
+                        res.on("error", (error: any) => {
+                            reject(error);
+                        });
+                    }
+                    else{
+                        // error cases when status code is in 400 range
+                        if (res.statusCode === 429) {
+                            reject(new ApiLimitError());
                         }
-
-                        this.cache.set(IPinfoWrapper.cacheKey(asn), asnResp);
-                        resolve(asnResp);
-                    });
-
-                    res.on("error", (error: any) => {
-                        if (error.response && error.response.status === 429) {
-                            reject(this.limitErrorMessage);
+                        else {
+                            res.on("close", () => {
+                                reject(new Error(data));
+                            });
                         }
-                        reject(error);
-                    });
+                    }
                 });
 
                 req.end();
@@ -184,7 +191,7 @@ export default class IPinfoWrapper {
     public getMap(ips: string[]): Promise<MapResponse> {
         if (ips.length > 500000) {
             return new Promise((_resolve, reject) => {
-                reject(this.mapLimitErrorMessage);
+                reject(new Error(this.mapLimitErrorMessage));
             });
         }
 
@@ -213,16 +220,26 @@ export default class IPinfoWrapper {
                         data += chunk;
                     });
 
-                    res.on("close", () => {
-                        resolve(JSON.parse(data));
-                    });
+                    if (!this._isStatusCodeIn400Range(res.statusCode)) {
+                        res.on("close", () => {
+                            resolve(JSON.parse(data));
+                        });
 
-                    res.on("error", (error: any) => {
-                        if (error.response && error.response.status === 429) {
-                            reject(this.limitErrorMessage);
+                        res.on("error", (error: any) => {
+                            reject(error);
+                        });
+                    }
+                    else{
+                        // error cases when status code is in 400 range
+                        if (res.statusCode === 429) {
+                            reject(new ApiLimitError());
                         }
-                        reject(error);
-                    });
+                        else {
+                            res.on("close", () => {
+                                reject(new Error(data));
+                            });
+                        }
+                    }
                 });
 
                 req.on("error", (error) => {
@@ -266,20 +283,30 @@ export default class IPinfoWrapper {
                         data += chunk;
                     });
 
-                    res.on("close", () => {
-                        resolve(data);
-                    });
+                    if (!this._isStatusCodeIn400Range(res.statusCode)) {
+                        res.on("close", () => {
+                            resolve(data);
+                        });
 
-                    res.on("error", (error: any) => {
-                        if (error.response && error.response.status === 429) {
-                            reject(this.limitErrorMessage);
+                        res.on("error", (error: any) => {
+                            reject(error);
+                        });
+                    }
+                    else{
+                        // error cases when status code is in 400 range
+                        if (res.statusCode === 429) {
+                            reject(new ApiLimitError());
                         }
-                        reject(error);
-                    });
+                        else {
+                            res.on("close", () => {
+                                reject(new Error(data));
+                            });
+                        }
+                    }
                 });
 
                 req.on("timeout", () => {
-                    reject("batch timeout reached");
+                    reject(new Error("batch timeout reached"));
                 });
 
                 req.on("error", (error) => {
@@ -398,7 +425,7 @@ export default class IPinfoWrapper {
             (value) => {
                 return new Promise((resolve, reject) => {
                     if (value === totalTimeoutReached) {
-                        reject("Total timeout has been exceeded.");
+                        reject(new Error("Total timeout has been exceeded."));
                     } else {
                         // timeout may still be running; cancel it.
                         if (totalTimeoutRef) {
@@ -410,5 +437,16 @@ export default class IPinfoWrapper {
                 });
             }
         );
+    }
+
+    private _isStatusCodeIn400Range(
+        statusCode: any
+    ): boolean{
+        if (statusCode && statusCode>=400 && statusCode<500) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }
