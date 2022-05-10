@@ -24,11 +24,16 @@ export default class IPinfoWrapper {
     private countries: any;
     private cache: Cache;
     private timeout: number;
-    private limitErrorMessage: string =
-        "You have exceeded 50,000 requests a month. Visit https://ipinfo.io/account to see your API limits.";
     private mapLimitErrorMessage: string =
         "You have exceeded maximum IP upload limit i.e 500,000 IPs per request.";
 
+    /**
+     * Creates IPinfoWrapper object to communicate with the [IPinfo](https://ipinfo.io/) API.
+     *
+     * @param token Token string provided by IPinfo for registered user.
+     * @param cache An implementation of IPCache interface. If it is not provided then LruCache is used as default.
+     * @param timeout Timeout in milliseconds that controls the timeout of requests. It defaults to 5000 i.e. 5 seconds. A timeout of 0 disables the timeout feature.
+     */
     constructor(token: string, cache?: Cache, timeout?: number) {
         this.token = token;
         this.countries = countries;
@@ -43,7 +48,13 @@ export default class IPinfoWrapper {
         return `${k}:${CACHE_VSN}`;
     }
 
-    public lookupIp(ip: string): Promise<IPinfo> {
+    /**
+     * Lookup IP information using the IP.
+     *
+     * @param ip IP address against which the location information is required.
+     * @return Response containing location information.
+     */
+     public lookupIp(ip: string): Promise<IPinfo> {
         const data = this.cache.get(IPinfoWrapper.cacheKey(ip));
         if (data) {
             return new Promise((resolve) => {
@@ -118,6 +129,12 @@ export default class IPinfoWrapper {
         });
     }
 
+    /**
+     * Lookup ASN information using the AS number.
+     *
+     * @param asn the asn string to lookup.
+     * @return Response containing AsnResponse from the api.
+     */
     public lookupASN(asn: string): Promise<AsnResponse> {
         const data = this.cache.get(IPinfoWrapper.cacheKey(asn));
         if (data) {
@@ -188,6 +205,12 @@ export default class IPinfoWrapper {
         });
     }
 
+    /**
+     * Get a map of a list of IPs.
+     *
+     * @param ips the array of IPs to map.
+     * @return Response containing MapResponse.
+     */
     public getMap(ips: string[]): Promise<MapResponse> {
         if (ips.length > 500000) {
             return new Promise((_resolve, reject) => {
@@ -321,6 +344,16 @@ export default class IPinfoWrapper {
         });
     }
 
+    /**
+     * Get the result of a list of URLs in bulk.
+     *
+     * @param urls the array of URLs.
+     * @param batchSize default value is 1000.
+     * @param batchTimeout default value is 5000 milliseconds.
+     * @param timeoutTotal disabled by default.
+     * @param filter default value is false.
+     * @return Response containing BatchResponse for all URLs.
+     */
     public async getBatch(
         urls: string[],
         batchSize: number = BATCH_MAX_SIZE,
