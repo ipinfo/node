@@ -25,7 +25,7 @@ export default class IPinfoWrapper {
     private cache: Cache;
     private timeout: number;
     private mapLimitErrorMessage: string =
-        "You have exceeded maximum IP upload limit i.e 500,000 IPs per request.";
+        "You have exceeded maximum IP upload limit per request.";
 
     /**
      * Creates IPinfoWrapper object to communicate with the [IPinfo](https://ipinfo.io/) API.
