@@ -31,9 +31,9 @@ export default class IPinfoWrapper {
      * Creates IPinfoWrapper object to communicate with the [IPinfo](https://ipinfo.io/) API.
      *
      * @param token Token string provided by IPinfo for registered user.
-     * @param cache An implementation of IPCache interface. If it is not provided 
+     * @param cache An implementation of IPCache interface. If it is not provided
      * then LruCache is used as default.
-     * @param timeout Timeout in milliseconds that controls the timeout of requests. 
+     * @param timeout Timeout in milliseconds that controls the timeout of requests.
      * It defaults to 5000 i.e. 5 seconds. A timeout of 0 disables the timeout feature.
      */
     constructor(token: string, cache?: Cache, timeout?: number) {
@@ -56,7 +56,7 @@ export default class IPinfoWrapper {
      * @param ip IP address against which the location information is required.
      * @return Response containing location information.
      */
-     public lookupIp(ip: string): Promise<IPinfo> {
+    public lookupIp(ip: string): Promise<IPinfo> {
         const data = this.cache.get(IPinfoWrapper.cacheKey(ip));
         if (data) {
             return new Promise((resolve) => {
@@ -98,7 +98,8 @@ export default class IPinfoWrapper {
                                     this.countries[ipinfo.countryCode];
                             }
                             if (ipinfo.abuse && ipinfo.abuse.country) {
-                                ipinfo.abuse.countryCode = ipinfo.abuse.country;
+                                ipinfo.abuse.countryCode =
+                                    ipinfo.abuse.country;
                                 ipinfo.abuse.country =
                                     this.countries[ipinfo.abuse.countryCode];
                             }
@@ -110,13 +111,11 @@ export default class IPinfoWrapper {
                         res.on("error", (error: any) => {
                             reject(error);
                         });
-                    }
-                    else{
+                    } else {
                         // error cases when status code is in 400 range
                         if (res.statusCode === 429) {
                             reject(new ApiLimitError());
-                        }
-                        else {
+                        } else {
                             res.on("close", () => {
                                 reject(new Error(data));
                             });
@@ -183,20 +182,21 @@ export default class IPinfoWrapper {
                                     this.countries[asnResp.countryCode];
                             }
 
-                            this.cache.set(IPinfoWrapper.cacheKey(asn), asnResp);
+                            this.cache.set(
+                                IPinfoWrapper.cacheKey(asn),
+                                asnResp
+                            );
                             resolve(asnResp);
                         });
 
                         res.on("error", (error: any) => {
                             reject(error);
                         });
-                    }
-                    else{
+                    } else {
                         // error cases when status code is in 400 range
                         if (res.statusCode === 429) {
                             reject(new ApiLimitError());
-                        }
-                        else {
+                        } else {
                             res.on("close", () => {
                                 reject(new Error(data));
                             });
@@ -261,13 +261,11 @@ export default class IPinfoWrapper {
                         res.on("error", (error: any) => {
                             reject(error);
                         });
-                    }
-                    else{
+                    } else {
                         // error cases when status code is in 400 range
                         if (res.statusCode === 429) {
                             reject(new ApiLimitError());
-                        }
-                        else {
+                        } else {
                             res.on("close", () => {
                                 reject(new Error(data));
                             });
@@ -324,13 +322,11 @@ export default class IPinfoWrapper {
                         res.on("error", (error: any) => {
                             reject(error);
                         });
-                    }
-                    else{
+                    } else {
                         // error cases when status code is in 400 range
                         if (res.statusCode === 429) {
                             reject(new ApiLimitError());
-                        }
-                        else {
+                        } else {
                             res.on("close", () => {
                                 reject(new Error(data));
                             });
@@ -482,13 +478,10 @@ export default class IPinfoWrapper {
         );
     }
 
-    private _isStatusCodeIn400Range(
-        statusCode: any
-    ): boolean{
-        if (statusCode && statusCode>=400 && statusCode<500) {
+    private _isStatusCodeIn400Range(statusCode: any): boolean {
+        if (statusCode && statusCode >= 400 && statusCode < 500) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
