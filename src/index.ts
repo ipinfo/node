@@ -1,10 +1,11 @@
 import IPinfoWrapper from "./ipinfoWrapper";
 import Cache from "./cache/cache";
 import LruCache from "./cache/lruCache";
+import ApiLimitError from "./errors/apiLimitError";
 
 export { Options } from "lru-cache";
 
-export { Cache, LruCache, IPinfoWrapper };
+export { Cache, LruCache, IPinfoWrapper, ApiLimitError };
 export {
     Asn,
     Company,

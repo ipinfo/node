@@ -3,7 +3,7 @@ import https, { RequestOptions } from "https";
 import countries from "../config/en_US.json";
 import Cache from "./cache/cache";
 import LruCache from "./cache/lruCache";
-import { ApiLimitError } from "./errors/apiLimitError";
+import ApiLimitError from "./errors/apiLimitError";
 import {
     IPinfo,
     AsnResponse,
