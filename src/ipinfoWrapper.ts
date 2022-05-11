@@ -122,6 +122,10 @@ export default class IPinfoWrapper {
                     }
                 });
 
+                req.on("error", (error) => {
+                    reject(error);
+                });
+
                 req.end();
             } catch (error) {
                 reject(error);
@@ -196,6 +200,10 @@ export default class IPinfoWrapper {
                             });
                         }
                     }
+                });
+
+                req.on("error", (error) => {
+                    reject(error);
                 });
 
                 req.end();
