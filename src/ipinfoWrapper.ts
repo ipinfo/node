@@ -31,8 +31,10 @@ export default class IPinfoWrapper {
      * Creates IPinfoWrapper object to communicate with the [IPinfo](https://ipinfo.io/) API.
      *
      * @param token Token string provided by IPinfo for registered user.
-     * @param cache An implementation of IPCache interface. If it is not provided then LruCache is used as default.
-     * @param timeout Timeout in milliseconds that controls the timeout of requests. It defaults to 5000 i.e. 5 seconds. A timeout of 0 disables the timeout feature.
+     * @param cache An implementation of IPCache interface. If it is not provided 
+     * then LruCache is used as default.
+     * @param timeout Timeout in milliseconds that controls the timeout of requests. 
+     * It defaults to 5000 i.e. 5 seconds. A timeout of 0 disables the timeout feature.
      */
     constructor(token: string, cache?: Cache, timeout?: number) {
         this.token = token;
