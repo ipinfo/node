@@ -25,7 +25,7 @@ npm install node-ipinfo
 
 ### Usage
 
-#### TypeScript
+##### TypeScript
 
 ```typescript
 import IPinfoWrapper, { IPinfo, AsnResponse } from "node-ipinfo";
@@ -41,7 +41,7 @@ ipinfoWrapper.lookupASN("AS7922").then((response: AsnResponse) => {
 });
 ```
 
-#### JavaScript
+##### JavaScript
 
 ```javascript
 let { IPinfoWrapper } = require("node-ipinfo");
@@ -65,7 +65,7 @@ If you prefer a different caching methodology, you may use the `IPCache` interfa
 
 The default cache length is 1 day and the defauly max number of items allowed in the cache is 5000. This can be changed by passing an `Option` to the `LruCache` constructor.
 
-#### TypeScript
+##### TypeScript
 
 ```typescript
 import IPinfoWrapper, { LruCache, Options } from "node-ipinfo";
@@ -78,7 +78,7 @@ let cache = new LruCache(cacheOptions);
 let ipinfoWrapper = new IPinfoWrapper("MY_TOKEN", cache);
 ```
 
-#### JavaScript
+##### JavaScript
 
 ```javascript
 let { IPinfoWrapper, LruCache } = require("node-ipinfo");
@@ -98,7 +98,7 @@ controls the timeout of requests. It defaults to `5000` i.e. 5 seconds.
 
 A timeout of `0` disables the timeout feature.
 
-#### TypeScript
+##### TypeScript
 
 ```typescript
 import IPinfoWrapper from "node-ipinfo";
@@ -107,7 +107,7 @@ import IPinfoWrapper from "node-ipinfo";
 let ipinfoWrapper = new IPinfoWrapper("MY_TOKEN", null, 10000);
 ```
 
-#### JavaScript
+##### JavaScript
 
 ```javascript
 let { IPinfoWrapper } = require("node-ipinfo");
@@ -118,10 +118,10 @@ let ipinfo = new IPinfoWrapper("MY_TOKEN", null, 10000);
 
 ### Errors
 
-#### TypeScript
+##### TypeScript
 
 ```typescript
-import IPinfoWrapper, { IPinfo, AsnResponse } from "node-ipinfo";
+import IPinfoWrapper, ApiLimitError, { IPinfo } from "node-ipinfo";
 
 const ipinfoWrapper = new IPinfoWrapper("MY_TOKEN");
 
@@ -138,7 +138,7 @@ ipinfoWrapper.lookupIp("1.1.1.1").then((response: IPinfo) => {
 });
 ```
 
-#### JavaScript
+##### JavaScript
 
 ```javascript
 let { IPinfoWrapper, ApiLimitError } = require("node-ipinfo");
@@ -162,7 +162,7 @@ ipinfo.lookupIp("1.1.1.1").then((response) => {
 
 `response.country` will return the country name, whereas `response.countryCode` can be used to fetch country code.
 
-#### TypeScript
+##### TypeScript
 
 ```typescript
 import IPinfoWrapper, { IPinfo } from "node-ipinfo";
@@ -178,7 +178,7 @@ ipinfoWrapper.lookupIp("1.1.1.1").then((response: IPinfo) => {
 });
 ```
 
-#### JavaScript
+##### JavaScript
 
 ```javascript
 let { IPinfoWrapper } = require("node-ipinfo");
@@ -198,7 +198,7 @@ ipinfo.lookupIp("1.1.1.1").then((response) => {
 
 `response.loc` will return a composite string of latitude and longitude values in the `"latitude,longitude"` format.
 
-#### TypeScript
+##### TypeScript
 
 ```typescript
 import IPinfoWrapper, { IPinfo } from "node-ipinfo";
@@ -211,7 +211,7 @@ ipinfoWrapper.lookupIp("1.1.1.1").then((response: IPinfo) => {
 });
 ```
 
-#### JavaScript
+##### JavaScript
 
 ```javascript
 let { IPinfoWrapper } = require("node-ipinfo");
