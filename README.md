@@ -44,9 +44,9 @@ ipinfoWrapper.lookupASN("AS7922").then((response: AsnResponse) => {
 ##### JavaScript
 
 ```javascript
-let { IPinfoWrapper } = require("node-ipinfo");
+const { IPinfoWrapper } = require("node-ipinfo");
 
-let ipinfo = new IPinfoWrapper("MY_TOKEN");
+const ipinfo = new IPinfoWrapper("MY_TOKEN");
 
 ipinfo.lookupIp("1.1.1.1").then((response) => {
     console.log(response);
@@ -74,21 +74,21 @@ const cacheOptions: Options<string, any> = {
     max: 5000,
     maxAge: 24 * 1000 * 60 * 60,
 };
-let cache = new LruCache(cacheOptions);
-let ipinfoWrapper = new IPinfoWrapper("MY_TOKEN", cache);
+const cache = new LruCache(cacheOptions);
+const ipinfoWrapper = new IPinfoWrapper("MY_TOKEN", cache);
 ```
 
 ##### JavaScript
 
 ```javascript
-let { IPinfoWrapper, LruCache } = require("node-ipinfo");
+const { IPinfoWrapper, LruCache } = require("node-ipinfo");
 
-let cacheOptions = {
+const cacheOptions = {
     max: 5000,
     maxAge: 24 * 1000 * 60 * 60,
 };
-let cache = new LruCache(cacheOptions);
-let ipinfo = new IPinfoWrapper("MY_TOKEN", cache);
+const cache = new LruCache(cacheOptions);
+const ipinfo = new IPinfoWrapper("MY_TOKEN", cache);
 ```
 
 ### Timeouts
@@ -104,16 +104,16 @@ A timeout of `0` disables the timeout feature.
 import IPinfoWrapper from "node-ipinfo";
 
 // 10 second timeout.
-let ipinfoWrapper = new IPinfoWrapper("MY_TOKEN", null, 10000);
+const ipinfoWrapper = new IPinfoWrapper("MY_TOKEN", null, 10000);
 ```
 
 ##### JavaScript
 
 ```javascript
-let { IPinfoWrapper } = require("node-ipinfo");
+const { IPinfoWrapper } = require("node-ipinfo");
 
 // 10 second timeout.
-let ipinfo = new IPinfoWrapper("MY_TOKEN", null, 10000);
+const ipinfo = new IPinfoWrapper("MY_TOKEN", null, 10000);
 ```
 
 ### Errors
@@ -141,9 +141,9 @@ ipinfoWrapper.lookupIp("1.1.1.1").then((response: IPinfo) => {
 ##### JavaScript
 
 ```javascript
-let { IPinfoWrapper, ApiLimitError } = require("node-ipinfo");
+const { IPinfoWrapper, ApiLimitError } = require("node-ipinfo");
 
-let ipinfo = new IPinfoWrapper("MY_TOKEN");
+const ipinfo = new IPinfoWrapper("MY_TOKEN");
 
 ipinfo.lookupIp("1.1.1.1").then((response) => {
     console.log(response);
@@ -181,9 +181,9 @@ ipinfoWrapper.lookupIp("1.1.1.1").then((response: IPinfo) => {
 ##### JavaScript
 
 ```javascript
-let { IPinfoWrapper } = require("node-ipinfo");
+const { IPinfoWrapper } = require("node-ipinfo");
 
-let ipinfo = new IPinfoWrapper("MY_TOKEN");
+const ipinfo = new IPinfoWrapper("MY_TOKEN");
 
 ipinfo.lookupIp("1.1.1.1").then((response) => {
     // country code, e.g. 'US'
@@ -214,9 +214,9 @@ ipinfoWrapper.lookupIp("1.1.1.1").then((response: IPinfo) => {
 ##### JavaScript
 
 ```javascript
-let { IPinfoWrapper } = require("node-ipinfo");
+const { IPinfoWrapper } = require("node-ipinfo");
 
-let ipinfo = new IPinfoWrapper("MY_TOKEN");
+const ipinfo = new IPinfoWrapper("MY_TOKEN");
 
 ipinfo.lookupIp("1.1.1.1").then((response) => {
     // '34.0522,-118.2437'
