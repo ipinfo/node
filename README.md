@@ -17,15 +17,15 @@ You'll need an IPinfo API access token, which you can get by signing up for a fr
 
 The free plan is limited to 50,000 requests per month, and doesn't include some of the data fields such as IP type and company data. To enable all the data fields and additional request volumes see [https://ipinfo.io/pricing](https://ipinfo.io/pricing).
 
-## Installation
+### Installation
 
 ```sh
 npm install node-ipinfo
 ```
 
-## Usage
+### Usage
 
-### TypeScript
+#### TypeScript
 
 ```typescript
 import IPinfoWrapper, { IPinfo, AsnResponse } from "node-ipinfo";
@@ -41,7 +41,7 @@ ipinfoWrapper.lookupASN("AS7922").then((response: AsnResponse) => {
 });
 ```
 
-### JavaScript
+#### JavaScript
 
 ```javascript
 let { IPinfoWrapper } = require("node-ipinfo");
@@ -65,7 +65,7 @@ If you prefer a different caching methodology, you may use the `IPCache` interfa
 
 The default cache length is 1 day and the defauly max number of items allowed in the cache is 5000. This can be changed by passing an `Option` to the `LruCache` constructor.
 
-##### TypeScript
+#### TypeScript
 
 ```typescript
 import IPinfoWrapper, { LruCache, Options } from "node-ipinfo";
@@ -78,7 +78,7 @@ let cache = new LruCache(cacheOptions);
 let ipinfoWrapper = new IPinfoWrapper("MY_TOKEN", cache);
 ```
 
-##### JavaScript
+#### JavaScript
 
 ```javascript
 let { IPinfoWrapper, LruCache } = require("node-ipinfo");
@@ -98,7 +98,7 @@ controls the timeout of requests. It defaults to `5000` i.e. 5 seconds.
 
 A timeout of `0` disables the timeout feature.
 
-##### TypeScript
+#### TypeScript
 
 ```typescript
 import IPinfoWrapper from "node-ipinfo";
@@ -107,7 +107,7 @@ import IPinfoWrapper from "node-ipinfo";
 let ipinfoWrapper = new IPinfoWrapper("MY_TOKEN", null, 10000);
 ```
 
-##### JavaScript
+#### JavaScript
 
 ```javascript
 let { IPinfoWrapper } = require("node-ipinfo");
@@ -118,7 +118,7 @@ let ipinfo = new IPinfoWrapper("MY_TOKEN", null, 10000);
 
 ### Errors
 
-##### TypeScript
+#### TypeScript
 
 ```typescript
 import IPinfoWrapper, { IPinfo, AsnResponse } from "node-ipinfo";
@@ -138,7 +138,7 @@ ipinfoWrapper.lookupIp("1.1.1.1").then((response: IPinfo) => {
 });
 ```
 
-##### JavaScript
+#### JavaScript
 
 ```javascript
 let { IPinfoWrapper, ApiLimitError } = require("node-ipinfo");
@@ -162,7 +162,7 @@ ipinfo.lookupIp("1.1.1.1").then((response) => {
 
 `response.country` will return the country name, whereas `response.countryCode` can be used to fetch country code.
 
-##### TypeScript
+#### TypeScript
 
 ```typescript
 import IPinfoWrapper, { IPinfo } from "node-ipinfo";
@@ -178,7 +178,7 @@ ipinfoWrapper.lookupIp("1.1.1.1").then((response: IPinfo) => {
 });
 ```
 
-##### JavaScript
+#### JavaScript
 
 ```javascript
 let { IPinfoWrapper } = require("node-ipinfo");
@@ -198,7 +198,7 @@ ipinfo.lookupIp("1.1.1.1").then((response) => {
 
 `response.loc` will return a composite string of latitude and longitude values in the `"latitude,longitude"` format.
 
-##### TypeScript
+#### TypeScript
 
 ```typescript
 import IPinfoWrapper, { IPinfo } from "node-ipinfo";
@@ -211,7 +211,7 @@ ipinfoWrapper.lookupIp("1.1.1.1").then((response: IPinfo) => {
 });
 ```
 
-##### JavaScript
+#### JavaScript
 
 ```javascript
 let { IPinfoWrapper } = require("node-ipinfo");
@@ -238,13 +238,13 @@ If you want to check out the coverage, run:
 
     $ npm run test:coverage
 
-### Other Libraries
+## Other Libraries
 
 There are official IPinfo client libraries available for many languages including PHP, Python, Go, Java, Ruby, and many popular frameworks such as Django, Rails and Laravel. There are also many third party libraries and integrations available for our API.
 
 https://ipinfo.io/developers/libraries
 
-### About IPinfo
+## About IPinfo
 
 Founded in 2013, IPinfo prides itself on being the most reliable, accurate, and in-depth source of IP address data available anywhere. We process terabytes of data to produce our custom IP geolocation, company, carrier, privacy detection (VPN, proxie, Tor), hosted domains, and IP type data sets. Our API handles over 40 billion requests a month for 100,000 businesses and developers.
 
