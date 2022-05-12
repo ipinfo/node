@@ -17,15 +17,15 @@ You'll need an IPinfo API access token, which you can get by signing up for a fr
 
 The free plan is limited to 50,000 requests per month, and doesn't include some of the data fields such as IP type and company data. To enable all the data fields and additional request volumes see [https://ipinfo.io/pricing](https://ipinfo.io/pricing).
 
-## Installation
+### Installation
 
 ```sh
 npm install node-ipinfo
 ```
 
-## Usage
+### Usage
 
-### TypeScript
+##### TypeScript
 
 ```typescript
 import IPinfoWrapper, { IPinfo, AsnResponse } from "node-ipinfo";
@@ -41,12 +41,12 @@ ipinfoWrapper.lookupASN("AS7922").then((response: AsnResponse) => {
 });
 ```
 
-### JavaScript
+##### JavaScript
 
 ```javascript
-let { IPinfoWrapper } = require("node-ipinfo");
+const { IPinfoWrapper } = require("node-ipinfo");
 
-let ipinfo = new IPinfoWrapper("MY_TOKEN");
+const ipinfo = new IPinfoWrapper("MY_TOKEN");
 
 ipinfo.lookupIp("1.1.1.1").then((response) => {
     console.log(response);
@@ -74,21 +74,21 @@ const cacheOptions: Options<string, any> = {
     max: 5000,
     maxAge: 24 * 1000 * 60 * 60,
 };
-let cache = new LruCache(cacheOptions);
-let ipinfoWrapper = new IPinfoWrapper("MY_TOKEN", cache);
+const cache = new LruCache(cacheOptions);
+const ipinfoWrapper = new IPinfoWrapper("MY_TOKEN", cache);
 ```
 
 ##### JavaScript
 
 ```javascript
-let { IPinfoWrapper, LruCache } = require("node-ipinfo");
+const { IPinfoWrapper, LruCache } = require("node-ipinfo");
 
-let cacheOptions = {
+const cacheOptions = {
     max: 5000,
     maxAge: 24 * 1000 * 60 * 60,
 };
-let cache = new LruCache(cacheOptions);
-let ipinfo = new IPinfoWrapper("MY_TOKEN", cache);
+const cache = new LruCache(cacheOptions);
+const ipinfo = new IPinfoWrapper("MY_TOKEN", cache);
 ```
 
 ### Timeouts
@@ -104,34 +104,124 @@ A timeout of `0` disables the timeout feature.
 import IPinfoWrapper from "node-ipinfo";
 
 // 10 second timeout.
-let ipinfoWrapper = new IPinfoWrapper("MY_TOKEN", null, 10000);
+const ipinfoWrapper = new IPinfoWrapper("MY_TOKEN", null, 10000);
 ```
 
 ##### JavaScript
 
 ```javascript
-let { IPinfoWrapper } = require("node-ipinfo");
+const { IPinfoWrapper } = require("node-ipinfo");
 
 // 10 second timeout.
-let ipinfo = new IPinfoWrapper("MY_TOKEN", null, 10000);
+const ipinfo = new IPinfoWrapper("MY_TOKEN", null, 10000);
 ```
 
 ### Errors
 
+##### TypeScript
+
+```typescript
+import IPinfoWrapper, { IPinfo, ApiLimitError } from "node-ipinfo";
+
+const ipinfoWrapper = new IPinfoWrapper("MY_TOKEN");
+
+ipinfoWrapper.lookupIp("1.1.1.1").then((response: IPinfo) => {
+    console.log(response);
+})
+.catch((error) => {
+    console.log(error);
+    if (error instanceof ApiLimitError) {
+        // handle api limit exceed error
+    } else {
+        // handle other errors
+    }
+});
+```
+
+##### JavaScript
+
 ```javascript
-// example coming soon
+const { IPinfoWrapper, ApiLimitError } = require("node-ipinfo");
+
+const ipinfo = new IPinfoWrapper("MY_TOKEN");
+
+ipinfo.lookupIp("1.1.1.1").then((response) => {
+    console.log(response);
+},
+(error) => {
+    console.log(error);
+    if (error instanceof ApiLimitError){
+        // handle api limit exceed error
+    } else {
+        // handle other errors
+    }
+});
 ```
 
 ### Country Name Lookup
 
+`response.country` will return the country name, whereas `response.countryCode` can be used to fetch country code.
+
+##### TypeScript
+
+```typescript
+import IPinfoWrapper, { IPinfo } from "node-ipinfo";
+
+const ipinfoWrapper = new IPinfoWrapper("MY_TOKEN");
+
+ipinfoWrapper.lookupIp("1.1.1.1").then((response: IPinfo) => {
+    // country code, e.g. 'US'
+    console.log(response.countryCode);
+
+    // country name, e.g. 'United States'
+    console.log(response.country);
+});
+```
+
+##### JavaScript
+
 ```javascript
-// example coming soon
+const { IPinfoWrapper } = require("node-ipinfo");
+
+const ipinfo = new IPinfoWrapper("MY_TOKEN");
+
+ipinfo.lookupIp("1.1.1.1").then((response) => {
+    // country code, e.g. 'US'
+    console.log(response.countryCode);
+
+    // country name, e.g. 'United States'
+    console.log(response.country);
+});
 ```
 
 ### Location Information
 
+`response.loc` will return a composite string of latitude and longitude values in the `"latitude,longitude"` format.
+
+##### TypeScript
+
+```typescript
+import IPinfoWrapper, { IPinfo } from "node-ipinfo";
+
+const ipinfoWrapper = new IPinfoWrapper("MY_TOKEN");
+
+ipinfoWrapper.lookupIp("1.1.1.1").then((response: IPinfo) => {
+    // '34.0522,-118.2437'
+    console.log(response.loc);
+});
+```
+
+##### JavaScript
+
 ```javascript
-// example coming soon
+const { IPinfoWrapper } = require("node-ipinfo");
+
+const ipinfo = new IPinfoWrapper("MY_TOKEN");
+
+ipinfo.lookupIp("1.1.1.1").then((response) => {
+    // '34.0522,-118.2437'
+    console.log(response.loc);
+});
 ```
 
 ## Integrated Typescript Typings
@@ -148,13 +238,13 @@ If you want to check out the coverage, run:
 
     $ npm run test:coverage
 
-### Other Libraries
+## Other Libraries
 
 There are official IPinfo client libraries available for many languages including PHP, Python, Go, Java, Ruby, and many popular frameworks such as Django, Rails and Laravel. There are also many third party libraries and integrations available for our API.
 
 https://ipinfo.io/developers/libraries
 
-### About IPinfo
+## About IPinfo
 
 Founded in 2013, IPinfo prides itself on being the most reliable, accurate, and in-depth source of IP address data available anywhere. We process terabytes of data to produce our custom IP geolocation, company, carrier, privacy detection (VPN, proxie, Tor), hosted domains, and IP type data sets. Our API handles over 40 billion requests a month for 100,000 businesses and developers.
 
