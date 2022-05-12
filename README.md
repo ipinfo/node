@@ -121,7 +121,7 @@ let ipinfo = new IPinfoWrapper("MY_TOKEN", null, 10000);
 ##### TypeScript
 
 ```typescript
-import IPinfoWrapper, ApiLimitError, { IPinfo } from "node-ipinfo";
+import IPinfoWrapper, { IPinfo, ApiLimitError } from "node-ipinfo";
 
 const ipinfoWrapper = new IPinfoWrapper("MY_TOKEN");
 
