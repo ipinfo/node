@@ -118,8 +118,44 @@ let ipinfo = new IPinfoWrapper("MY_TOKEN", null, 10000);
 
 ### Errors
 
+##### TypeScript
+
+```typescript
+import IPinfoWrapper, { IPinfo, AsnResponse } from "node-ipinfo";
+
+const ipinfoWrapper = new IPinfoWrapper("MY_TOKEN");
+
+ipinfoWrapper.lookupIp("1.1.1.1").then((response: IPinfo) => {
+    console.log(response);
+})
+.catch((error) => {
+    console.log(error);
+    if (error instanceof ApiLimitError) {
+        // handle api limit exceed error
+    } else {
+        // handle other errors
+    }
+});
+```
+
+##### JavaScript
+
 ```javascript
-// example coming soon
+let { IPinfoWrapper, ApiLimitError } = require("node-ipinfo");
+
+let ipinfo = new IPinfoWrapper("MY_TOKEN");
+
+ipinfo.lookupIp("1.1.1.1").then((response) => {
+    console.log(response);
+},
+(error) => {
+    console.log(error);
+    if (error instanceof ApiLimitError){
+        // handle api limit exceed error
+    } else {
+        // handle other errors
+    }
+});
 ```
 
 ### Country Name Lookup
