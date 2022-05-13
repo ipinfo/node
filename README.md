@@ -224,6 +224,36 @@ ipinfo.lookupIp("1.1.1.1").then((response) => {
 });
 ```
 
+### Locate IPs on World Map
+
+IPs can be mapped on the world map using `getMap`.
+
+##### TypeScript
+
+```typescript
+import IPinfoWrapper, { MapResponse } from "node-ipinfo";
+
+const ipinfoWrapper = new IPinfoWrapper("MY_TOKEN");
+
+const ips = ["1.1.1.1", "2.2.2.2", "3.3.3.3"]; 
+ipinfoWrapper.getMap(ips).then((response: MapResponse) => {
+    console.log(response);
+});
+```
+
+##### JavaScript
+
+```javascript
+const { IPinfoWrapper } = require("node-ipinfo");
+
+const ipinfo = new IPinfoWrapper("MY_TOKEN");
+
+const ips = ["1.1.1.1", "2.2.2.2", "3.3.3.3"]; 
+ipinfo.getMap(ips).then((mapResponse) => {
+    console.log(mapResponse);
+});
+```
+
 ## Integrated Typescript Typings
 
 Get great code completion for this package using the integrated typescript typings. It includes the complete typings of the IPinfo API too, so you'll know both how to the navigate the API as well as the response you are getting.
