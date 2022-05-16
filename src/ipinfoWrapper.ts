@@ -216,7 +216,7 @@ export default class IPinfoWrapper {
     }
 
     /**
-     * Get a mapping of a list of IPs on world map.
+     * Get a mapping of a list of IPs on a world map.
      *
      * @param ips the array of IPs to map.
      * @return Response containing MapResponse.
