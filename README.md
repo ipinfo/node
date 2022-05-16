@@ -226,7 +226,7 @@ ipinfo.lookupIp("1.1.1.1").then((response) => {
 
 ### Locate IPs on a World Map
 
-IPs can be mapped on the world map using `getMap`. It returns url of the map in the response.
+A world map can be generated with locations of all input IPs using `getMap`. It returns the URL of the map in the response.
 
 ##### TypeScript
 
