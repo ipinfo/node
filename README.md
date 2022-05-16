@@ -224,7 +224,7 @@ ipinfo.lookupIp("1.1.1.1").then((response) => {
 });
 ```
 
-### Locate IPs on World Map
+### Locate IPs on a World Map
 
 IPs can be mapped on the world map using `getMap`. It returns url of the map in the response.
 
