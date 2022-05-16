@@ -351,11 +351,10 @@ export default class IPinfoWrapper {
     }
 
     /**
-     * Allow a batch endpoint to group together IPs and retrieve details in bulk.
+     * Get the result of a list of URLs in bulk.
      *
      * @param urls the array of URLs.
-     * @param batchSize default value is set to max value for batch size, which 
-     * is 1000.
+     * @param batchSize default value is set to max value for batch size, which is 1000.
      * @param batchTimeout in milliseconds. Default value is 5000 milliseconds.
      * @param timeoutTotal disabled by default.
      * @param filter default value is false.
