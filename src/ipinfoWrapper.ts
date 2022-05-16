@@ -216,7 +216,7 @@ export default class IPinfoWrapper {
     }
 
     /**
-     * Get a map of a list of IPs.
+     * Get a mapping of a list of IPs on world map.
      *
      * @param ips the array of IPs to map.
      * @return Response containing MapResponse.
@@ -354,8 +354,8 @@ export default class IPinfoWrapper {
      * Get the result of a list of URLs in bulk.
      *
      * @param urls the array of URLs.
-     * @param batchSize default value is 1000.
-     * @param batchTimeout default value is 5000 milliseconds.
+     * @param batchSize default value and max value for batch size is 1000.
+     * @param batchTimeout in milliseconds. Default value is 5000 milliseconds.
      * @param timeoutTotal disabled by default.
      * @param filter default value is false.
      * @return Response containing BatchResponse for all URLs.

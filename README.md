@@ -226,7 +226,7 @@ ipinfo.lookupIp("1.1.1.1").then((response) => {
 
 ### Locate IPs on World Map
 
-IPs can be mapped on the world map using `getMap`.
+IPs can be mapped on the world map using `getMap`. It returns url of the map in the response.
 
 ##### TypeScript
 
@@ -235,7 +235,7 @@ import IPinfoWrapper, { MapResponse } from "node-ipinfo";
 
 const ipinfoWrapper = new IPinfoWrapper("MY_TOKEN");
 
-const ips = ["1.1.1.1", "2.2.2.2", "3.3.3.3"]; 
+const ips = ["1.1.1.1", "8.8.8.8", "1.2.3.4"]; 
 ipinfoWrapper.getMap(ips).then((response: MapResponse) => {
     console.log(response);
 });
@@ -248,11 +248,47 @@ const { IPinfoWrapper } = require("node-ipinfo");
 
 const ipinfo = new IPinfoWrapper("MY_TOKEN");
 
-const ips = ["1.1.1.1", "2.2.2.2", "3.3.3.3"]; 
-ipinfo.getMap(ips).then((mapResponse) => {
-    console.log(mapResponse);
+const ips = ["1.1.1.1", "8.8.8.8", "1.2.3.4"]; 
+ipinfo.getMap(ips).then((response) => {
+    console.log(response);
 });
 ```
+
+### Batch Operations
+
+Looking up a single IP at a time can be slow. It could be done concurrently from the client side, but IPinfo supports a batch endpoint to allow you to group together IPs and let us handle retrieving details for them in bulk for you.
+
+##### TypeScript
+
+```typescript
+import IPinfoWrapper, { BatchResponse } from "node-ipinfo";
+
+const ipinfoWrapper = new IPinfoWrapper("MY_TOKEN");
+
+const ips = ["1.1.1.1", "8.8.8.8", "1.2.3.4/country"]; 
+ipinfoWrapper.getBatch(ips).then((response: BatchResponse) => {
+    console.log(response);
+});
+```
+
+##### JavaScript
+
+```javascript
+const { IPinfoWrapper } = require("node-ipinfo");
+
+const ipinfo = new IPinfoWrapper("MY_TOKEN");
+
+const ips = ["1.1.1.1", "8.8.8.8", "1.2.3.4/country"]; 
+ipinfo.getBatch(ips).then((response) => {
+    console.log(response);
+});
+```
+
+The input size is not limited, as the interface will chunk operations for you
+behind the scenes.
+
+Please see [the official documentation](https://ipinfo.io/developers/batch) for
+more information and limitations.
 
 ## Integrated Typescript Typings
 
