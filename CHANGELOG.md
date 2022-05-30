@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 3.1.0
+
+- Fixed error handling; 429 errors were not properly being propagated to the
+  user.
+- Added a lot more documentation across the board.
+
 ## 3.0.2
 
 - Added `relay` and `service` fields to Privacy typescript definition.

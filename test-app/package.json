@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "node-ipinfo": "^3.0.2",
+    "node-ipinfo": "^3.1.0",
     "typescript": "^4.4.2"
   }
 }
