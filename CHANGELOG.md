@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 3.1.1
+
+- Fix error handling for 5xx errors; a slightly more sensible error is now
+  thrown.
+
 ## 3.1.0
 
 - Fixed error handling; 429 errors were not properly being propagated to the

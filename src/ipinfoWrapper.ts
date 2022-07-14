@@ -86,7 +86,7 @@ export default class IPinfoWrapper {
                         data += chunk;
                     });
 
-                    if (!this._isStatusCodeIn400Range(res.statusCode)) {
+                    if (!this.is4xxOr5xx(res.statusCode)) {
                         res.on("close", () => {
                             const ipinfo: IPinfo = JSON.parse(data);
 
@@ -170,7 +170,7 @@ export default class IPinfoWrapper {
                         data += chunk;
                     });
 
-                    if (!this._isStatusCodeIn400Range(res.statusCode)) {
+                    if (!this.is4xxOr5xx(res.statusCode)) {
                         res.on("close", () => {
                             const asnResp: AsnResponse = JSON.parse(data);
 
@@ -253,7 +253,7 @@ export default class IPinfoWrapper {
                         data += chunk;
                     });
 
-                    if (!this._isStatusCodeIn400Range(res.statusCode)) {
+                    if (!this.is4xxOr5xx(res.statusCode)) {
                         res.on("close", () => {
                             resolve(JSON.parse(data));
                         });
@@ -314,7 +314,7 @@ export default class IPinfoWrapper {
                         data += chunk;
                     });
 
-                    if (!this._isStatusCodeIn400Range(res.statusCode)) {
+                    if (!this.is4xxOr5xx(res.statusCode)) {
                         res.on("close", () => {
                             resolve(data);
                         });
@@ -478,11 +478,7 @@ export default class IPinfoWrapper {
         );
     }
 
-    private _isStatusCodeIn400Range(statusCode: any): boolean {
-        if (statusCode && statusCode >= 400 && statusCode < 500) {
-            return true;
-        } else {
-            return false;
-        }
+    private is4xxOr5xx(statusCode: any): boolean {
+        return statusCode && statusCode >= 400 && statusCode < 600;
     }
 }
