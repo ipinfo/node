@@ -20,6 +20,7 @@ describe("IPinfoWrapper", () => {
             expect(data.city).toEqual("Mountain View");
             expect(data.region).toEqual("California");
             expect(data.country).toEqual("United States");
+            expect(data.isEU).toEqual(false);
             expect(data.countryCode).toEqual("US");
             expect(data.loc).toEqual("37.4056,-122.0775");
             expect(data.postal).toEqual("94043");
@@ -106,17 +107,17 @@ describe("IPinfoWrapper", () => {
             expect(data["8.8.8.8/hostname"]).toEqual("dns.google");
             expect(data["4.4.4.4"]).toEqual({
                 ip: "4.4.4.4",
-                city: "New York City",
-                region: "New York",
+                city: "Broomfield",
+                region: "Colorado",
                 country: "United States",
-                loc: "40.7143,-74.0060",
+                loc: "39.8854,-105.1139",
                 org: "AS3356 Level 3 Parent, LLC",
-                postal: "10004",
-                timezone: "America/New_York",
+                postal: "80021",
+                timezone: "America/Denver",
                 asn: {
                     asn: "AS3356",
                     name: "Level 3 Parent, LLC",
-                    domain: "level3.com",
+                    domain: "lumen.com",
                     route: "4.0.0.0/9",
                     type: "isp"
                 },
@@ -144,13 +145,13 @@ describe("IPinfoWrapper", () => {
                 },
                 domains: {
                     ip: "4.4.4.4",
-                    total: 224,
+                    total: 171,
                     domains: [
-                        "gf-clan.ch",
-                        "cms3970.com",
-                        "blue-buff.com",
-                        "dc-scape.eu",
-                        "www.guixf.cn"
+                        "ncrsaas.com",
+                        "8888jx.com",
+                        "itmg.eu",
+                        "pregelj.io",
+                        "ronnis.at"
                     ]
                 },
                 countryCode: "US"

@@ -1,6 +1,7 @@
 import { IncomingMessage } from "http";
 import https, { RequestOptions } from "https";
 import countries from "../config/en_US.json";
+import euCountries from "../config/eu.json";
 import Cache from "./cache/cache";
 import LruCache from "./cache/lruCache";
 import ApiLimitError from "./errors/apiLimitError";
@@ -22,6 +23,7 @@ const clientUserAgent = `IPinfoClient/nodejs/${VERSION}`;
 export default class IPinfoWrapper {
     private token: string;
     private countries: any;
+    private euCountries: Array<string>;
     private cache: Cache;
     private timeout: number;
     private mapLimitErrorMessage: string =
@@ -39,6 +41,7 @@ export default class IPinfoWrapper {
     constructor(token: string, cache?: Cache, timeout?: number) {
         this.token = token;
         this.countries = countries;
+        this.euCountries = euCountries;
         this.cache = cache ? cache : new LruCache();
         this.timeout =
             timeout === null || timeout === undefined
@@ -96,6 +99,9 @@ export default class IPinfoWrapper {
                                 ipinfo.countryCode = ipinfo.country;
                                 ipinfo.country =
                                     this.countries[ipinfo.countryCode];
+                                ipinfo.isEU = this.euCountries.includes(
+                                    ipinfo.countryCode
+                                );
                             }
                             if (ipinfo.abuse && ipinfo.abuse.country) {
                                 ipinfo.abuse.countryCode =

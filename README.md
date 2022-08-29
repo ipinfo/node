@@ -161,6 +161,7 @@ ipinfo.lookupIp("1.1.1.1").then((response) => {
 ### Country Name Lookup
 
 `response.country` will return the country name, whereas `response.countryCode` can be used to fetch country code.
+Additionally `response.isEU` will return true if the country is a member of European Union (EU).
 
 ##### TypeScript
 
@@ -175,6 +176,9 @@ ipinfoWrapper.lookupIp("1.1.1.1").then((response: IPinfo) => {
 
     // country name, e.g. 'United States'
     console.log(response.country);
+
+    // whether part of the EU, e.g. false 
+    console.log(response.isEU);
 });
 ```
 
@@ -191,6 +195,9 @@ ipinfo.lookupIp("1.1.1.1").then((response) => {
 
     // country name, e.g. 'United States'
     console.log(response.country);
+
+    // whether part of the EU, e.g. false 
+    console.log(response.isEU);
 });
 ```
 
