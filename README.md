@@ -161,7 +161,8 @@ ipinfo.lookupIp("1.1.1.1").then((response) => {
 ### Country Name Lookup
 
 `response.country` will return the country name, whereas `response.countryCode` can be used to fetch country code.
-Additionally `response.isEU` will return true if the country is a member of European Union (EU).
+
+Additionally `response.isEU` will return `true` if the country is a member of the European Union (EU).
 
 ##### TypeScript
 
