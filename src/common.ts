@@ -65,6 +65,7 @@ export interface IPinfo {
     city: string;
     region: string;
     country: string;
+    isEU: boolean;
     countryCode: string;
     loc: string;
     org: string;
