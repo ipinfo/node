@@ -438,7 +438,12 @@ export default class IPinfoWrapper {
                             ipinfo.abuse.country =
                                 this.countries[ipinfo.abuse.countryCode];
                         }
-                        this.cache.set(IPinfoWrapper.cacheKey(key), ipinfo);
+                        if (!ipinfo.error) {
+                            this.cache.set(
+                                IPinfoWrapper.cacheKey(key),
+                                ipinfo
+                            );
+                        }
                         result[key] = batchResp[key];
                     }
                 }
