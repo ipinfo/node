@@ -427,7 +427,7 @@ export default class IPinfoWrapper {
                     if (batchResp.hasOwnProperty(key)) {
                         const ipinfo = batchResp[key];
 
-                        if (ipinfo.error) {
+                        if (ipinfo.error && !this.is4xxOr5xx) {
                             delete batchResp[key];
                         } else {
                             /* convert country code to full country name */
