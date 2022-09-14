@@ -426,29 +426,25 @@ export default class IPinfoWrapper {
                 for (var key in batchResp) {
                     if (batchResp.hasOwnProperty(key)) {
                         const ipinfo = batchResp[key];
-
-                        if (ipinfo.error) {
-                            delete batchResp[key];
-                        } else {
-                            /* convert country code to full country name */
-                            // NOTE: always do this _before_ setting cache.
-                            if (ipinfo.country) {
-                                ipinfo.countryCode = ipinfo.country;
-                                ipinfo.country =
-                                    this.countries[ipinfo.countryCode];
-                            }
-                            if (ipinfo.abuse && ipinfo.abuse.country) {
-                                ipinfo.abuse.countryCode =
-                                    ipinfo.abuse.country;
-                                ipinfo.abuse.country =
-                                    this.countries[ipinfo.abuse.countryCode];
-                            }
+                        /* convert country code to full country name */
+                        // NOTE: always do this _before_ setting cache.
+                        if (ipinfo.country) {
+                            ipinfo.countryCode = ipinfo.country;
+                            ipinfo.country =
+                                this.countries[ipinfo.countryCode];
+                        }
+                        if (ipinfo.abuse && ipinfo.abuse.country) {
+                            ipinfo.abuse.countryCode = ipinfo.abuse.country;
+                            ipinfo.abuse.country =
+                                this.countries[ipinfo.abuse.countryCode];
+                        }
+                        if (!ipinfo.error) {
                             this.cache.set(
                                 IPinfoWrapper.cacheKey(key),
                                 ipinfo
                             );
-                            result[key] = batchResp[key];
                         }
+                        result[key] = batchResp[key];
                     }
                 }
             });
