@@ -22,6 +22,8 @@ describe("IPinfoWrapper", () => {
             expect(data.country).toEqual("United States");
             expect(data.isEU).toEqual(false);
             expect(data.countryCode).toEqual("US");
+            expect(data.countryFlag.emoji).toEqual("🇺🇸");
+            expect(data.countryFlag.unicode).toEqual("U+1F1FA U+1F1F8");
             expect(data.loc).toEqual("37.4056,-122.0775");
             expect(data.postal).toEqual("94043");
             expect(data.timezone).toEqual("America/Los_Angeles");
@@ -30,19 +32,19 @@ describe("IPinfoWrapper", () => {
                 name: "Google LLC",
                 domain: "google.com",
                 route: "8.8.8.0/24",
-                type: "business"
+                type: "hosting"
             });
             expect(data.company).toEqual({
                 name: "Google LLC",
                 domain: "google.com",
-                type: "business"
+                type: "hosting"
             });
             expect(data.privacy).toEqual({
                 vpn: false,
                 proxy: false,
                 tor: false,
                 relay: false,
-                hosting: false,
+                hosting: true,
                 service: ""
             });
             expect(data.abuse).toEqual({
@@ -145,13 +147,13 @@ describe("IPinfoWrapper", () => {
                 },
                 domains: {
                     ip: "4.4.4.4",
-                    total: 171,
+                    total: 125,
                     domains: [
                         "ncrsaas.com",
-                        "8888jx.com",
-                        "itmg.eu",
-                        "pregelj.io",
-                        "ronnis.at"
+                        "edv-abteilung.de",
+                        "itmanagementgroup.de",
+                        "ciie.ru",
+                        "ddosxtesting.co.uk"
                     ]
                 },
                 countryCode: "US"

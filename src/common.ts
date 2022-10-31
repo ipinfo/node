@@ -57,6 +57,11 @@ export interface Domains {
     domains: string[];
 }
 
+export interface CountryFlag {
+    emoji: string;
+    unicode: string;
+}
+
 export interface IPinfo {
     ip: string;
     hostname: string;
@@ -65,6 +70,7 @@ export interface IPinfo {
     city: string;
     region: string;
     country: string;
+    countryFlag: CountryFlag
     isEU: boolean;
     countryCode: string;
     loc: string;
