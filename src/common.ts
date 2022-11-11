@@ -62,6 +62,11 @@ export interface CountryFlag {
     unicode: string;
 }
 
+export interface CountryCurrency {
+    code: string;
+    symbol: string;
+}
+
 export interface IPinfo {
     ip: string;
     hostname: string;
@@ -70,7 +75,8 @@ export interface IPinfo {
     city: string;
     region: string;
     country: string;
-    countryFlag: CountryFlag
+    countryFlag: CountryFlag;
+    countryCurrency: CountryCurrency;
     isEU: boolean;
     countryCode: string;
     loc: string;

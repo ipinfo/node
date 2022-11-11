@@ -3,6 +3,7 @@ import https, { RequestOptions } from "https";
 import countries from "../config/en_US.json";
 import euCountries from "../config/eu.json";
 import countriesFlags from "../config/flags.json"
+import countriesCurrencies from "../config/currency.json"
 import Cache from "./cache/cache";
 import LruCache from "./cache/lruCache";
 import ApiLimitError from "./errors/apiLimitError";
@@ -25,6 +26,7 @@ export default class IPinfoWrapper {
     private token: string;
     private countries: any;
     private countriesFlags: any;
+    private countriesCurrencies: any;
     private euCountries: Array<string>;
     private cache: Cache;
     private timeout: number;
@@ -44,6 +46,7 @@ export default class IPinfoWrapper {
         this.token = token;
         this.countries = countries;
         this.countriesFlags = countriesFlags;
+        this.countriesCurrencies = countriesCurrencies;
         this.euCountries = euCountries;
         this.cache = cache ? cache : new LruCache();
         this.timeout =
@@ -104,6 +107,8 @@ export default class IPinfoWrapper {
                                     this.countries[ipinfo.countryCode];
                                 ipinfo.countryFlag = 
                                     this.countriesFlags[ipinfo.countryCode]
+                                ipinfo.countryCurrency = 
+                                    this.countriesCurrencies[ipinfo.countryCode]
                                 ipinfo.isEU = this.euCountries.includes(
                                     ipinfo.countryCode
                                 );
