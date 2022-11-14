@@ -26,6 +26,8 @@ describe("IPinfoWrapper", () => {
             expect(data.countryFlag.unicode).toEqual("U+1F1FA U+1F1F8");
             expect(data.countryCurrency.code).toEqual("USD");
             expect(data.countryCurrency.symbol).toEqual("$");
+            expect(data.continent.code).toEqual("NA");
+            expect(data.continent.name).toEqual("North America");
             expect(data.loc).toEqual("37.4056,-122.0775");
             expect(data.postal).toEqual("94043");
             expect(data.timezone).toEqual("America/Los_Angeles");

@@ -67,6 +67,11 @@ export interface CountryCurrency {
     symbol: string;
 }
 
+export interface Continent {
+    code: string;
+    name: string;
+}
+
 export interface IPinfo {
     ip: string;
     hostname: string;
@@ -77,6 +82,7 @@ export interface IPinfo {
     country: string;
     countryFlag: CountryFlag;
     countryCurrency: CountryCurrency;
+    continent: Continent;
     isEU: boolean;
     countryCode: string;
     loc: string;

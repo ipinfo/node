@@ -4,6 +4,7 @@ import countries from "../config/en_US.json";
 import euCountries from "../config/eu.json";
 import countriesFlags from "../config/flags.json"
 import countriesCurrencies from "../config/currency.json"
+import continents from "../config/continent.json"
 import Cache from "./cache/cache";
 import LruCache from "./cache/lruCache";
 import ApiLimitError from "./errors/apiLimitError";
@@ -27,6 +28,7 @@ export default class IPinfoWrapper {
     private countries: any;
     private countriesFlags: any;
     private countriesCurrencies: any;
+    private continets: any;
     private euCountries: Array<string>;
     private cache: Cache;
     private timeout: number;
@@ -47,6 +49,7 @@ export default class IPinfoWrapper {
         this.countries = countries;
         this.countriesFlags = countriesFlags;
         this.countriesCurrencies = countriesCurrencies;
+        this.continets = continents;
         this.euCountries = euCountries;
         this.cache = cache ? cache : new LruCache();
         this.timeout =
@@ -106,9 +109,11 @@ export default class IPinfoWrapper {
                                 ipinfo.country =
                                     this.countries[ipinfo.countryCode];
                                 ipinfo.countryFlag = 
-                                    this.countriesFlags[ipinfo.countryCode]
+                                    this.countriesFlags[ipinfo.countryCode];
                                 ipinfo.countryCurrency = 
-                                    this.countriesCurrencies[ipinfo.countryCode]
+                                    this.countriesCurrencies[ipinfo.countryCode];
+                                ipinfo.continent = 
+                                    this.continets[ipinfo.countryCode];
                                 ipinfo.isEU = this.euCountries.includes(
                                     ipinfo.countryCode
                                 );

@@ -163,7 +163,7 @@ ipinfo.lookupIp("1.1.1.1").then((response) => {
 `response.country` will return the country name, whereas `response.countryCode` can be used to fetch country code.
 
 Additionally `response.isEU` will return `true` if the country is a member of the European Union (EU), `response.countryFlag` 
-will return emoji and unicode of country's flag and `response.countryCurrency` will return code and symbol of country's currency.
+will return emoji and unicode of country's flag, `response.countryCurrency` will return code and symbol of country's currency and `response.continent` will return the continent of IP.
 
 ##### TypeScript
 
@@ -187,6 +187,9 @@ ipinfoWrapper.lookupIp("1.1.1.1").then((response: IPinfo) => {
 
     // code and symbol of country currency { code: 'USD', symbol: '$' }
     console.log(response.countryCurrency)
+
+    // code and name of continent { code: 'NA', name: 'North America' }
+    console.log(response.continent)
 });
 ```
 
