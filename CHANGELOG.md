@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 3.2.0
+
+- Added `isEU` that checks whether the IP geolocates to a European Union (EU) country.
+- Added `CountryFlag` that returns emoji and unicode of country's flag.
+- Added `CountryCurrency` that returns code and symbol of country's currency.
+- Added `Continent` that returns the continent where IP geolocates.
+
 ## 3.1.1
 
 - Fix error handling for 5xx errors; a slightly more sensible error is now
