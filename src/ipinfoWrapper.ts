@@ -2,12 +2,13 @@ import { IncomingMessage } from "http";
 import https, { RequestOptions } from "https";
 import countries from "../config/en_US.json";
 import euCountries from "../config/eu.json";
-import countriesFlags from "../config/flags.json"
-import countriesCurrencies from "../config/currency.json"
-import continents from "../config/continent.json"
+import countriesFlags from "../config/flags.json";
+import countriesCurrencies from "../config/currency.json";
+import continents from "../config/continent.json";
 import Cache from "./cache/cache";
 import LruCache from "./cache/lruCache";
 import ApiLimitError from "./errors/apiLimitError";
+const { isInSubnet } = require("subnet-check");
 import {
     IPinfo,
     AsnResponse,
@@ -17,7 +18,8 @@ import {
     BATCH_REQ_TIMEOUT_DEFAULT,
     REQUEST_TIMEOUT_DEFAULT,
     CACHE_VSN,
-    HOST
+    HOST,
+    BOGON_NETWORKS
 } from "./common";
 import VERSION from "./version";
 
@@ -69,6 +71,15 @@ export default class IPinfoWrapper {
      * @return Response containing location information.
      */
     public lookupIp(ip: string): Promise<IPinfo> {
+        if (this.isBogon(ip)) {
+            const ipinfo: IPinfo = {} as IPinfo;
+            ipinfo.bogon = true;
+            ipinfo.ip = ip;
+            return new Promise((resolve) => {
+                resolve(ipinfo);
+            });
+        }
+
         const data = this.cache.get(IPinfoWrapper.cacheKey(ip));
         if (data) {
             return new Promise((resolve) => {
@@ -108,11 +119,13 @@ export default class IPinfoWrapper {
                                 ipinfo.countryCode = ipinfo.country;
                                 ipinfo.country =
                                     this.countries[ipinfo.countryCode];
-                                ipinfo.countryFlag = 
+                                ipinfo.countryFlag =
                                     this.countriesFlags[ipinfo.countryCode];
-                                ipinfo.countryCurrency = 
-                                    this.countriesCurrencies[ipinfo.countryCode];
-                                ipinfo.continent = 
+                                ipinfo.countryCurrency =
+                                    this.countriesCurrencies[
+                                        ipinfo.countryCode
+                                    ];
+                                ipinfo.continent =
                                     this.continets[ipinfo.countryCode];
                                 ipinfo.isEU = this.euCountries.includes(
                                     ipinfo.countryCode
@@ -497,5 +510,14 @@ export default class IPinfoWrapper {
 
     private is4xxOr5xx(statusCode: any): boolean {
         return statusCode && statusCode >= 400 && statusCode < 600;
+    }
+
+    private isBogon(ip: string): boolean {
+        for (var network of BOGON_NETWORKS) {
+            if (isInSubnet(ip, network)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
