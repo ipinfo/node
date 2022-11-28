@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 3.3.0
+
+- Checking `bogon` IP locally.
+
 ## 3.2.0
 
 - Added `isEU` that checks whether the IP geolocates to a European Union (EU) country.
