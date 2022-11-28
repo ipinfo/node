@@ -30,8 +30,9 @@
         "node": ">=10"
     },
     "dependencies": {
+        "@types/lru-cache": "^5.1.1",
         "lru-cache": "^6.0.0",
-        "@types/lru-cache": "^5.1.1"
+        "subnet-check": "^1.10.1"
     },
     "devDependencies": {
         "@types/dotenv": "^8.2.0",

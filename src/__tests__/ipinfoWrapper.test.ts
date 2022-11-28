@@ -124,7 +124,7 @@ describe("IPinfoWrapper", () => {
                     asn: "AS3356",
                     name: "Level 3 Parent, LLC",
                     domain: "lumen.com",
-                    route: "4.0.0.0/9",
+                    route: "4.4.0.0/16",
                     type: "isp"
                 },
                 company: {
@@ -181,6 +181,13 @@ describe("IPinfoWrapper", () => {
             });
         }
 
+        done();
+    });
+
+    test("isBogon", async (done) => {
+        const data: IPinfo = await ipinfoWrapper.lookupIp("198.51.100.1");
+        expect(data.ip).toEqual("198.51.100.1");
+        expect(data.bogon).toEqual(true);
         done();
     });
 });
