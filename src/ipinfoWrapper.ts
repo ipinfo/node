@@ -79,6 +79,7 @@ export default class IPinfoWrapper {
                 resolve(ipinfo);
             });
         }
+
         const data = this.cache.get(IPinfoWrapper.cacheKey(ip));
         if (data) {
             return new Promise((resolve) => {
