@@ -70,21 +70,17 @@ export default class IPinfoWrapper {
      * @param ip IP address against which the location information is required.
      * @return Response containing location information.
      */
-    public lookupIp(ip: string): Promise<IPinfo> {
+    public async lookupIp(ip: string): Promise<IPinfo> {
         if (this.isBogon(ip)) {
             const ipinfo: IPinfo = {} as IPinfo;
             ipinfo.bogon = true;
             ipinfo.ip = ip;
-            return new Promise((resolve) => {
-                resolve(ipinfo);
-            });
+            return ipinfo;
         }
 
-        const data = this.cache.get(IPinfoWrapper.cacheKey(ip));
+        const data = await this.cache.get(IPinfoWrapper.cacheKey(ip));
         if (data) {
-            return new Promise((resolve) => {
-                resolve(data);
-            });
+            return data;
         }
 
         const config: RequestOptions = {
