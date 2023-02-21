@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 3.4.0
+
+- Allow async LRUCache storage.
+
 ## 3.3.0
 
 - Checking `bogon` IP locally.

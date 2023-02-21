@@ -1,6 +1,6 @@
 {
     "name": "node-ipinfo",
-    "version": "3.3.0",
+    "version": "3.4.0",
     "description": "Official Node client library for IPinfo",
     "main": "dist/src/index.js",
     "types": "dist/src/index.d.ts",
