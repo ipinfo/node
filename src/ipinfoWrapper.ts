@@ -70,21 +70,17 @@ export default class IPinfoWrapper {
      * @param ip IP address against which the location information is required.
      * @return Response containing location information.
      */
-    public lookupIp(ip: string): Promise<IPinfo> {
+    public async lookupIp(ip: string): Promise<IPinfo> {
         if (this.isBogon(ip)) {
             const ipinfo: IPinfo = {} as IPinfo;
             ipinfo.bogon = true;
             ipinfo.ip = ip;
-            return new Promise((resolve) => {
-                resolve(ipinfo);
-            });
+            return ipinfo;
         }
 
-        const data = this.cache.get(IPinfoWrapper.cacheKey(ip));
+        const data = await this.cache.get(IPinfoWrapper.cacheKey(ip));
         if (data) {
-            return new Promise((resolve) => {
-                resolve(data);
-            });
+            return data;
         }
 
         const config: RequestOptions = {
@@ -174,12 +170,10 @@ export default class IPinfoWrapper {
      * @param asn the asn string to lookup.
      * @return Response containing AsnResponse from the api.
      */
-    public lookupASN(asn: string): Promise<AsnResponse> {
-        const data = this.cache.get(IPinfoWrapper.cacheKey(asn));
+    public async lookupASN(asn: string): Promise<AsnResponse> {
+        const data = await this.cache.get(IPinfoWrapper.cacheKey(asn));
         if (data) {
-            return new Promise((resolve) => {
-                resolve(data);
-            });
+            return data;
         }
 
         const config: RequestOptions = {
@@ -405,9 +399,7 @@ export default class IPinfoWrapper {
 
         // no items?
         if (urls.length == 0) {
-            return new Promise((resolve) => {
-                resolve(result);
-            });
+            return result;
         }
 
         // clip batch size.
@@ -417,20 +409,18 @@ export default class IPinfoWrapper {
 
         // filter out URLs already cached.
         const lookupUrls: string[] = [];
-        urls.forEach((url) => {
-            const cachedUrl = this.cache.get(IPinfoWrapper.cacheKey(url));
+        for (const url of urls) {
+            const cachedUrl = await this.cache.get(IPinfoWrapper.cacheKey(url));
             if (cachedUrl) {
                 result[url] = cachedUrl;
             } else {
                 lookupUrls.push(url);
             }
-        });
+        }
 
         // everything cached? exit early.
         if (lookupUrls.length == 0) {
-            return new Promise((resolve) => {
-                resolve(result);
-            });
+            return result;
         }
 
         const promises: Promise<any>[] = [];
