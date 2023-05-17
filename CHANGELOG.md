@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 3.4.2
+
+- Refactored `isBogon` function.
+
+## 3.4.1
+
+- Fixed `isBogon` empty IP check.
+
 ## 3.4.0
 
 - Allow async LRUCache storage.
