@@ -71,7 +71,7 @@ export default class IPinfoWrapper {
      * @return Response containing location information.
      */
     public async lookupIp(ip: string): Promise<IPinfo> {
-        if (this.isBogon(ip)) {
+        if (ip && this.isBogon(ip)) {
             const ipinfo: IPinfo = {} as IPinfo;
             ipinfo.bogon = true;
             ipinfo.ip = ip;
