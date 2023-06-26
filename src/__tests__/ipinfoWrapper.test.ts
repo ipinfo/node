@@ -24,6 +24,7 @@ describe("IPinfoWrapper", () => {
             expect(data.countryCode).toEqual("US");
             expect(data.countryFlag.emoji).toEqual("🇺🇸");
             expect(data.countryFlag.unicode).toEqual("U+1F1FA U+1F1F8");
+            expect(data.countryFlagURL).toEqual("https://cdn.ipinfo.io/static/images/countries-flags/US.svg");
             expect(data.countryCurrency.code).toEqual("USD");
             expect(data.countryCurrency.symbol).toEqual("$");
             expect(data.continent.code).toEqual("NA");
@@ -113,18 +114,17 @@ describe("IPinfoWrapper", () => {
             expect(data["8.8.8.8/hostname"]).toEqual("dns.google");
             expect(data["4.4.4.4"]).toEqual({
                 ip: "4.4.4.4",
-                city: "Broomfield",
-                region: "Colorado",
-                country: "United States",
-                loc: "39.8854,-105.1139",
+                city: "Taipei",
+                region: "Taiwan",
+                country: "Taiwan",
+                loc: "25.0478,121.5319",
                 org: "AS3356 Level 3 Parent, LLC",
-                postal: "80021",
-                timezone: "America/Denver",
+                timezone: "Asia/Taipei",
                 asn: {
                     asn: "AS3356",
                     name: "Level 3 Parent, LLC",
                     domain: "lumen.com",
-                    route: "4.4.0.0/16",
+                    route: "4.0.0.0/9",
                     type: "isp"
                 },
                 company: {
@@ -141,26 +141,26 @@ describe("IPinfoWrapper", () => {
                     service: ""
                 },
                 abuse: {
-                    address: "US, CO, Broomfield, 1025 Eldorado Blvd., 80021",
+                    address: "US, LA, Monroe, 100 CenturyLink Drive, 71203",
                     country: "United States",
                     email: "abuse@level3.com",
-                    name: "Abuse POC LVLT",
+                    name: "L3 Abuse Contact",
                     network: "4.4.0.0/16",
                     phone: "+1-877-453-8353",
                     countryCode: "US"
                 },
                 domains: {
                     ip: "4.4.4.4",
-                    total: 125,
+                    total: 124,
                     domains: [
                         "ncrsaas.com",
-                        "edv-abteilung.de",
-                        "itmanagementgroup.de",
-                        "ciie.ru",
-                        "ddosxtesting.co.uk"
+                        "snowdongliders.com",
+                        "codecrunch.se",
+                        "tetrauni.com",
+                        "reidaidns.com"
                     ]
                 },
-                countryCode: "US"
+                countryCode: "TW"
             });
 
             expect(data["AS123"]).toEqual({

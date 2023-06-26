@@ -24,6 +24,7 @@ import {
 import VERSION from "./version";
 
 const clientUserAgent = `IPinfoClient/nodejs/${VERSION}`;
+const countryFlagURL = "https://cdn.ipinfo.io/static/images/countries-flags/"
 
 export default class IPinfoWrapper {
     private token: string;
@@ -117,6 +118,8 @@ export default class IPinfoWrapper {
                                     this.countries[ipinfo.countryCode];
                                 ipinfo.countryFlag =
                                     this.countriesFlags[ipinfo.countryCode];
+                                ipinfo.countryFlagURL = 
+                                    countryFlagURL + ipinfo.countryCode + ".svg"
                                 ipinfo.countryCurrency =
                                     this.countriesCurrencies[
                                         ipinfo.countryCode

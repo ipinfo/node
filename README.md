@@ -163,7 +163,7 @@ ipinfo.lookupIp("1.1.1.1").then((response) => {
 `response.country` will return the country name, whereas `response.countryCode` can be used to fetch country code.
 
 Additionally `response.isEU` will return `true` if the country is a member of the European Union (EU), `response.countryFlag` 
-will return emoji and unicode of country's flag, `response.countryCurrency` will return code and symbol of country's currency and `response.continent` will return the continent of IP.
+will return emoji and unicode of country's flag, `response.countryFlagURL` will return a public link to the country's flag image as an SVG which can be used anywhere, `response.countryCurrency` will return code and symbol of country's currency and `response.continent` will return the continent of IP.
 
 ##### TypeScript
 
@@ -184,6 +184,9 @@ ipinfoWrapper.lookupIp("1.1.1.1").then((response: IPinfo) => {
 
     // emoji and unicode of country flag { emoji: '🇺🇸', unicode: 'U+1F1FA U+1F1F8' }
     console.log(response.countryFlag)
+
+    // country's flag image URL e.g. https://cdn.ipinfo.io/static/images/countries-flags/US.svg
+    console.log(response.countryFlagURL)
 
     // code and symbol of country currency { code: 'USD', symbol: '$' }
     console.log(response.countryCurrency)
@@ -212,6 +215,9 @@ ipinfo.lookupIp("1.1.1.1").then((response) => {
     
     // emoji and unicode of country flag { emoji: '🇺🇸', unicode: 'U+1F1FA U+1F1F8' }
     console.log(response.countryFlag)
+
+    // country's flag image URL e.g. https://cdn.ipinfo.io/static/images/countries-flags/US.svg
+    console.log(response.countryFlagURL)
 
     // code and symbol of country currency { code: 'USD', symbol: '$' }
     console.log(response.countryCurrency)
