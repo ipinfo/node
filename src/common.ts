@@ -81,6 +81,7 @@ export interface IPinfo {
     region: string;
     country: string;
     countryFlag: CountryFlag;
+    countryFlagURL: string;
     countryCurrency: CountryCurrency;
     continent: Continent;
     isEU: boolean;
