@@ -1,9 +1,9 @@
 # [<img src="https://ipinfo.io/static/ipinfo-small.svg" alt="IPinfo" width="24"/>](https://ipinfo.io/) IPinfo NodeJS Client Library
 
-This is the official NodeJS client library for the [IPinfo.io](https://ipinfo.io) IP data API, allowing you to lookup your own IP address, or get any of the following details for an IP:
+This is the official NodeJS client library for the [IPinfo.io](https://ipinfo.io) IP data API, allowing you to look up your own IP address, or get any of the following details for an IP:
 
-- [IP geolocation data](https://ipinfo.io/ip-geolocation-api) (city, region, country, postal code, latitude and longitude)
-- [ASN details](https://ipinfo.io/asn-api) (ISP or network operator, associated domain name, and type, such as business, hosting or company)
+- [IP geolocation data](https://ipinfo.io/ip-geolocation-api) (city, region, country, postal code, latitude, and longitude)
+- [ASN details](https://ipinfo.io/asn-api) (ISP or network operator, associated domain name, and type, such as business, hosting, or company)
 - [Company data](https://ipinfo.io/ip-company-api) (the name and domain of the business that uses the IP address)
 - [Carrier information](https://ipinfo.io/ip-carrier-api) (the name of the mobile carrier and MNC and MCC for that carrier if the IP is used exclusively for mobile traffic)
 
@@ -63,7 +63,7 @@ This library uses an LRU cache (deletes the least-recently-used items).
 
 If you prefer a different caching methodology, you may use the `IPCache` interface through TypeScript and implement your own caching system around your own infrastructure.
 
-The default cache length is 1 day and the defauly max number of items allowed in the cache is 5000. This can be changed by passing an `Option` to the `LruCache` constructor.
+The default cache length is 1 day and the default max number of items allowed in the cache is 5000. This can be changed by passing an `Option` to the `LruCache` constructor.
 
 ##### TypeScript
 
@@ -160,10 +160,10 @@ ipinfo.lookupIp("1.1.1.1").then((response) => {
 
 ### Country Name Lookup
 
-`response.country` will return the country name, whereas `response.countryCode` can be used to fetch country code.
+`response.country` will return the country name, whereas `response.countryCode` can be used to fetch the country code.
 
 Additionally `response.isEU` will return `true` if the country is a member of the European Union (EU), `response.countryFlag` 
-will return emoji and unicode of country's flag, `response.countryFlagURL` will return a public link to the country's flag image as an SVG which can be used anywhere, `response.countryCurrency` will return code and symbol of country's currency and `response.continent` will return the continent of IP.
+will return the emoji and Unicode of the country's flag, `response.countryFlagURL` will return a public link to the country's flag image as an SVG which can be used anywhere, `response.countryCurrency` will return the code and symbol of the country's currency and `response.continent` will return the continent of the IP.
 
 ##### TypeScript
 
@@ -322,7 +322,7 @@ more information and limitations.
 
 ## Integrated Typescript Typings
 
-Get great code completion for this package using the integrated typescript typings. It includes the complete typings of the IPinfo API too, so you'll know both how to the navigate the API as well as the response you are getting.
+Get great code completion for this package using the integrated typescript typings. It includes the complete typings of the IPinfo API too, so you'll know how to navigate both the API as well as the response you are getting.
 
 ## Running tests
 
@@ -336,12 +336,12 @@ If you want to check out the coverage, run:
 
 ## Other Libraries
 
-There are official IPinfo client libraries available for many languages including PHP, Python, Go, Java, Ruby, and many popular frameworks such as Django, Rails and Laravel. There are also many third party libraries and integrations available for our API.
+There are official IPinfo client libraries available for many languages including PHP, Python, Go, Java, Ruby, and many popular frameworks such as Django, Rails, and Laravel. There are also many third-party libraries and integrations available for our API.
 
 https://ipinfo.io/developers/libraries
 
 ## About IPinfo
 
-Founded in 2013, IPinfo prides itself on being the most reliable, accurate, and in-depth source of IP address data available anywhere. We process terabytes of data to produce our custom IP geolocation, company, carrier, privacy detection (VPN, proxie, Tor), hosted domains, and IP type data sets. Our API handles over 40 billion requests a month for 100,000 businesses and developers.
+Founded in 2013, IPinfo prides itself on being the most reliable, accurate, and in-depth source of IP address data available anywhere. We process terabytes of data to produce our custom IP geolocation, company, carrier, privacy detection (VPN, proxies, Tor), hosted domains, and IP type data sets. Our API handles over 40 billion requests a month for 100,000 businesses and developers.
 
 [![image](https://avatars3.githubusercontent.com/u/15721521?s=128&u=7bb7dde5c4991335fb234e68a30971944abc6bf3&v=4)](https://ipinfo.io/)
