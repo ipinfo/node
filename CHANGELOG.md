@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 3.4.4
+
+- Added lru-cache types into published artifacts.
+
 ## 3.4.3
 
 - Moved test files out of published artifacts and updated some packages.
