@@ -19,8 +19,16 @@ The free plan is limited to 50,000 requests per month, and doesn't include some 
 
 ### Installation
 
-```sh
+#### npm
+
+```bash
 npm install node-ipinfo
+```
+
+#### yarn
+
+```bash
+yarn add node-ipinfo
 ```
 
 ### Usage
