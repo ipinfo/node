@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 3.4.3
+
+- Moved test files out of published artifacts and updated some packages.
+
 ## 3.4.2
 
 - Refactored `isBogon` function.
