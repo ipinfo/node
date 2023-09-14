@@ -1,6 +1,6 @@
 import * as dotenv from "dotenv";
-import IPinfoWrapper from "../ipinfoWrapper";
-import { IPinfo, AsnResponse } from "../common";
+import IPinfoWrapper from "../src/ipinfoWrapper";
+import { IPinfo, AsnResponse } from "../src/common";
 
 let ipinfoWrapper: IPinfoWrapper;
 
@@ -11,7 +11,7 @@ beforeEach(() => {
 });
 
 describe("IPinfoWrapper", () => {
-    test("lookupIp", async (done) => {
+    test("lookupIp", async () => {
         // test multiple times for cache.
         for (let i = 0; i < 5; i++) {
             const data: IPinfo = await ipinfoWrapper.lookupIp("8.8.8.8");
@@ -66,11 +66,9 @@ describe("IPinfoWrapper", () => {
             expect(data.domains.total).not.toBeFalsy();
             expect(data.domains.domains.length).toEqual(5);
         }
-
-        done();
     });
 
-    test("lookupASN", async (done) => {
+    test("lookupASN", async () => {
         // test multiple times for cache.
         for (let i = 0; i < 5; i++) {
             const data: AsnResponse = await ipinfoWrapper.lookupASN("AS7922");
@@ -84,21 +82,18 @@ describe("IPinfoWrapper", () => {
             expect(data.num_ips).not.toBeFalsy();
             expect(data.type).toEqual("isp");
         }
-
-        done();
     });
 
-    test("getMap", async (done) => {
+    test("getMap", async () => {
         let data = await ipinfoWrapper.getMap(["8.8.8.8", "4.4.4.4"]);
 
         expect(data.status).toEqual("Report Generated");
         expect(
             data.reportUrl?.includes("https://ipinfo.io/tools/map/")
         ).toBeTruthy();
-        done();
     });
 
-    test("getBatch", async (done) => {
+    test("getBatch", async () => {
         // test multiple times for cache.
         for (let i = 0; i < 5; i++) {
             const data = await ipinfoWrapper.getBatch([
@@ -114,12 +109,13 @@ describe("IPinfoWrapper", () => {
             expect(data["8.8.8.8/hostname"]).toEqual("dns.google");
             expect(data["4.4.4.4"]).toEqual({
                 ip: "4.4.4.4",
-                city: "Taipei",
-                region: "Taiwan",
-                country: "Taiwan",
-                loc: "25.0478,121.5319",
+                city: "Broomfield",
+                region: "Colorado",
+                country: "United States",
+                loc: "39.8854,-105.1139",
                 org: "AS3356 Level 3 Parent, LLC",
-                timezone: "Asia/Taipei",
+                postal: "80021",
+                timezone: "America/Denver",
                 asn: {
                     asn: "AS3356",
                     name: "Level 3 Parent, LLC",
@@ -151,16 +147,16 @@ describe("IPinfoWrapper", () => {
                 },
                 domains: {
                     ip: "4.4.4.4",
-                    total: 124,
+                    total: 119,
                     domains: [
                         "ncrsaas.com",
-                        "snowdongliders.com",
-                        "codecrunch.se",
-                        "tetrauni.com",
-                        "reidaidns.com"
+                        "datacenterteam.de",
+                        "lavu-pos.com",
+                        "prodygy.biz",
+                        "giacomoni.ca",
                     ]
                 },
-                countryCode: "TW"
+                countryCode: "US"
             });
 
             expect(data["AS123"]).toEqual({
@@ -180,14 +176,11 @@ describe("IPinfoWrapper", () => {
                 downstreams: null
             });
         }
-
-        done();
     });
 
-    test("isBogon", async (done) => {
+    test("isBogon", async () => {
         const data: IPinfo = await ipinfoWrapper.lookupIp("198.51.100.1");
         expect(data.ip).toEqual("198.51.100.1");
         expect(data.bogon).toEqual(true);
-        done();
     });
 });
