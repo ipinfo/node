@@ -1,6 +1,9 @@
 name: Release package to npm
 
-on: workflow_dispatch
+on:
+  push:
+    tags:
+      - 'v*'
 
 jobs:
   build:
