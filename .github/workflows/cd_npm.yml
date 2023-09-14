@@ -15,7 +15,8 @@ jobs:
           node-version: 16
       - run: npm ci
       - run: npm test
-
+        env:
+          IPINFO_TOKEN: ${{secrets.IPINFO_TOKEN}}
   publish:
     needs: build
     runs-on: ubuntu-latest
