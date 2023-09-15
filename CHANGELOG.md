@@ -1,6 +1,11 @@
 # CHANGELOG
 
-## 3.4.5
+## 3.4.6
+
+- Last version (3.4.5) incorrectly published a bad dist output due to buggy
+  CI/CD. This fixes it.
+
+## 3.4.5 (DEPRECATED)
 
 - Updated tests.
 
