@@ -1,6 +1,6 @@
 {
     "name": "node-ipinfo",
-    "version": "3.4.6",
+    "version": "3.5.0",
     "description": "Official Node client library for IPinfo",
     "main": "dist/src/index.js",
     "types": "dist/src/index.d.ts",
@@ -30,11 +30,10 @@
         "node": ">=10"
     },
     "dependencies": {
-        "lru-cache": "^6.0.0",
+        "lru-cache": "^7.18.3",
         "subnet-check": "^1.10.1"
     },
     "devDependencies": {
-        "@types/lru-cache": "^7.10.10",
         "@types/jest": "^29.5.3",
         "@types/node": "^18.15.0",
         "dotenv": "^8.6.0",

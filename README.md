@@ -80,7 +80,7 @@ import IPinfoWrapper, { LruCache, Options } from "node-ipinfo";
 
 const cacheOptions: Options<string, any> = {
     max: 5000,
-    maxAge: 24 * 1000 * 60 * 60,
+    ttl: 24 * 1000 * 60 * 60,
 };
 const cache = new LruCache(cacheOptions);
 const ipinfoWrapper = new IPinfoWrapper("MY_TOKEN", cache);
@@ -93,7 +93,7 @@ const { IPinfoWrapper, LruCache } = require("node-ipinfo");
 
 const cacheOptions = {
     max: 5000,
-    maxAge: 24 * 1000 * 60 * 60,
+    ttl: 24 * 1000 * 60 * 60,
 };
 const cache = new LruCache(cacheOptions);
 const ipinfo = new IPinfoWrapper("MY_TOKEN", cache);

@@ -6,7 +6,7 @@ const cacheOptions: Options<string, any> = {
     max: 5000,
 
     // The maximum life of a cached item in milliseconds.
-    maxAge: 24 * 1000 * 60 * 60
+    ttl: 24 * 1000 * 60 * 60
 };
 
 export default class LruCache implements IPCache {

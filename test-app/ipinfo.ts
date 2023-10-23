@@ -2,7 +2,7 @@ import IPinfoWrapper, { LruCache, Options, IPinfo, AsnResponse } from "node-ipin
 
 const cacheOptions: Options<string, any> = {
     max: 5000,
-    maxAge: 24 * 1000 * 60 * 60,
+    ttl: 24 * 1000 * 60 * 60,
 };
 const cache = new LruCache(cacheOptions);
 

@@ -125,7 +125,7 @@ describe("IPinfoWrapper", () => {
                 },
                 company: {
                     name: "Level 3 Communications, Inc.",
-                    domain: "lumen.com",
+                    domain: "level3.com",
                     type: "isp"
                 },
                 privacy: {
@@ -147,13 +147,13 @@ describe("IPinfoWrapper", () => {
                 },
                 domains: {
                     ip: "4.4.4.4",
-                    total: 119,
+                    total: 127,
                     domains: [
                         "ncrsaas.com",
-                        "datacenterteam.de",
-                        "lavu-pos.com",
-                        "prodygy.biz",
-                        "giacomoni.ca",
+                        "fbidiy.net",
+                        "innnn.in",
+                        "safermoto.com",
+                        "shaoshuaitest0614.net",
                     ]
                 },
                 countryCode: "US"

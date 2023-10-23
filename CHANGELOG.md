@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 3.5.0
+
+- Upgrades underlying default LRU cache library to fix typescript errors (v6
+  didn't provide types, but v7 and above do natively).
+
 ## 3.4.6
 
 - Last version (3.4.5) incorrectly published a bad dist output due to buggy

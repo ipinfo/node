@@ -2,7 +2,7 @@ let { IPinfoWrapper, LruCache } = require("node-ipinfo");
 
 let cacheOptions = {
     max: 5000,
-    maxAge: 24 * 1000 * 60 * 60,
+    ttl: 24 * 1000 * 60 * 60,
 };
 let cache = new LruCache(cacheOptions);
 
