@@ -1,10 +1,12 @@
 import { IncomingMessage } from "http";
 import https, { RequestOptions } from "https";
-import countries from "../config/en_US.json";
-import euCountries from "../config/eu.json";
-import countriesFlags from "../config/flags.json";
-import countriesCurrencies from "../config/currency.json";
-import continents from "../config/continent.json";
+import {
+    continents,
+    countriesCurrencies,
+    countriesFlags,
+    countries,
+    euCountries
+} from "../config/utils"
 import Cache from "./cache/cache";
 import LruCache from "./cache/lruCache";
 import ApiLimitError from "./errors/apiLimitError";
