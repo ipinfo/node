@@ -33,7 +33,7 @@ export default class IPinfoWrapper {
     private countries: any;
     private countriesFlags: any;
     private countriesCurrencies: any;
-    private continets: any;
+    private continents: any;
     private euCountries: Array<string>;
     private cache: Cache;
     private timeout: number;
@@ -54,7 +54,7 @@ export default class IPinfoWrapper {
         this.countries = countries;
         this.countriesFlags = countriesFlags;
         this.countriesCurrencies = countriesCurrencies;
-        this.continets = continents;
+        this.continents = continents;
         this.euCountries = euCountries;
         this.cache = cache ? cache : new LruCache();
         this.timeout =
@@ -127,7 +127,7 @@ export default class IPinfoWrapper {
                                         ipinfo.countryCode
                                     ];
                                 ipinfo.continent =
-                                    this.continets[ipinfo.countryCode];
+                                    this.continents[ipinfo.countryCode];
                                 ipinfo.isEU = this.euCountries.includes(
                                     ipinfo.countryCode
                                 );
