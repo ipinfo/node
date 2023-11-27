@@ -109,13 +109,13 @@ describe("IPinfoWrapper", () => {
             expect(data["8.8.8.8/hostname"]).toEqual("dns.google");
             expect(data["4.4.4.4"]).toEqual({
                 ip: "4.4.4.4",
-                city: "Broomfield",
-                region: "Colorado",
-                country: "United States",
-                loc: "39.8854,-105.1139",
+                city: "Paris",
+                region: "Île-de-France",
+                country: "France",
+                loc: "48.8534,2.3488",
                 org: "AS3356 Level 3 Parent, LLC",
-                postal: "80021",
-                timezone: "America/Denver",
+                postal: "75000",
+                timezone: "Europe/Paris",
                 asn: {
                     asn: "AS3356",
                     name: "Level 3 Parent, LLC",
@@ -124,8 +124,8 @@ describe("IPinfoWrapper", () => {
                     type: "isp"
                 },
                 company: {
-                    name: "Level 3 Communications, Inc.",
-                    domain: "level3.com",
+                    name: "Level 3 Parent, LLC",
+                    domain: "lumen.com",
                     type: "isp"
                 },
                 privacy: {
@@ -141,22 +141,22 @@ describe("IPinfoWrapper", () => {
                     country: "United States",
                     email: "abuse@level3.com",
                     name: "L3 Abuse Contact",
-                    network: "4.4.0.0/16",
+                    network: "4.0.0.0/9",
                     phone: "+1-877-453-8353",
                     countryCode: "US"
                 },
                 domains: {
                     ip: "4.4.4.4",
-                    total: 127,
+                    total: 124,
                     domains: [
-                        "ncrsaas.com",
-                        "fbidiy.net",
-                        "innnn.in",
-                        "safermoto.com",
-                        "shaoshuaitest0614.net",
+                        "clearcloud.ru",
+                        "ddosxtesting.co.uk",
+                        "fleetzy.com",
+                        "datacenter-team.eu",
+                        "datacenterteam.net",
                     ]
                 },
-                countryCode: "US"
+                countryCode: "FR"
             });
 
             expect(data["AS123"]).toEqual({
