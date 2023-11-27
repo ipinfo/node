@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 3.5.1
+
+- Inlined files that were previously being loaded as JSON files.
+
 ## 3.5.0
 
 - Upgrades underlying default LRU cache library to fix typescript errors (v6

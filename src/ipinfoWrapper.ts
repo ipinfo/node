@@ -6,7 +6,7 @@ import {
     countriesFlags,
     countries,
     euCountries
-} from "../config/utils"
+} from "../config/utils";
 import Cache from "./cache/cache";
 import LruCache from "./cache/lruCache";
 import ApiLimitError from "./errors/apiLimitError";
@@ -26,7 +26,7 @@ import {
 import VERSION from "./version";
 
 const clientUserAgent = `IPinfoClient/nodejs/${VERSION}`;
-const countryFlagURL = "https://cdn.ipinfo.io/static/images/countries-flags/"
+const countryFlagURL = "https://cdn.ipinfo.io/static/images/countries-flags/";
 
 export default class IPinfoWrapper {
     private token: string;
@@ -120,8 +120,10 @@ export default class IPinfoWrapper {
                                     this.countries[ipinfo.countryCode];
                                 ipinfo.countryFlag =
                                     this.countriesFlags[ipinfo.countryCode];
-                                ipinfo.countryFlagURL = 
-                                    countryFlagURL + ipinfo.countryCode + ".svg"
+                                ipinfo.countryFlagURL =
+                                    countryFlagURL +
+                                    ipinfo.countryCode +
+                                    ".svg";
                                 ipinfo.countryCurrency =
                                     this.countriesCurrencies[
                                         ipinfo.countryCode
@@ -415,7 +417,9 @@ export default class IPinfoWrapper {
         // filter out URLs already cached.
         const lookupUrls: string[] = [];
         for (const url of urls) {
-            const cachedUrl = await this.cache.get(IPinfoWrapper.cacheKey(url));
+            const cachedUrl = await this.cache.get(
+                IPinfoWrapper.cacheKey(url)
+            );
             if (cachedUrl) {
                 result[url] = cachedUrl;
             } else {
@@ -508,7 +512,7 @@ export default class IPinfoWrapper {
     }
 
     private isBogon(ip: string): boolean {
-        if (ip != '') {
+        if (ip != "") {
             for (var network of BOGON_NETWORKS) {
                 if (isInSubnet(ip, network)) {
                     return true;
