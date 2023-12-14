@@ -1,4 +1,4 @@
-export const continents = {
+export const defaultContinents = {
     "BD": {"code": "AS", "name": "Asia"},
     "BE": {"code": "EU", "name": "Europe"},
     "BF": {"code": "AF", "name": "Africa"},
@@ -251,7 +251,7 @@ export const continents = {
     "MZ": {"code": "AF", "name": "Africa"}
   }
  
-export const countriesCurrencies = {
+export const defaultCountriesCurrencies = {
     "AD" : { "code": "EUR" ,"symbol": "€"},
     "AE" : { "code": "AED" ,"symbol": "د.إ"},
     "AF" : { "code": "AFN" ,"symbol": "؋"},
@@ -504,7 +504,7 @@ export const countriesCurrencies = {
     "ZW" : { "code": "ZWL" ,"symbol": "$"}
   }
   
-export const countries = {
+export const defaultCountries = {
   "BD": "Bangladesh",
   "BE": "Belgium",
   "BF": "Burkina Faso",
@@ -757,7 +757,7 @@ export const countries = {
   "MZ": "Mozambique"
 }
 
-export const countriesFlags = {
+export const defaultCountriesFlags = {
   "AD": {"emoji": "🇦🇩","unicode": "U+1F1E6 U+1F1E9"},
   "AE": {"emoji": "🇦🇪","unicode": "U+1F1E6 U+1F1EA"},
   "AF": {"emoji": "🇦🇫","unicode": "U+1F1E6 U+1F1EB"},
@@ -1010,4 +1010,4 @@ export const countriesFlags = {
   "ZW": {"emoji": "🇿🇼","unicode": "U+1F1FF U+1F1FC"}
 }
 
-export const euCountries = ["IE","AT","LT","LU","LV","DE","DK","SE","SI","SK","CZ","CY","NL","FI","FR","MT","ES","IT","EE","PL","PT","HU","HR","GR","RO","BG","BE"]
+export const defaultEuCountries = ["IE","AT","LT","LU","LV","DE","DK","SE","SI","SK","CZ","CY","NL","FI","FR","MT","ES","IT","EE","PL","PT","HU","HR","GR","RO","BG","BE"]
