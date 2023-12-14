@@ -166,19 +166,60 @@ ipinfo.lookupIp("1.1.1.1").then((response) => {
 });
 ```
 
-### Country Name Lookup
+### Internationalization
 
-`response.country` will return the country name, whereas `response.countryCode` can be used to fetch the country code.
-
-Additionally `response.isEU` will return `true` if the country is a member of the European Union (EU), `response.countryFlag` 
-will return the emoji and Unicode of the country's flag, `response.countryFlagURL` will return a public link to the country's flag image as an SVG which can be used anywhere, `response.countryCurrency` will return the code and symbol of the country's currency and `response.continent` will return the continent of the IP.
+When looking up an IP address, the response object includes `response.country` will return the country name, `response.countryCode` can be used to fetch the country code, Additionally `response.isEU` will return `true` if the country is a member of the European Union (EU), `response.countryFlag` will return the emoji and Unicode of the country's flag, `response.countryFlagURL` will return a public link to the country's flag image as an SVG which can be used anywhere, `response.countryCurrency` will return the code and symbol of the country's currency and `response.continent` will return the continent of the IP. It is possible to return the country name in other languages, change the EU countries, countries flags, countries currencies, and continents by setting the `countries`, `euCountries`, `countriesFlags`, `countriesCurrencies` and `continents` settings when creating the IPinfo object.
 
 ##### TypeScript
 
 ```typescript
 import IPinfoWrapper, { IPinfo } from "node-ipinfo";
 
-const ipinfoWrapper = new IPinfoWrapper("MY_TOKEN");
+// Countries Names: In-memory map
+const countries = {
+    "US": "United States",
+    "FR": "France",
+    "BD": "Bangladesh",
+    ...
+}
+
+//  Countries Flags: In-memory map
+const countriesFlags = {
+    "US": {"emoji": "🇺🇸","unicode": "U+1F1FA U+1F1F8"},
+    "AD": {"emoji": "🇦🇩", "unicode": "U+1F1E6 U+1F1E9"},
+    "AE": {"emoji": "🇦🇪", "unicode": "U+1F1E6 U+1F1EA"},
+    ...
+}
+
+//  Countries Currencies: In-memory map
+const countriesCurrencies = {
+    "US" : { "code": "USD" ,"symbol": "$"},
+    "AD": {"code": "EUR", "symbol": "€"},
+    "AE": {"code": "AED", "symbol": "د.إ"},
+    ...
+}
+
+//  Continents: In-memory map
+const continents = {
+    "US": {"code": "NA", "name": "North America"},
+    "BD": {"code": "AS", "name": "Asia"},
+    "BE": {"code": "EU", "name": "Europe"},
+    ...
+}
+
+//  EU Countries: In-memory map
+const euCountries = ["FR","ES","BE", ...]
+
+const ipinfoWrapper = new IPinfoWrapper(
+    "MY_TOKEN",
+    undefined,
+    undefined,
+    countries, 
+    countriesFlags, 
+    countriesCurrencies,
+    continents, 
+    euCountries
+);
 
 ipinfoWrapper.lookupIp("1.1.1.1").then((response: IPinfo) => {
     // country code, e.g. 'US'
@@ -209,7 +250,51 @@ ipinfoWrapper.lookupIp("1.1.1.1").then((response: IPinfo) => {
 ```javascript
 const { IPinfoWrapper } = require("node-ipinfo");
 
-const ipinfo = new IPinfoWrapper("MY_TOKEN");
+// Countries Names: In-memory map
+const countries = {
+    "US": "United States",
+    "FR": "France",
+    "BD": "Bangladesh",
+    ...
+}
+
+//  Countries Flags: In-memory map
+const countriesFlags = {
+    "US": {"emoji": "🇺🇸","unicode": "U+1F1FA U+1F1F8"},
+    "AD": {"emoji": "🇦🇩", "unicode": "U+1F1E6 U+1F1E9"},
+    "AE": {"emoji": "🇦🇪", "unicode": "U+1F1E6 U+1F1EA"},
+    ...
+}
+
+//  Countries Currencies: In-memory map
+const countriesCurrencies = {
+    "US" : { "code": "USD" ,"symbol": "$"},
+    "AD": {"code": "EUR", "symbol": "€"},
+    "AE": {"code": "AED", "symbol": "د.إ"},
+    ...
+}
+
+//  Continents: In-memory map
+const continents = {
+    "US": {"code": "NA", "name": "North America"},
+    "BD": {"code": "AS", "name": "Asia"},
+    "BE": {"code": "EU", "name": "Europe"},
+    ...
+}
+
+//  EU Countries: In-memory map
+const euCountries = ["FR","ES","BE", ...]
+
+const ipinfo = new IPinfoWrapper(
+    "MY_TOKEN",
+    undefined,
+    undefined,
+    countries,
+    countriesFlags,
+    countriesCurrencies,
+    continents,
+    euCountries
+);
 
 ipinfo.lookupIp("1.1.1.1").then((response) => {
     // country code, e.g. 'US'
