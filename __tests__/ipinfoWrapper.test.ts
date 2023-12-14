@@ -154,7 +154,6 @@ describe("IPinfoWrapper", () => {
                         "cloudmaas.net",
                         "datacenter-team.de",
                         "fisiodiagnosticaragionieri.it",
-
                     ]
                 },
                 countryCode: "US"
