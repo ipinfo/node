@@ -175,7 +175,6 @@ When looking up an IP address, the response object includes `response.country` w
 ```typescript
 import IPinfoWrapper, { IPinfo } from "node-ipinfo";
 
-// Countries Names: In-memory map
 const countries = {
     "US": "United States",
     "FR": "France",
@@ -183,7 +182,6 @@ const countries = {
     ...
 }
 
-//  Countries Flags: In-memory map
 const countriesFlags = {
     "US": {"emoji": "🇺🇸","unicode": "U+1F1FA U+1F1F8"},
     "AD": {"emoji": "🇦🇩", "unicode": "U+1F1E6 U+1F1E9"},
@@ -191,7 +189,6 @@ const countriesFlags = {
     ...
 }
 
-//  Countries Currencies: In-memory map
 const countriesCurrencies = {
     "US" : { "code": "USD" ,"symbol": "$"},
     "AD": {"code": "EUR", "symbol": "€"},
@@ -199,7 +196,6 @@ const countriesCurrencies = {
     ...
 }
 
-//  Continents: In-memory map
 const continents = {
     "US": {"code": "NA", "name": "North America"},
     "BD": {"code": "AS", "name": "Asia"},
@@ -207,18 +203,18 @@ const continents = {
     ...
 }
 
-//  EU Countries: In-memory map
 const euCountries = ["FR","ES","BE", ...]
 
 const ipinfoWrapper = new IPinfoWrapper(
     "MY_TOKEN",
     undefined,
     undefined,
-    countries, 
-    countriesFlags, 
-    countriesCurrencies,
-    continents, 
-    euCountries
+    {
+        countries: countries,
+        countriesFlags: countriesFlags,
+        countriesCurrencies: countriesCurrencies,
+        ...
+    }
 );
 
 ipinfoWrapper.lookupIp("1.1.1.1").then((response: IPinfo) => {
@@ -250,7 +246,6 @@ ipinfoWrapper.lookupIp("1.1.1.1").then((response: IPinfo) => {
 ```javascript
 const { IPinfoWrapper } = require("node-ipinfo");
 
-// Countries Names: In-memory map
 const countries = {
     "US": "United States",
     "FR": "France",
@@ -258,7 +253,6 @@ const countries = {
     ...
 }
 
-//  Countries Flags: In-memory map
 const countriesFlags = {
     "US": {"emoji": "🇺🇸","unicode": "U+1F1FA U+1F1F8"},
     "AD": {"emoji": "🇦🇩", "unicode": "U+1F1E6 U+1F1E9"},
@@ -266,7 +260,6 @@ const countriesFlags = {
     ...
 }
 
-//  Countries Currencies: In-memory map
 const countriesCurrencies = {
     "US" : { "code": "USD" ,"symbol": "$"},
     "AD": {"code": "EUR", "symbol": "€"},
@@ -274,7 +267,6 @@ const countriesCurrencies = {
     ...
 }
 
-//  Continents: In-memory map
 const continents = {
     "US": {"code": "NA", "name": "North America"},
     "BD": {"code": "AS", "name": "Asia"},
@@ -282,18 +274,18 @@ const continents = {
     ...
 }
 
-//  EU Countries: In-memory map
 const euCountries = ["FR","ES","BE", ...]
 
 const ipinfo = new IPinfoWrapper(
     "MY_TOKEN",
     undefined,
     undefined,
-    countries,
-    countriesFlags,
-    countriesCurrencies,
-    continents,
-    euCountries
+    {   
+        countries: countries,
+        countriesFlags: countriesFlags,
+        countriesCurrencies: countriesCurrencies,
+        ...
+    }
 );
 
 ipinfo.lookupIp("1.1.1.1").then((response) => {
