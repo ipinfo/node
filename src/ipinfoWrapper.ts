@@ -63,20 +63,22 @@ export default class IPinfoWrapper {
         token: string,
         cache?: Cache,
         timeout?: number,
-        countries?: any,
-        countriesFlags?: any,
-        countriesCurrencies?: any,
-        continents?: any,
-        euCountries?: Array<string>,
+        customData?: {
+            countries?: any,
+            countriesFlags?: any,
+            countriesCurrencies?: any,
+            continents?: any,
+            euCountries?: Array<string>,
+        }
     ) {
         this.token = token;
-        this.countries = countries ? countries : defaultCountries;
-        this.countriesFlags = countriesFlags ? countriesFlags: defaultCountriesFlags;
-        this.countriesCurrencies = countriesCurrencies ? countriesCurrencies: defaultCountriesCurrencies;
-        this.continents = continents ? continents : defaultContinents;
+        this.countries = customData?.countries ? customData.countries : defaultCountries;
+        this.countriesFlags = customData?.countriesFlags ? customData.countriesFlags: defaultCountriesFlags;
+        this.countriesCurrencies = customData?.countriesCurrencies ? customData.countriesCurrencies: defaultCountriesCurrencies;
+        this.continents = customData?.continents ? customData.continents : defaultContinents;
         this.euCountries =
-            euCountries && euCountries.length !== 0
-            ? euCountries : defaultEuCountries;
+            customData?.euCountries && customData?.euCountries.length !== 0
+            ? customData.euCountries : defaultEuCountries;
         this.cache = cache ? cache : new LruCache();
         this.timeout =
             timeout === null || timeout === undefined

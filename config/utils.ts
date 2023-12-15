@@ -249,7 +249,7 @@ export const defaultContinents = {
     "UA": {"code": "EU", "name": "Europe"},
     "QA": {"code": "AS", "name": "Asia"},
     "MZ": {"code": "AF", "name": "Africa"}
-  }
+}
  
 export const defaultCountriesCurrencies = {
     "AD" : { "code": "EUR" ,"symbol": "€"},
@@ -502,7 +502,7 @@ export const defaultCountriesCurrencies = {
     "ZA" : { "code": "ZAR" ,"symbol": "R"},
     "ZM" : { "code": "ZMK" ,"symbol": "ZK"},
     "ZW" : { "code": "ZWL" ,"symbol": "$"}
-  }
+}
   
 export const defaultCountries = {
   "BD": "Bangladesh",
