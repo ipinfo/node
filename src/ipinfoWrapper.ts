@@ -48,22 +48,19 @@ export default class IPinfoWrapper {
      * then LruCache is used as default.
      * @param timeout Timeout in milliseconds that controls the timeout of requests.
      * It defaults to 5000 i.e. 5 seconds. A timeout of 0 disables the timeout feature.
-     * @param countries An optional parameter representing custom countries data. 
-     * If not provided, default countries data will be used.
-     * @param countriesFlags An optional parameter representing custom countries flags data.
-     * If not provided, default countries flags data will be used.
-     * @param countriesCurrencies An optional parameter representing custom countries currencies data. 
-     * If not provided, default countries currencies data will be used.
-     * @param continents An optional parameter representing custom continents data.
-     * If not provided, default continents data will be used.
-     * @param euCountries An optional parameter representing custom EU countries data. 
-     * If not provided or an empty array, default EU countries data will be used.
+     * @param i18nData Internationalization data for customizing countries-related information.
+     * @param i18nData.countries Custom countries data. If not provided, default countries data will be used.
+     * @param i18nData.countriesFlags Custom countries flags data. If not provided, default countries flags data will be used.
+     * @param i18nData.countriesCurrencies Custom countries currencies data. If not provided, default countries currencies data will be used.
+     * @param i18nData.continents Custom continents data. If not provided, default continents data will be used.
+     * @param i18nData.euCountries Custom EU countries data. If not provided or an empty array, default EU countries data will be used.
+ 
      */
     constructor(
         token: string,
         cache?: Cache,
         timeout?: number,
-        customData?: {
+        i18nData?: {
             countries?: any,
             countriesFlags?: any,
             countriesCurrencies?: any,
@@ -72,13 +69,13 @@ export default class IPinfoWrapper {
         }
     ) {
         this.token = token;
-        this.countries = customData?.countries ? customData.countries : defaultCountries;
-        this.countriesFlags = customData?.countriesFlags ? customData.countriesFlags: defaultCountriesFlags;
-        this.countriesCurrencies = customData?.countriesCurrencies ? customData.countriesCurrencies: defaultCountriesCurrencies;
-        this.continents = customData?.continents ? customData.continents : defaultContinents;
+        this.countries = i18nData?.countries ? i18nData.countries : defaultCountries;
+        this.countriesFlags = i18nData?.countriesFlags ? i18nData.countriesFlags: defaultCountriesFlags;
+        this.countriesCurrencies = i18nData?.countriesCurrencies ? i18nData.countriesCurrencies: defaultCountriesCurrencies;
+        this.continents = i18nData?.continents ? i18nData.continents : defaultContinents;
         this.euCountries =
-            customData?.euCountries && customData?.euCountries.length !== 0
-            ? customData.euCountries : defaultEuCountries;
+            i18nData?.euCountries && i18nData?.euCountries.length !== 0
+            ? i18nData.euCountries : defaultEuCountries;
         this.cache = cache ? cache : new LruCache();
         this.timeout =
             timeout === null || timeout === undefined
