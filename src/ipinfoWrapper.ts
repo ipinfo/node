@@ -54,7 +54,6 @@ export default class IPinfoWrapper {
      * @param i18nData.countriesCurrencies Custom countries currencies data. If not provided, default countries currencies data will be used.
      * @param i18nData.continents Custom continents data. If not provided, default continents data will be used.
      * @param i18nData.euCountries Custom EU countries data. If not provided or an empty array, default EU countries data will be used.
- 
      */
     constructor(
         token: string,
