@@ -1,11 +1,11 @@
 import { IncomingMessage } from "http";
 import https, { RequestOptions } from "https";
 import {
-    continents,
-    countriesCurrencies,
-    countriesFlags,
-    countries,
-    euCountries
+    defaultContinents,
+    defaultCountriesCurrencies,
+    defaultCountriesFlags,
+    defaultCountries,
+    defaultEuCountries
 } from "../config/utils";
 import Cache from "./cache/cache";
 import LruCache from "./cache/lruCache";
@@ -48,14 +48,33 @@ export default class IPinfoWrapper {
      * then LruCache is used as default.
      * @param timeout Timeout in milliseconds that controls the timeout of requests.
      * It defaults to 5000 i.e. 5 seconds. A timeout of 0 disables the timeout feature.
+     * @param i18nData Internationalization data for customizing countries-related information.
+     * @param i18nData.countries Custom countries data. If not provided, default countries data will be used.
+     * @param i18nData.countriesFlags Custom countries flags data. If not provided, default countries flags data will be used.
+     * @param i18nData.countriesCurrencies Custom countries currencies data. If not provided, default countries currencies data will be used.
+     * @param i18nData.continents Custom continents data. If not provided, default continents data will be used.
+     * @param i18nData.euCountries Custom EU countries data. If not provided or an empty array, default EU countries data will be used.
      */
-    constructor(token: string, cache?: Cache, timeout?: number) {
+    constructor(
+        token: string,
+        cache?: Cache,
+        timeout?: number,
+        i18nData?: {
+            countries?: any,
+            countriesFlags?: any,
+            countriesCurrencies?: any,
+            continents?: any,
+            euCountries?: Array<string>,
+        }
+    ) {
         this.token = token;
-        this.countries = countries;
-        this.countriesFlags = countriesFlags;
-        this.countriesCurrencies = countriesCurrencies;
-        this.continents = continents;
-        this.euCountries = euCountries;
+        this.countries = i18nData?.countries ? i18nData.countries : defaultCountries;
+        this.countriesFlags = i18nData?.countriesFlags ? i18nData.countriesFlags: defaultCountriesFlags;
+        this.countriesCurrencies = i18nData?.countriesCurrencies ? i18nData.countriesCurrencies: defaultCountriesCurrencies;
+        this.continents = i18nData?.continents ? i18nData.continents : defaultContinents;
+        this.euCountries =
+            i18nData?.euCountries && i18nData?.euCountries.length !== 0
+            ? i18nData.euCountries : defaultEuCountries;
         this.cache = cache ? cache : new LruCache();
         this.timeout =
             timeout === null || timeout === undefined

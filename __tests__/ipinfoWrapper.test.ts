@@ -109,13 +109,13 @@ describe("IPinfoWrapper", () => {
             expect(data["8.8.8.8/hostname"]).toEqual("dns.google");
             expect(data["4.4.4.4"]).toEqual({
                 ip: "4.4.4.4",
-                city: "Paris",
-                region: "Île-de-France",
-                country: "France",
-                loc: "48.8534,2.3488",
+                city: "Honolulu",
+                region: "Hawaii",
+                country: "United States",
+                loc: "21.3179,-157.8521",
                 org: "AS3356 Level 3 Parent, LLC",
-                postal: "75000",
-                timezone: "Europe/Paris",
+                postal: "96813",
+                timezone: "Pacific/Honolulu",
                 asn: {
                     asn: "AS3356",
                     name: "Level 3 Parent, LLC",
@@ -147,16 +147,16 @@ describe("IPinfoWrapper", () => {
                 },
                 domains: {
                     ip: "4.4.4.4",
-                    total: 124,
+                    total: 110,
                     domains: [
-                        "clearcloud.ru",
-                        "ddosxtesting.co.uk",
-                        "fleetzy.com",
-                        "datacenter-team.eu",
-                        "datacenterteam.net",
+                        "dyyunyou.com",
+                        "itmg.ch",
+                        "cloudmaas.net",
+                        "datacenter-team.de",
+                        "fisiodiagnosticaragionieri.it",
                     ]
                 },
-                countryCode: "FR"
+                countryCode: "US"
             });
 
             expect(data["AS123"]).toEqual({
