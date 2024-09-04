@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 3.5.2 / 3.5.3
+
+- No-op release
+
 ## 3.5.1
 
 - Inlined files that were previously being loaded as JSON files.
