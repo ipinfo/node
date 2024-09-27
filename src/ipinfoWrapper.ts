@@ -179,6 +179,10 @@ export default class IPinfoWrapper {
                     }
                 });
 
+                req.on("timeout", () => {
+                    reject(new Error("timeout reached"));
+                });
+
                 req.on("error", (error) => {
                     reject(error);
                 });
@@ -258,6 +262,10 @@ export default class IPinfoWrapper {
                     }
                 });
 
+                req.on("timeout", () => {
+                    reject(new Error("timeout reached"));
+                });
+
                 req.on("error", (error) => {
                     reject(error);
                 });
@@ -325,6 +333,10 @@ export default class IPinfoWrapper {
                             });
                         }
                     }
+                });
+
+                req.on("timeout", () => {
+                    reject(new Error("timeout reached"));
                 });
 
                 req.on("error", (error) => {
