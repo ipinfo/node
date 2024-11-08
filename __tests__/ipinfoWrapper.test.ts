@@ -1,6 +1,6 @@
 import * as dotenv from "dotenv";
+import { AsnResponse, IPinfo } from "../src/common";
 import IPinfoWrapper from "../src/ipinfoWrapper";
-import { IPinfo, AsnResponse } from "../src/common";
 
 let ipinfoWrapper: IPinfoWrapper;
 
@@ -109,13 +109,12 @@ describe("IPinfoWrapper", () => {
             expect(data["8.8.8.8/hostname"]).toEqual("dns.google");
             expect(data["4.4.4.4"]).toEqual({
                 ip: "4.4.4.4",
-                city: "Honolulu",
-                region: "Hawaii",
-                country: "United States",
-                loc: "21.3179,-157.8521",
+                city: "Rembangan",
+                region: "Central Java",
+                country: "Indonesia",
+                loc: "-6.7036,111.3416",
                 org: "AS3356 Level 3 Parent, LLC",
-                postal: "96813",
-                timezone: "Pacific/Honolulu",
+                timezone: "Asia/Jakarta",
                 asn: {
                     asn: "AS3356",
                     name: "Level 3 Parent, LLC",
@@ -125,7 +124,7 @@ describe("IPinfoWrapper", () => {
                 },
                 company: {
                     name: "Level 3 Parent, LLC",
-                    domain: "lumen.com",
+                    domain: "level3.com",
                     type: "isp"
                 },
                 privacy: {
@@ -147,16 +146,16 @@ describe("IPinfoWrapper", () => {
                 },
                 domains: {
                     ip: "4.4.4.4",
-                    total: 110,
+                    total: 111,
                     domains: [
-                        "dyyunyou.com",
-                        "itmg.ch",
-                        "cloudmaas.net",
-                        "datacenter-team.de",
-                        "fisiodiagnosticaragionieri.it",
+                        "itmanagementgroup.de",
+                        "safermoto.com",
+                        "progeni.com",
+                        "grahamhostedservices.com",
+                        "bhcentral.tech",
                     ]
                 },
-                countryCode: "US"
+                countryCode: "ID"
             });
 
             expect(data["AS123"]).toEqual({
