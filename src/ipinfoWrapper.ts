@@ -129,7 +129,13 @@ export default class IPinfoWrapper {
 
                     if (!this.is4xxOr5xx(res.statusCode)) {
                         res.on("close", () => {
-                            const ipinfo: IPinfo = JSON.parse(data);
+                            let ipinfo: IPinfo;
+                            try {
+                                ipinfo = JSON.parse(data)
+                            } catch {
+                                reject(new Error("error parsing JSON response")); 
+                                return;
+                            };
 
                             /* convert country code to full country name */
                             // NOTE: always do this _before_ setting cache.
@@ -230,7 +236,13 @@ export default class IPinfoWrapper {
 
                     if (!this.is4xxOr5xx(res.statusCode)) {
                         res.on("close", () => {
-                            const asnResp: AsnResponse = JSON.parse(data);
+                            let asnResp: AsnResponse;
+                            try {
+                                asnResp = JSON.parse(data)
+                            } catch {
+                                reject(new Error("error parsing JSON response"));
+                                return;
+                            };
 
                             /* convert country code to full country name */
                             // NOTE: always do this _before_ setting cache.
@@ -317,7 +329,15 @@ export default class IPinfoWrapper {
 
                     if (!this.is4xxOr5xx(res.statusCode)) {
                         res.on("close", () => {
-                            resolve(JSON.parse(data));
+                            let response;
+                            try {
+                                response = JSON.parse(data)
+                            } catch {
+                                reject(new Error("error parsing JSON response"));
+                                return;
+                            };
+
+                            resolve(response);
                         });
 
                         res.on("error", (error: any) => {
@@ -479,7 +499,12 @@ export default class IPinfoWrapper {
 
         const batchPromise = Promise.all(promises).then((values) => {
             values.forEach((el: any) => {
-                let batchResp = JSON.parse(el);
+                let batchResp;
+                try {
+                    batchResp = JSON.parse(el);
+                } catch {
+                    batchResp = {}
+                };
 
                 for (var key in batchResp) {
                     if (batchResp.hasOwnProperty(key)) {
