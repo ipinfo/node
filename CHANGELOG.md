@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 3.5.4
+
+- Reject on timeout in lookupIP, lookupASN, and getMap
+- Gracefully handle JSON.parse failures
+
 ## 3.5.2 / 3.5.3
 
 - No-op release
