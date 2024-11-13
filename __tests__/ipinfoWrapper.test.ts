@@ -24,7 +24,9 @@ describe("IPinfoWrapper", () => {
             expect(data.countryCode).toEqual("US");
             expect(data.countryFlag.emoji).toEqual("🇺🇸");
             expect(data.countryFlag.unicode).toEqual("U+1F1FA U+1F1F8");
-            expect(data.countryFlagURL).toEqual("https://cdn.ipinfo.io/static/images/countries-flags/US.svg");
+            expect(data.countryFlagURL).toEqual(
+                "https://cdn.ipinfo.io/static/images/countries-flags/US.svg"
+            );
             expect(data.countryCurrency.code).toEqual("USD");
             expect(data.countryCurrency.symbol).toEqual("$");
             expect(data.continent.code).toEqual("NA");
@@ -152,7 +154,7 @@ describe("IPinfoWrapper", () => {
                         "safermoto.com",
                         "progeni.com",
                         "grahamhostedservices.com",
-                        "bhcentral.tech",
+                        "bhcentral.tech"
                     ]
                 },
                 countryCode: "ID"
