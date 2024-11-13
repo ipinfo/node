@@ -157,7 +157,7 @@ export default class IPinfoWrapper {
             return data;
         }
 
-        return this.fetchApi(ip).then(async (response) => {
+        return this.fetchApi(`${ip}/json`).then(async (response) => {
             const ipinfo = (await response.json()) as IPinfo;
 
             /* convert country code to full country name */
@@ -237,7 +237,7 @@ export default class IPinfoWrapper {
         filter: boolean
     ): Promise<any> {
         return this.fetchApi(`batch${filter ? "?filter=1" : ""}`, {
-            // Accept: "application/json",
+            Accept: "application/json",
             headers: {
                 "Content-Type": "application/json"
             },
