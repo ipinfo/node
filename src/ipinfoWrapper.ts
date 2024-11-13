@@ -28,18 +28,6 @@ import VERSION from "./version";
 const clientUserAgent = `IPinfoClient/nodejs/${VERSION}`;
 const countryFlagURL = "https://cdn.ipinfo.io/static/images/countries-flags/";
 
-function checkResponseForError(response: Response) {
-    if (response.statusCode === 429) {
-        throw new ApiLimitError();
-    }
-
-    if (response.statusCode >= 400) {
-        throw new Error("Response is not OK.");
-    }
-
-    return response;
-}
-
 export default class IPinfoWrapper {
     private token: string;
     private baseUrl: string;
@@ -131,7 +119,21 @@ export default class IPinfoWrapper {
         );
 
         return fetch(`${this.baseUrl}${path}`, request).then(
-            checkResponseForError
+            (response: Response) => {
+                if (response.status === 429) {
+                    throw new ApiLimitError();
+                }
+
+                if (response.status >= 400) {
+                    throw new Error(
+                        `Received an error from the IPinfo API ` +
+                            `(using authorization ${headers["Authorization"]}) ` +
+                            `${response.status} ${response.statusText} ${response.url}`
+                    );
+                }
+
+                return response;
+            }
         );
     }
 
@@ -195,7 +197,6 @@ export default class IPinfoWrapper {
             return data;
         }
 
-        // TODO: Return type?
         return this.fetchApi(`${asn}/json`).then(async (response) => {
             const asnResp = (await response.json()) as AsnResponse;
 

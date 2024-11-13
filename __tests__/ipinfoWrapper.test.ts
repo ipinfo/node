@@ -184,4 +184,9 @@ describe("IPinfoWrapper", () => {
         expect(data.ip).toEqual("198.51.100.1");
         expect(data.bogon).toEqual(true);
     });
+
+    test("Error is thrown for invalid token", async () => {
+        const ipinfo = new IPinfoWrapper("invalid-token");
+        await expect(ipinfo.lookupIp("1.2.3.4")).rejects.toThrow();
+    });
 });
