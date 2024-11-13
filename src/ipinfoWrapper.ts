@@ -1,5 +1,5 @@
-import { IncomingMessage } from "http";
-import https, { RequestOptions } from "https";
+import fetch from "node-fetch";
+import type { RequestInit, Response } from "node-fetch";
 import {
     defaultContinents,
     defaultCountriesCurrencies,
@@ -28,8 +28,21 @@ import VERSION from "./version";
 const clientUserAgent = `IPinfoClient/nodejs/${VERSION}`;
 const countryFlagURL = "https://cdn.ipinfo.io/static/images/countries-flags/";
 
+function checkResponseForError(response: Response) {
+    if (response.statusCode === 429) {
+        throw new ApiLimitError();
+    }
+
+    if (response.statusCode >= 400) {
+        throw new Error("Response is not OK.");
+    }
+
+    return response;
+}
+
 export default class IPinfoWrapper {
     private token: string;
+    private baseUrl: string;
     private countries: any;
     private countriesFlags: any;
     private countriesCurrencies: any;
@@ -57,33 +70,69 @@ export default class IPinfoWrapper {
      */
     constructor(
         token: string,
+        baseUrl?: string,
         cache?: Cache,
         timeout?: number,
         i18nData?: {
-            countries?: any,
-            countriesFlags?: any,
-            countriesCurrencies?: any,
-            continents?: any,
-            euCountries?: Array<string>,
+            countries?: any;
+            countriesFlags?: any;
+            countriesCurrencies?: any;
+            continents?: any;
+            euCountries?: Array<string>;
         }
     ) {
         this.token = token;
-        this.countries = i18nData?.countries ? i18nData.countries : defaultCountries;
-        this.countriesFlags = i18nData?.countriesFlags ? i18nData.countriesFlags: defaultCountriesFlags;
-        this.countriesCurrencies = i18nData?.countriesCurrencies ? i18nData.countriesCurrencies: defaultCountriesCurrencies;
-        this.continents = i18nData?.continents ? i18nData.continents : defaultContinents;
+        this.countries = i18nData?.countries
+            ? i18nData.countries
+            : defaultCountries;
+        this.countriesFlags = i18nData?.countriesFlags
+            ? i18nData.countriesFlags
+            : defaultCountriesFlags;
+        this.countriesCurrencies = i18nData?.countriesCurrencies
+            ? i18nData.countriesCurrencies
+            : defaultCountriesCurrencies;
+        this.continents = i18nData?.continents
+            ? i18nData.continents
+            : defaultContinents;
         this.euCountries =
             i18nData?.euCountries && i18nData?.euCountries.length !== 0
-            ? i18nData.euCountries : defaultEuCountries;
+                ? i18nData.euCountries
+                : defaultEuCountries;
         this.cache = cache ? cache : new LruCache();
         this.timeout =
             timeout === null || timeout === undefined
                 ? REQUEST_TIMEOUT_DEFAULT
                 : timeout;
+        this.baseUrl = baseUrl || `https://${HOST}/`;
     }
 
     public static cacheKey(k: string) {
         return `${k}:${CACHE_VSN}`;
+    }
+
+    public async fetchApi(
+        path: string,
+        init: RequestInit = {}
+    ): Promise<Response> {
+        const headers = {
+            Accept: "application/json",
+            Authorization: `Bearer ${this.token}`,
+            "Content-Type": "application/json",
+            "User-Agent": clientUserAgent
+        };
+
+        const request = Object.assign(
+            {
+                timeout: this.timeout,
+                method: "GET"
+            },
+            init,
+            { headers: Object.assign(headers, init.headers) }
+        );
+
+        return fetch(`${this.baseUrl}${path}`, request).then(
+            checkResponseForError
+        );
     }
 
     /**
@@ -101,102 +150,36 @@ export default class IPinfoWrapper {
         }
 
         const data = await this.cache.get(IPinfoWrapper.cacheKey(ip));
+
         if (data) {
             return data;
         }
 
-        const config: RequestOptions = {
-            headers: {
-                Accept: "application/json",
-                Authorization: `Bearer ${this.token}`,
-                "Content-Type": "application/json",
-                "User-Agent": clientUserAgent
-            },
-            method: "GET",
-            host: HOST,
-            path: `/${ip}`,
-            timeout: this.timeout
-        };
+        return this.fetchApi(ip).then(async (response) => {
+            const ipinfo = (await response.json()) as IPinfo;
 
-        return new Promise((resolve, reject) => {
-            try {
-                const req = https.request(config, (res: IncomingMessage) => {
-                    let data = "";
-
-                    res.on("data", (chunk: any) => {
-                        data += chunk;
-                    });
-
-                    if (!this.is4xxOr5xx(res.statusCode)) {
-                        res.on("close", () => {
-                            let ipinfo: IPinfo;
-                            try {
-                                ipinfo = JSON.parse(data)
-                            } catch {
-                                reject(new Error("error parsing JSON response")); 
-                                return;
-                            };
-
-                            /* convert country code to full country name */
-                            // NOTE: always do this _before_ setting cache.
-                            if (ipinfo.country) {
-                                ipinfo.countryCode = ipinfo.country;
-                                ipinfo.country =
-                                    this.countries[ipinfo.countryCode];
-                                ipinfo.countryFlag =
-                                    this.countriesFlags[ipinfo.countryCode];
-                                ipinfo.countryFlagURL =
-                                    countryFlagURL +
-                                    ipinfo.countryCode +
-                                    ".svg";
-                                ipinfo.countryCurrency =
-                                    this.countriesCurrencies[
-                                        ipinfo.countryCode
-                                    ];
-                                ipinfo.continent =
-                                    this.continents[ipinfo.countryCode];
-                                ipinfo.isEU = this.euCountries.includes(
-                                    ipinfo.countryCode
-                                );
-                            }
-                            if (ipinfo.abuse && ipinfo.abuse.country) {
-                                ipinfo.abuse.countryCode =
-                                    ipinfo.abuse.country;
-                                ipinfo.abuse.country =
-                                    this.countries[ipinfo.abuse.countryCode];
-                            }
-
-                            this.cache.set(IPinfoWrapper.cacheKey(ip), ipinfo);
-                            resolve(ipinfo);
-                        });
-
-                        res.on("error", (error: any) => {
-                            reject(error);
-                        });
-                    } else {
-                        // error cases when status code is in 400 range
-                        if (res.statusCode === 429) {
-                            reject(new ApiLimitError());
-                        } else {
-                            res.on("close", () => {
-                                reject(new Error(data));
-                            });
-                        }
-                    }
-                });
-
-                req.on("timeout", () => {
-                    reject(new Error("timeout reached"));
-                });
-
-                req.on("error", (error) => {
-                    reject(error);
-                });
-
-                req.end();
-            } catch (error) {
-                reject(error);
+            /* convert country code to full country name */
+            // NOTE: always do this _before_ setting cache.
+            if (ipinfo.country) {
+                ipinfo.countryCode = ipinfo.country;
+                ipinfo.country = this.countries[ipinfo.countryCode];
+                ipinfo.countryFlag = this.countriesFlags[ipinfo.countryCode];
+                ipinfo.countryFlagURL =
+                    countryFlagURL + ipinfo.countryCode + ".svg";
+                ipinfo.countryCurrency =
+                    this.countriesCurrencies[ipinfo.countryCode];
+                ipinfo.continent = this.continents[ipinfo.countryCode];
+                ipinfo.isEU = this.euCountries.includes(ipinfo.countryCode);
             }
+            if (ipinfo.abuse && ipinfo.abuse.country) {
+                ipinfo.abuse.countryCode = ipinfo.abuse.country;
+                ipinfo.abuse.country =
+                    this.countries[ipinfo.abuse.countryCode];
+            }
+
+            this.cache.set(IPinfoWrapper.cacheKey(ip), ipinfo);
+
+            return ipinfo;
         });
     }
 
@@ -212,80 +195,19 @@ export default class IPinfoWrapper {
             return data;
         }
 
-        const config: RequestOptions = {
-            headers: {
-                Accept: "application/json",
-                Authorization: `Bearer ${this.token}`,
-                "Content-Type": "application/json",
-                "User-Agent": clientUserAgent
-            },
-            method: "GET",
-            host: HOST,
-            path: `/${asn}/json`,
-            timeout: this.timeout
-        };
+        // TODO: Return type?
+        return this.fetchApi(`${asn}/json`).then(async (response) => {
+            const asnResp = (await response.json()) as AsnResponse;
 
-        return new Promise((resolve, reject) => {
-            try {
-                const req = https.request(config, (res: IncomingMessage) => {
-                    let data = "";
-
-                    res.on("data", (chunk: any) => {
-                        data += chunk;
-                    });
-
-                    if (!this.is4xxOr5xx(res.statusCode)) {
-                        res.on("close", () => {
-                            let asnResp: AsnResponse;
-                            try {
-                                asnResp = JSON.parse(data)
-                            } catch {
-                                reject(new Error("error parsing JSON response"));
-                                return;
-                            };
-
-                            /* convert country code to full country name */
-                            // NOTE: always do this _before_ setting cache.
-                            if (asnResp.country) {
-                                asnResp.countryCode = asnResp.country;
-                                asnResp.country =
-                                    this.countries[asnResp.countryCode];
-                            }
-
-                            this.cache.set(
-                                IPinfoWrapper.cacheKey(asn),
-                                asnResp
-                            );
-                            resolve(asnResp);
-                        });
-
-                        res.on("error", (error: any) => {
-                            reject(error);
-                        });
-                    } else {
-                        // error cases when status code is in 400 range
-                        if (res.statusCode === 429) {
-                            reject(new ApiLimitError());
-                        } else {
-                            res.on("close", () => {
-                                reject(new Error(data));
-                            });
-                        }
-                    }
-                });
-
-                req.on("timeout", () => {
-                    reject(new Error("timeout reached"));
-                });
-
-                req.on("error", (error) => {
-                    reject(error);
-                });
-
-                req.end();
-            } catch (error) {
-                reject(error);
+            /* convert country code to full country name */
+            // NOTE: always do this _before_ setting cache.
+            if (asnResp.country) {
+                asnResp.countryCode = asnResp.country;
+                asnResp.country = this.countries[asnResp.countryCode];
             }
+
+            this.cache.set(IPinfoWrapper.cacheKey(asn), asnResp);
+            return asnResp;
         });
     }
 
@@ -302,73 +224,10 @@ export default class IPinfoWrapper {
             });
         }
 
-        const ipsData = JSON.stringify(ips);
-
-        const config: RequestOptions = {
-            headers: {
-                Accept: "application/json",
-                Authorization: `Bearer ${this.token}`,
-                "Content-Type": "application/json",
-                "Content-Length": ipsData.length,
-                "User-Agent": clientUserAgent
-            },
+        return this.fetchApi("/tools/map?cli=1", {
             method: "POST",
-            host: HOST,
-            path: `/tools/map?cli=1`,
-            timeout: this.timeout
-        };
-
-        return new Promise((resolve, reject) => {
-            try {
-                const req = https.request(config, (res: IncomingMessage) => {
-                    let data = "";
-
-                    res.on("data", (chunk: any) => {
-                        data += chunk;
-                    });
-
-                    if (!this.is4xxOr5xx(res.statusCode)) {
-                        res.on("close", () => {
-                            let response;
-                            try {
-                                response = JSON.parse(data)
-                            } catch {
-                                reject(new Error("error parsing JSON response"));
-                                return;
-                            };
-
-                            resolve(response);
-                        });
-
-                        res.on("error", (error: any) => {
-                            reject(error);
-                        });
-                    } else {
-                        // error cases when status code is in 400 range
-                        if (res.statusCode === 429) {
-                            reject(new ApiLimitError());
-                        } else {
-                            res.on("close", () => {
-                                reject(new Error(data));
-                            });
-                        }
-                    }
-                });
-
-                req.on("timeout", () => {
-                    reject(new Error("timeout reached"));
-                });
-
-                req.on("error", (error) => {
-                    reject(error);
-                });
-
-                req.write(ipsData);
-                req.end();
-            } catch (error) {
-                reject(error);
-            }
-        });
+            body: JSON.stringify(ips)
+        }).then((response) => response.json());
     }
 
     private __getBatch(
@@ -376,64 +235,15 @@ export default class IPinfoWrapper {
         batchTimeout: number,
         filter: boolean
     ): Promise<any> {
-        const ipsData = JSON.stringify(ips);
-        const config: RequestOptions = {
+        return this.fetchApi(`batch${filter ? "?filter=1" : ""}`, {
+            // Accept: "application/json",
             headers: {
-                Accept: "application/json",
-                Authorization: `Bearer ${this.token}`,
-                "Content-Type": "application/json",
-                "Content-Length": ipsData.length,
-                "User-Agent": clientUserAgent
+                "Content-Type": "application/json"
             },
             method: "POST",
-            host: HOST,
-            path: `/batch${filter ? "?filter=1" : ""}`,
+            body: JSON.stringify(ips),
             timeout: batchTimeout
-        };
-
-        return new Promise((resolve, reject) => {
-            try {
-                const req = https.request(config, (res: IncomingMessage) => {
-                    let data = "";
-
-                    res.on("data", (chunk: any) => {
-                        data += chunk;
-                    });
-
-                    if (!this.is4xxOr5xx(res.statusCode)) {
-                        res.on("close", () => {
-                            resolve(data);
-                        });
-
-                        res.on("error", (error: any) => {
-                            reject(error);
-                        });
-                    } else {
-                        // error cases when status code is in 400 range
-                        if (res.statusCode === 429) {
-                            reject(new ApiLimitError());
-                        } else {
-                            res.on("close", () => {
-                                reject(new Error(data));
-                            });
-                        }
-                    }
-                });
-
-                req.on("timeout", () => {
-                    reject(new Error("batch timeout reached"));
-                });
-
-                req.on("error", (error) => {
-                    reject(error);
-                });
-
-                req.write(ipsData);
-                req.end();
-            } catch (error) {
-                reject(error);
-            }
-        });
+        }).then(async (response: Response) => await response.json());
     }
 
     /**
@@ -494,6 +304,7 @@ export default class IPinfoWrapper {
                 batchTimeout,
                 filter
             );
+
             promises.push(resDetails);
         }
 
@@ -501,10 +312,10 @@ export default class IPinfoWrapper {
             values.forEach((el: any) => {
                 let batchResp;
                 try {
-                    batchResp = JSON.parse(el);
+                    batchResp = el;
                 } catch {
-                    batchResp = {}
-                };
+                    batchResp = {};
+                }
 
                 for (var key in batchResp) {
                     if (batchResp.hasOwnProperty(key)) {
@@ -561,10 +372,6 @@ export default class IPinfoWrapper {
                 });
             }
         );
-    }
-
-    private is4xxOr5xx(statusCode: any): boolean {
-        return statusCode && statusCode >= 400 && statusCode < 600;
     }
 
     private isBogon(ip: string): boolean {

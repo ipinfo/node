@@ -27,10 +27,11 @@
     },
     "homepage": "https://ipinfo.io/",
     "engines": {
-        "node": ">=10"
+        "node": ">=14"
     },
     "dependencies": {
         "lru-cache": "^7.18.3",
+        "node-fetch": "^2.7.0",
         "subnet-check": "^1.10.1"
     },
     "devDependencies": {
