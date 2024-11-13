@@ -109,12 +109,12 @@ describe("IPinfoWrapper", () => {
             expect(data["8.8.8.8/hostname"]).toEqual("dns.google");
             expect(data["4.4.4.4"]).toEqual({
                 ip: "4.4.4.4",
-                city: "Rembangan",
-                region: "Central Java",
+                city: "Weda",
+                region: "North Maluku",
                 country: "Indonesia",
-                loc: "-6.7036,111.3416",
+                loc: "0.3295,127.8739",
                 org: "AS3356 Level 3 Parent, LLC",
-                timezone: "Asia/Jakarta",
+                timezone: "Asia/Jayapura",
                 asn: {
                     asn: "AS3356",
                     name: "Level 3 Parent, LLC",
