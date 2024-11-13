@@ -60,21 +60,30 @@ export default class IPinfoWrapper {
         cache?: Cache,
         timeout?: number,
         i18nData?: {
-            countries?: any,
-            countriesFlags?: any,
-            countriesCurrencies?: any,
-            continents?: any,
-            euCountries?: Array<string>,
+            countries?: any;
+            countriesFlags?: any;
+            countriesCurrencies?: any;
+            continents?: any;
+            euCountries?: Array<string>;
         }
     ) {
         this.token = token;
-        this.countries = i18nData?.countries ? i18nData.countries : defaultCountries;
-        this.countriesFlags = i18nData?.countriesFlags ? i18nData.countriesFlags: defaultCountriesFlags;
-        this.countriesCurrencies = i18nData?.countriesCurrencies ? i18nData.countriesCurrencies: defaultCountriesCurrencies;
-        this.continents = i18nData?.continents ? i18nData.continents : defaultContinents;
+        this.countries = i18nData?.countries
+            ? i18nData.countries
+            : defaultCountries;
+        this.countriesFlags = i18nData?.countriesFlags
+            ? i18nData.countriesFlags
+            : defaultCountriesFlags;
+        this.countriesCurrencies = i18nData?.countriesCurrencies
+            ? i18nData.countriesCurrencies
+            : defaultCountriesCurrencies;
+        this.continents = i18nData?.continents
+            ? i18nData.continents
+            : defaultContinents;
         this.euCountries =
             i18nData?.euCountries && i18nData?.euCountries.length !== 0
-            ? i18nData.euCountries : defaultEuCountries;
+                ? i18nData.euCountries
+                : defaultEuCountries;
         this.cache = cache ? cache : new LruCache();
         this.timeout =
             timeout === null || timeout === undefined
@@ -131,11 +140,13 @@ export default class IPinfoWrapper {
                         res.on("close", () => {
                             let ipinfo: IPinfo;
                             try {
-                                ipinfo = JSON.parse(data)
+                                ipinfo = JSON.parse(data);
                             } catch {
-                                reject(new Error("error parsing JSON response")); 
+                                reject(
+                                    new Error("error parsing JSON response")
+                                );
                                 return;
-                            };
+                            }
 
                             /* convert country code to full country name */
                             // NOTE: always do this _before_ setting cache.
@@ -238,11 +249,13 @@ export default class IPinfoWrapper {
                         res.on("close", () => {
                             let asnResp: AsnResponse;
                             try {
-                                asnResp = JSON.parse(data)
+                                asnResp = JSON.parse(data);
                             } catch {
-                                reject(new Error("error parsing JSON response"));
+                                reject(
+                                    new Error("error parsing JSON response")
+                                );
                                 return;
-                            };
+                            }
 
                             /* convert country code to full country name */
                             // NOTE: always do this _before_ setting cache.
@@ -331,11 +344,13 @@ export default class IPinfoWrapper {
                         res.on("close", () => {
                             let response;
                             try {
-                                response = JSON.parse(data)
+                                response = JSON.parse(data);
                             } catch {
-                                reject(new Error("error parsing JSON response"));
+                                reject(
+                                    new Error("error parsing JSON response")
+                                );
                                 return;
-                            };
+                            }
 
                             resolve(response);
                         });
@@ -503,8 +518,8 @@ export default class IPinfoWrapper {
                 try {
                     batchResp = JSON.parse(el);
                 } catch {
-                    batchResp = {}
-                };
+                    batchResp = {};
+                }
 
                 for (var key in batchResp) {
                     if (batchResp.hasOwnProperty(key)) {

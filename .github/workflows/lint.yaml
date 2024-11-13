@@ -1,0 +1,17 @@
+name: "Lint Code"
+
+on:
+    push:
+    workflow_dispatch:
+
+jobs:
+    lint:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: "latest"
+            - run: npm ci
+            - run: npx prettier . --check
