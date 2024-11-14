@@ -64,7 +64,7 @@ const ipinfoWrapper = new IPinfoWrapper("MY_TOKEN");
 
 const ipAddress = process.argv[2] || "1.1.1.1";
 
-ipinfoWrapper.lookupIp(ipAddress).then(ipinfo => console.log(ipinfo))
+ipinfoWrapper.lookupIp(ipAddress).then((ipinfo) => console.log(ipinfo));
 ```
 
 2. Run `ipinfo.js` (without an IP) to lookup 1.1.1.1
@@ -97,9 +97,10 @@ desirable for the error to bubble up. For example, if your program is performing
 a lookup to find the country code of an IP:
 
 ```typescript
-const countryCode = ipinfoWrapper.lookupIp("1.1.1.1")
-    .then(ipinfo => ipinfo.countryCode)
-    .catch(error => "N/A");
+const countryCode = ipinfoWrapper
+    .lookupIp("1.1.1.1")
+    .then((ipinfo) => ipinfo.countryCode)
+    .catch((error) => "N/A");
 ```
 
 ### Caching
@@ -115,7 +116,7 @@ const { IPinfoWrapper, LruCache } = require("node-ipinfo");
 
 const cacheOptions = {
     max: 5000,
-    ttl: 24 * 1000 * 60 * 60,
+    ttl: 24 * 1000 * 60 * 60
 };
 
 const cache = new LruCache(cacheOptions);
@@ -133,8 +134,9 @@ A timeout of `0` disables the timeout feature.
 ```typescript
 const { IPinfoWrapper } = require("node-ipinfo");
 
-// 10 second timeout.
-const ipinfoWrapper = new IPinfoWrapper("MY_TOKEN", null, 10000);
+const timeout = 10 * 1000; // 10 seconds
+
+const ipinfoWrapper = new IPinfoWrapper("MY_TOKEN", undefined, timeout);
 ```
 
 ### Internationalization
@@ -144,70 +146,55 @@ When looking up an IP address, the response object includes `response.country` w
 ```typescript
 const { IPinfoWrapper } = require("node-ipinfo");
 
-const countries = {
-    "US": "United States",
-    "FR": "France",
-    "BD": "Bangladesh",
-    ...
-}
-
-const countriesFlags = {
-    "US": {"emoji": "🇺🇸","unicode": "U+1F1FA U+1F1F8"},
-    "AD": {"emoji": "🇦🇩", "unicode": "U+1F1E6 U+1F1E9"},
-    "AE": {"emoji": "🇦🇪", "unicode": "U+1F1E6 U+1F1EA"},
-    ...
-}
-
-const countriesCurrencies = {
-    "US" : { "code": "USD" ,"symbol": "$"},
-    "AD": {"code": "EUR", "symbol": "€"},
-    "AE": {"code": "AED", "symbol": "د.إ"},
-    ...
-}
-
-const continents = {
-    "US": {"code": "NA", "name": "North America"},
-    "BD": {"code": "AS", "name": "Asia"},
-    "BE": {"code": "EU", "name": "Europe"},
-    ...
-}
-
-const euCountries = ["FR","ES","BE", ...]
+const internationalization = {
+    countries: {
+        US: "United States",
+        FR: "France",
+        BD: "Bangladesh"
+        // ...
+    },
+    countriesFlags: {
+        US: { emoji: "🇺🇸", unicode: "U+1F1FA U+1F1F8" },
+        AD: { emoji: "🇦🇩", unicode: "U+1F1E6 U+1F1E9" },
+        AE: { emoji: "🇦🇪", unicode: "U+1F1E6 U+1F1EA" }
+        // ...
+    },
+    countriesCurrencies: {
+        US: { code: "USD", symbol: "$" },
+        AD: { code: "EUR", symbol: "€" },
+        AE: { code: "AED", symbol: "د.إ" }
+        // ...
+    },
+    continents: {
+        US: { code: "NA", name: "North America" },
+        BD: { code: "AS", name: "Asia" },
+        BE: { code: "EU", name: "Europe" }
+        // ...
+    },
+    euCountries: ["FR", "ES", "BE"]
+};
 
 const ipinfoWrapper = new IPinfoWrapper(
     "MY_TOKEN",
     undefined,
     undefined,
-    {
-        countries: countries,
-        countriesFlags: countriesFlags,
-        countriesCurrencies: countriesCurrencies,
-        ...
-    }
+    internationalization
 );
 
-ipinfoWrapper.lookupIp("1.1.1.1").then(response => {
-    // country code, e.g. 'US'
-    console.log(response.countryCode);
+ipinfoWrapper.lookupIp("8.8.8.8").then((response) => console.log(response));
+```
 
-    // country name, e.g. 'United States'
-    console.log(response.country);
-
-    // whether part of the EU, e.g. false 
-    console.log(response.isEU);
-
-    // emoji and unicode of country flag { emoji: '🇺🇸', unicode: 'U+1F1FA U+1F1F8' }
-    console.log(response.countryFlag)
-
-    // country's flag image URL e.g. https://cdn.ipinfo.io/static/images/countries-flags/US.svg
-    console.log(response.countryFlagURL)
-
-    // code and symbol of country currency { code: 'USD', symbol: '$' }
-    console.log(response.countryCurrency)
-
-    // code and name of continent { code: 'NA', name: 'North America' }
-    console.log(response.continent)
-});
+```
+{
+  ip: "8.8.8.8",
+  // ...
+  countryCode: 'US',
+  countryFlag: { emoji: '🇺🇸', unicode: 'U+1F1FA U+1F1F8' },
+  countryFlagURL: 'https://cdn.ipinfo.io/static/images/countries-flags/US.svg',
+  countryCurrency: { code: 'USD', symbol: '$' },
+  continent: { code: 'NA', name: 'North America' },
+  isEU: false
+}
 ```
 
 ### Location Information
