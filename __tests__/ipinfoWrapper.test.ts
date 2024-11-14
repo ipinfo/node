@@ -202,6 +202,9 @@ describe("IPinfoWrapper", () => {
 
         const ipinfo = new IPinfoWrapper(
             "token",
+            undefined,
+            undefined,
+            undefined,
             baseUrlWithUnparseableResponse
         );
 

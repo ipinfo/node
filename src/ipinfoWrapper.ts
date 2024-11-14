@@ -58,7 +58,6 @@ export default class IPinfoWrapper {
      */
     constructor(
         token: string,
-        baseUrl?: string,
         cache?: Cache,
         timeout?: number,
         i18nData?: {
@@ -67,7 +66,8 @@ export default class IPinfoWrapper {
             countriesCurrencies?: any;
             continents?: any;
             euCountries?: Array<string>;
-        }
+        },
+        baseUrl?: string
     ) {
         this.token = token;
         this.countries = i18nData?.countries
