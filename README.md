@@ -55,7 +55,8 @@ const ipinfo = await ipinfoWrapper.lookupIp("1.1.1.1");
 
 <details><summary>Standalone example</summary>
 
-1. Create a new file `ipinfo.js`
+1. Create `ipinfo.js` with the following code, then replace `MY_TOKEN` with 
+[your token](https://ipinfo.io/account/token).
 
 ```typescript
 const { IPinfoWrapper } = require("node-ipinfo");
