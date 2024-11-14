@@ -7,6 +7,13 @@ let ipinfoWrapper: IPinfoWrapper;
 beforeEach(() => {
     dotenv.config();
     const token = process.env.IPINFO_TOKEN || "";
+
+    if (!token) {
+        throw new Error(
+            "Tests require a token in the IPINFO_TOKEN Environment Variable."
+        );
+    }
+
     ipinfoWrapper = new IPinfoWrapper(token);
 });
 
@@ -188,5 +195,21 @@ describe("IPinfoWrapper", () => {
     test("Error is thrown for invalid token", async () => {
         const ipinfo = new IPinfoWrapper("invalid-token");
         await expect(ipinfo.lookupIp("1.2.3.4")).rejects.toThrow();
+    });
+
+    test("Error is thrown when response cannot be parsed", async () => {
+        const baseUrlWithUnparseableResponse =
+            "https://ipinfo.io/developers?path=";
+        const ipinfo = new IPinfoWrapper(
+            "token",
+            baseUrlWithUnparseableResponse
+        );
+        await expect(ipinfo.lookupIp("1.2.3.4")).rejects.toThrow();
+
+        const status = await ipinfo
+            .lookupIp("1.2.3.4")
+            .then((_) => "parseable")
+            .catch((_) => "unparseable");
+        expect(status).toEqual("unparseable");
     });
 });
