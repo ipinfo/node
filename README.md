@@ -54,7 +54,8 @@ const ipinfo = await ipinfoWrapper.lookupIp("1.1.1.1");
 ```
 
 <details><summary>Standalone example</summary>
-1. Create a new file, `ipinfo.js`
+
+1. Create a new file `ipinfo.js`
 
 ```typescript
 const { IPinfoWrapper } = require("node-ipinfo");
