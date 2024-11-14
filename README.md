@@ -44,9 +44,9 @@ const ipinfo = await ipinfoWrapper.lookupIp("1.1.1.1");
 #### Best practices
 
 Each `lookup` method will throw an error when the lookup does not complete
-successfully. A program that performs a lookup should catch errors and return
-a default value. For example, if your program is performing a lookup to find the 
-country code of an IP:
+successfully. A program that performs a lookup should catch errors unless it is
+desirable for the error to bubble up. For example, if your program is performing 
+a lookup to find the country code of an IP:
 
 ```typescript
 const ipinfo = await ipinfoWrapper.lookupIp("1.1.1.1").catch(error => null);
