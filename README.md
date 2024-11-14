@@ -260,10 +260,6 @@ In order to run the tests, run:
 
     $ npm run test
 
-If you want to check out the coverage, run:
-
-    $ npm run test:coverage
-
 ## Other Libraries
 
 There are official IPinfo client libraries available for many languages including PHP, Python, Go, Java, Ruby, and many popular frameworks such as Django, Rails, and Laravel. There are also many third-party libraries and integrations available for our API.
