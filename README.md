@@ -33,13 +33,60 @@ yarn add node-ipinfo
 
 ### Usage
 
+1. Initialize an instance of `IPinfoWrapper` with [your token](https://ipinfo.io/account/token).
+
 ```typescript
-import { IPinfoWrapper } from "node-ipinfo";
+const { IPinfoWrapper } = require("node-ipinfo");
+
+const ipinfoWrapper = new IPinfoWrapper("MY_TOKEN");
+```
+
+> [!TIP]
+> If you are using ESM, import like this instead:
+> ```
+> import { IPinfoWrapper } from "node-ipinfo";
+> ```
+
+2. Perform a lookup for an IP address or ASN
+
+```typescript
+const ipinfo = await ipinfoWrapper.lookupIp("1.1.1.1");
+```
+
+<details><summary>Standalone example</summary>
+1. Create a new file, `ipinfo.js`
+
+```typescript
+const { IPinfoWrapper } = require("node-ipinfo");
 
 const ipinfoWrapper = new IPinfoWrapper("MY_TOKEN");
 
-const ipinfo = await ipinfoWrapper.lookupIp("1.1.1.1");
+const ipAddress = process.argv[2] || "1.1.1.1";
+
+ipinfoWrapper.lookupIp(ipAddress).then(ipinfo => console.log(ipinfo))
 ```
+
+2. Run `ipinfo.js` (without an IP) to lookup 1.1.1.1
+
+```shell
+node ipinfo.js
+{
+  ip: '1.1.1.1',
+  // ...
+```
+
+3. Run `ipinfo.js` with an IP to lookup
+
+```shell
+node ipinfo.js 2.2.2.2
+{
+  ip: '2.2.2.2',
+  // ...
+```
+
+</details>
+
+
 
 #### Best practices
 
@@ -49,9 +96,9 @@ desirable for the error to bubble up. For example, if your program is performing
 a lookup to find the country code of an IP:
 
 ```typescript
-const ipinfo = await ipinfoWrapper.lookupIp("1.1.1.1").catch(error => null);
-
-const countryCode = ipinfo ? ipinfo.countryCode : "N/A";
+const countryCode = ipinfoWrapper.lookupIp("1.1.1.1")
+    .then(ipinfo => ipinfo.countryCode)
+    .catch(error => "N/A");
 ```
 
 ### Caching
@@ -63,13 +110,15 @@ If you prefer a different caching methodology, you may use the `IPCache` interfa
 The default cache length is 1 day and the default max number of items allowed in the cache is 5000. This can be changed by passing an `Option` to the `LruCache` constructor.
 
 ```typescript
-import { IPinfoWrapper, LruCache } from "node-ipinfo";
+const { IPinfoWrapper, LruCache } = require("node-ipinfo");
 
 const cacheOptions = {
     max: 5000,
     ttl: 24 * 1000 * 60 * 60,
 };
+
 const cache = new LruCache(cacheOptions);
+
 const ipinfoWrapper = new IPinfoWrapper("MY_TOKEN", cache);
 ```
 
@@ -81,7 +130,7 @@ controls the timeout of requests. It defaults to `5000` i.e. 5 seconds.
 A timeout of `0` disables the timeout feature.
 
 ```typescript
-import IPinfoWrapper from "node-ipinfo";
+const { IPinfoWrapper } = require("node-ipinfo");
 
 // 10 second timeout.
 const ipinfoWrapper = new IPinfoWrapper("MY_TOKEN", null, 10000);
@@ -92,7 +141,7 @@ const ipinfoWrapper = new IPinfoWrapper("MY_TOKEN", null, 10000);
 When looking up an IP address, the response object includes `response.country` will return the country name, `response.countryCode` can be used to fetch the country code, Additionally `response.isEU` will return `true` if the country is a member of the European Union (EU), `response.countryFlag` will return the emoji and Unicode of the country's flag, `response.countryFlagURL` will return a public link to the country's flag image as an SVG which can be used anywhere, `response.countryCurrency` will return the code and symbol of the country's currency and `response.continent` will return the continent of the IP. It is possible to return the country name in other languages, change the EU countries, countries flags, countries currencies, and continents by setting the `countries`, `euCountries`, `countriesFlags`, `countriesCurrencies` and `continents` settings when creating the IPinfo object.
 
 ```typescript
-import IPinfoWrapper from "node-ipinfo";
+const { IPinfoWrapper } = require("node-ipinfo");
 
 const countries = {
     "US": "United States",
@@ -165,7 +214,7 @@ ipinfoWrapper.lookupIp("1.1.1.1").then(response => {
 `response.loc` will return a composite string of latitude and longitude values in the `"latitude,longitude"` format.
 
 ```typescript
-import IPinfoWrapper from "node-ipinfo";
+const { IPinfoWrapper } = require("node-ipinfo");
 
 const ipinfoWrapper = new IPinfoWrapper("MY_TOKEN");
 
@@ -180,7 +229,7 @@ ipinfoWrapper.lookupIp("1.1.1.1").then(response => {
 A world map can be generated with locations of all input IPs using `getMap`. It returns the URL of the map in the response.
 
 ```typescript
-import IPinfoWrapper from "node-ipinfo";
+const { IPinfoWrapper } = require("node-ipinfo");
 
 const ipinfoWrapper = new IPinfoWrapper("MY_TOKEN");
 
@@ -195,14 +244,15 @@ ipinfoWrapper.getMap(ips).then(response => {
 Looking up a single IP at a time can be slow. It could be done concurrently from the client side, but IPinfo supports a batch endpoint to allow you to group together IPs and let us handle retrieving details for them in bulk for you.
 
 ```typescript
-import IPinfoWrapper from "node-ipinfo";
+const { IPinfoWrapper } = require("node-ipinfo");
 
 const ipinfoWrapper = new IPinfoWrapper("MY_TOKEN");
 
 const ips = ["1.1.1.1", "8.8.8.8", "1.2.3.4/country"]; 
-ipinfoWrapper.getBatch(ips).then(response => {
-    console.log(response);
-});
+
+ipinfoWrapper
+    .getBatch(ips)
+    .then(batch => console.log(batch));
 ```
 
 The input size is not limited, as the interface will chunk operations for you
