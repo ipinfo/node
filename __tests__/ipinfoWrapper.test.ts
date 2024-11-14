@@ -207,10 +207,11 @@ describe("IPinfoWrapper", () => {
 
         await expect(ipinfo.lookupIp("1.2.3.4")).rejects.toThrow();
 
-        const status = await ipinfo
+        const result = await ipinfo
             .lookupIp("1.2.3.4")
             .then((_) => "parseable")
             .catch((_) => "unparseable");
-        expect(status).toEqual("unparseable");
+
+        expect(result).toEqual("unparseable");
     });
 });
