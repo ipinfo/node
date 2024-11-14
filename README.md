@@ -42,7 +42,7 @@ const ipinfoWrapper = new IPinfoWrapper("MY_TOKEN");
 ```
 
 > [!TIP]
-> If you are using ESM, import like this instead:
+> If you are using ESM instead of CommonJS you can use `import` instead.
 > ```
 > import { IPinfoWrapper } from "node-ipinfo";
 > ```
