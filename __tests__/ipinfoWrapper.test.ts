@@ -197,13 +197,14 @@ describe("IPinfoWrapper", () => {
         await expect(ipinfo.lookupIp("1.2.3.4")).rejects.toThrow();
     });
 
-    test("Error is thrown when response cannot be parsed", async () => {
-        const baseUrlWithUnparseableResponse =
-            "https://ipinfo.io/developers?path=";
+    test("Error is thrown when response cannot be parsed as JSON", async () => {
+        const baseUrlWithUnparseableResponse = "https://ipinfo.io/developers#";
+
         const ipinfo = new IPinfoWrapper(
             "token",
             baseUrlWithUnparseableResponse
         );
+
         await expect(ipinfo.lookupIp("1.2.3.4")).rejects.toThrow();
 
         const status = await ipinfo
