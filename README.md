@@ -42,12 +42,12 @@ const ipinfoWrapper = new IPinfoWrapper("MY_TOKEN");
 ```
 
 > [!TIP]
-> If you are using ESM instead of CommonJS you can use `import`:
+> If you are using ESM instead of CommonJS you can use `import`.
 > ```
 > import { IPinfoWrapper } from "node-ipinfo";
 > ```
 
-2. Perform a lookup for an IP address or ASN
+2. Perform a lookup for an IP address or ASN.
 
 ```typescript
 const ipinfo = await ipinfoWrapper.lookupIp("1.1.1.1");
@@ -68,7 +68,7 @@ const ipAddress = process.argv[2] || "1.1.1.1";
 ipinfoWrapper.lookupIp(ipAddress).then((ipinfo) => console.log(ipinfo));
 ```
 
-2. Run `ipinfo.js` (without an IP) to lookup 1.1.1.1
+2. Run `ipinfo.js` (without an IP) to lookup 1.1.1.1.
 
 ```shell
 node ipinfo.js
@@ -77,7 +77,8 @@ node ipinfo.js
   // ...
 ```
 
-3. Run `ipinfo.js` with an IP to lookup
+3. Run `ipinfo.js` with an IP to lookup, like `2.2.2.2` `8.8.8.8` or 
+[your IP](https://ipinfo.io/what-is-my-ip).
 
 ```shell
 node ipinfo.js 2.2.2.2
@@ -88,14 +89,13 @@ node ipinfo.js 2.2.2.2
 
 </details>
 
-
-
 #### Best practices
 
 Each `lookup` method will throw an error when the lookup does not complete
 successfully. A program that performs a lookup should catch errors unless it is
 desirable for the error to bubble up. For example, if your program is performing 
-a lookup to find the country code of an IP:
+a lookup to find the country code of an IP you can return "N/A" when catching an
+error.
 
 ```typescript
 const countryCode = ipinfoWrapper
