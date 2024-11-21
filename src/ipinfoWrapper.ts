@@ -113,7 +113,7 @@ export default class IPinfoWrapper {
             {
                 timeout: this.timeout,
                 method: "GET",
-                compress: false,
+                compress: false
             },
             init,
             { headers: Object.assign(headers, init.headers) }
