@@ -17,5 +17,9 @@ jobs:
                   node-version: ${{ matrix.version }}
             - run: npm ci
             - run: npm test
+            - run: npm build
+            - run: cd test-app
+            - run: npm install
+            - run: node index.js
               env:
                   IPINFO_TOKEN: ${{ secrets.IPINFO_TOKEN }}
