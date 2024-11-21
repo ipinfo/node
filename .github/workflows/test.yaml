@@ -18,8 +18,6 @@ jobs:
             - run: npm ci
             - run: npm test
             - run: npm build
-            - run: cd test-app
-            - run: npm install
-            - run: node index.js
+            - run: cd test-app && npm install && node index.js
               env:
                   IPINFO_TOKEN: ${{ secrets.IPINFO_TOKEN }}
