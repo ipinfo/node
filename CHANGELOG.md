@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 4.0.0
+
+Version 4 is a major version bump due to changing internals 
+(from http(s) to node-fetch) which consumers may depend on.
+
+- Replace NodeJS http(s) with [node-fetch](https://www.npmjs.com/package/node-fetch) for communication with API
+- Increases minimum Node engine version to 14
+
 ## 3.5.4 / 3.5.5
 
 - Reject on timeout in lookupIP, lookupASN, and getMap

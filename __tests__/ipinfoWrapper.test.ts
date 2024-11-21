@@ -7,6 +7,13 @@ let ipinfoWrapper: IPinfoWrapper;
 beforeEach(() => {
     dotenv.config();
     const token = process.env.IPINFO_TOKEN || "";
+
+    if (!token) {
+        throw new Error(
+            "Tests require a token in the IPINFO_TOKEN Environment Variable."
+        );
+    }
+
     ipinfoWrapper = new IPinfoWrapper(token);
 });
 
@@ -111,12 +118,12 @@ describe("IPinfoWrapper", () => {
             expect(data["8.8.8.8/hostname"]).toEqual("dns.google");
             expect(data["4.4.4.4"]).toEqual({
                 ip: "4.4.4.4",
-                city: "Rembangan",
-                region: "Central Java",
+                city: "Weda",
+                region: "North Maluku",
                 country: "Indonesia",
-                loc: "-6.7036,111.3416",
+                loc: "0.3295,127.8739",
                 org: "AS3356 Level 3 Parent, LLC",
-                timezone: "Asia/Jakarta",
+                timezone: "Asia/Jayapura",
                 asn: {
                     asn: "AS3356",
                     name: "Level 3 Parent, LLC",
@@ -183,5 +190,31 @@ describe("IPinfoWrapper", () => {
         const data: IPinfo = await ipinfoWrapper.lookupIp("198.51.100.1");
         expect(data.ip).toEqual("198.51.100.1");
         expect(data.bogon).toEqual(true);
+    });
+
+    test("Error is thrown for invalid token", async () => {
+        const ipinfo = new IPinfoWrapper("invalid-token");
+        await expect(ipinfo.lookupIp("1.2.3.4")).rejects.toThrow();
+    });
+
+    test("Error is thrown when response cannot be parsed as JSON", async () => {
+        const baseUrlWithUnparseableResponse = "https://ipinfo.io/developers#";
+
+        const ipinfo = new IPinfoWrapper(
+            "token",
+            undefined,
+            undefined,
+            undefined,
+            baseUrlWithUnparseableResponse
+        );
+
+        await expect(ipinfo.lookupIp("1.2.3.4")).rejects.toThrow();
+
+        const result = await ipinfo
+            .lookupIp("1.2.3.4")
+            .then((_) => "parseable")
+            .catch((_) => "unparseable");
+
+        expect(result).toEqual("unparseable");
     });
 });
