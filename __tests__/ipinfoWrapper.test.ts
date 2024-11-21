@@ -6,15 +6,14 @@ let ipinfoWrapper: IPinfoWrapper;
 
 beforeEach(() => {
     dotenv.config();
-    const token = process.env.IPINFO_TOKEN || "";
 
-    if (!token) {
-        throw new Error(
-            "Tests require a token in the IPINFO_TOKEN Environment Variable."
-        );
-    }
-
-    ipinfoWrapper = new IPinfoWrapper(token);
+    ipinfoWrapper = new IPinfoWrapper(
+        "example-token",
+        undefined,
+        undefined,
+        {},
+        "http://127.0.0.1:9090"
+    );
 });
 
 describe("IPinfoWrapper", () => {
@@ -90,6 +89,10 @@ describe("IPinfoWrapper", () => {
             expect(data.domain).toEqual("comcast.com");
             expect(data.num_ips).not.toBeFalsy();
             expect(data.type).toEqual("isp");
+            expect(data.prefixes.length).toEqual(2);
+            expect(data.peers.length).toEqual(2);
+            expect(data.upstreams.length).toEqual(2);
+            expect(data.downstreams.length).toEqual(2);
         }
     });
 
@@ -121,6 +124,7 @@ describe("IPinfoWrapper", () => {
                 city: "Weda",
                 region: "North Maluku",
                 country: "Indonesia",
+                countryCode: "ID",
                 loc: "0.3295,127.8739",
                 org: "AS3356 Level 3 Parent, LLC",
                 timezone: "Asia/Jayapura",
@@ -147,15 +151,15 @@ describe("IPinfoWrapper", () => {
                 abuse: {
                     address: "US, LA, Monroe, 100 CenturyLink Drive, 71203",
                     country: "United States",
+                    countryCode: "US",
                     email: "abuse@level3.com",
                     name: "L3 Abuse Contact",
                     network: "4.0.0.0/9",
-                    phone: "+1-877-453-8353",
-                    countryCode: "US"
+                    phone: "+1-877-453-8353"
                 },
                 domains: {
                     ip: "4.4.4.4",
-                    total: 111,
+                    total: 114,
                     domains: [
                         "itmanagementgroup.de",
                         "safermoto.com",
@@ -163,8 +167,7 @@ describe("IPinfoWrapper", () => {
                         "grahamhostedservices.com",
                         "bhcentral.tech"
                     ]
-                },
-                countryCode: "ID"
+                }
             });
 
             expect(data["AS123"]).toEqual({

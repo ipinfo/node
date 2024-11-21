@@ -1,0 +1,33 @@
+{
+    "asn": "AS7922",
+    "name": "Comcast Cable Communications, LLC",
+    "country": "US",
+    "allocated": "1997-02-14",
+    "registry": "arin",
+    "domain": "comcast.com",
+    "num_ips": 70110720,
+    "type": "isp",
+    "prefixes": [
+        {
+            "netblock": "107.0.0.0/14",
+            "id": "JUMPSTART-5",
+            "name": "Comcast Cable Communications, LLC",
+            "country": "US",
+            "size": "262144",
+            "status": "ALLOCATION",
+            "domain": "comcast.com"
+        },
+        {
+            "netblock": "107.4.0.0/15",
+            "id": "MICHIGAN-39",
+            "name": "Comcast Cable Communications, Inc.",
+            "country": "US",
+            "size": "131072",
+            "status": "REASSIGNMENT",
+            "domain": "comcast.net"
+        }
+    ],
+    "peers": ["1273", "109"],
+    "upstreams": ["6453", "1299"],
+    "downstreams": ["398465", "32244"]
+}

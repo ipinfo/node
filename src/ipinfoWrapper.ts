@@ -91,7 +91,7 @@ export default class IPinfoWrapper {
             timeout === null || timeout === undefined
                 ? REQUEST_TIMEOUT_DEFAULT
                 : timeout;
-        this.baseUrl = baseUrl || `https://${HOST}/`;
+        this.baseUrl = baseUrl || `https://${HOST}`;
     }
 
     public static cacheKey(k: string) {
@@ -118,23 +118,25 @@ export default class IPinfoWrapper {
             { headers: Object.assign(headers, init.headers) }
         );
 
-        return fetch(`${this.baseUrl}${path}`, request).then(
-            (response: Response) => {
-                if (response.status === 429) {
-                    throw new ApiLimitError();
-                }
-
-                if (response.status >= 400) {
-                    throw new Error(
-                        `Received an error from the IPinfo API ` +
-                            `(using authorization ${headers["Authorization"]}) ` +
-                            `${response.status} ${response.statusText} ${response.url}`
-                    );
-                }
-
-                return response;
-            }
+        const url = [this.baseUrl, path].join(
+            !this.baseUrl.endsWith("/") && !path.startsWith("/") ? "/" : ""
         );
+
+        return fetch(url, request).then((response: Response) => {
+            if (response.status === 429) {
+                throw new ApiLimitError();
+            }
+
+            if (response.status >= 400) {
+                throw new Error(
+                    `Received an error from the IPinfo API ` +
+                        `(using authorization ${headers["Authorization"]}) ` +
+                        `${response.status} ${response.statusText} ${response.url}`
+                );
+            }
+
+            return response;
+        });
     }
 
     /**
