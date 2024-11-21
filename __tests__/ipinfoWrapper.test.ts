@@ -89,6 +89,10 @@ describe("IPinfoWrapper", () => {
             expect(data.domain).toEqual("comcast.com");
             expect(data.num_ips).not.toBeFalsy();
             expect(data.type).toEqual("isp");
+            expect(data.prefixes.length).toEqual(2);
+            expect(data.peers.length).toEqual(2);
+            expect(data.upstreams.length).toEqual(2);
+            expect(data.downstreams.length).toEqual(2);
         }
     });
 
