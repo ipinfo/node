@@ -1,4 +1,5 @@
 export const HOST: string = "ipinfo.io";
+export const HOST_LITE: string = "api.ipinfo.io/lite";
 
 // cache version
 export const CACHE_VSN: string = "1";
@@ -96,6 +97,23 @@ export interface IPinfo {
     privacy: Privacy;
     abuse: Abuse;
     domains: Domains;
+}
+
+export interface IPBogon {
+    ip: string;
+    bogon: boolean;
+}
+
+export interface IPinfoLite {
+    ip: string;
+    asn: string;
+    asName: string;
+    asDomain: string;
+    countryCode: string;
+    country: string;
+    continentCode: string;
+    continent: string;
+    isEU: boolean;
 }
 
 export interface Prefix {
