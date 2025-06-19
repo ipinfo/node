@@ -17,7 +17,7 @@ You'll need an IPinfo API access token, which you can get by signing up for a fr
 
 The free plan is limited to 50,000 requests per month, and doesn't include some of the data fields such as IP type and company data. To enable all the data fields and additional request volumes see [https://ipinfo.io/pricing](https://ipinfo.io/pricing).
 
-⚠️ Note: This library does not currently support our newest free API https://ipinfo.io/lite. If you’d like to use IPinfo Lite, you can call the [endpoint directly](https://ipinfo.io/developers/lite-api) using your preferred HTTP client. Developers are also welcome to contribute support for Lite by submitting a pull request.
+The library also supports the Lite API, see the [Lite API section](#lite-api) for more info.
 
 ### Installation
 
@@ -57,7 +57,7 @@ const ipinfo = await ipinfoWrapper.lookupIp("1.1.1.1");
 
 <details><summary>Standalone example</summary>
 
-1. Create `ipinfo.js` with the following code, then replace `MY_TOKEN` with 
+1. Create `ipinfo.js` with the following code, then replace `MY_TOKEN` with
 [your token](https://ipinfo.io/account/token).
 
 ```typescript
@@ -79,7 +79,7 @@ node ipinfo.js
   // ...
 ```
 
-3. Run `ipinfo.js` with an IP to lookup, like `2.2.2.2` `8.8.8.8` or 
+3. Run `ipinfo.js` with an IP to lookup, like `2.2.2.2` `8.8.8.8` or
 [your IP](https://ipinfo.io/what-is-my-ip).
 
 ```shell
@@ -95,7 +95,7 @@ node ipinfo.js 2.2.2.2
 
 Each `lookup` method will throw an error when the lookup does not complete
 successfully. A program that performs a lookup should catch errors unless it is
-desirable for the error to bubble up. For example, if your program is performing 
+desirable for the error to bubble up. For example, if your program is performing
 a lookup to find the country code of an IP you can return "N/A" when catching an
 error.
 
@@ -104,6 +104,23 @@ const countryCode = ipinfoWrapper
     .lookupIp("1.1.1.1")
     .then((ipinfo) => ipinfo.countryCode)
     .catch((error) => "N/A");
+```
+
+### Lite API
+
+The library gives the possibility to use the [Lite API](https://ipinfo.io/developers/lite-api) too, authentication with your token is still required.
+
+The returned details are slightly different from the Core API.
+
+```typescript
+import IPinfoLiteWrapper from "node-ipinfo";
+
+const ipinfoWrapper = new IPinfoLiteWrapper("MY_TOKEN");
+const ipinfo = await ipinfoWrapper.lookupIp("8.8.8.8");
+console.log(ipinfo.countryCode)
+// US
+console.log(ipinfo.country)
+// United States
 ```
 
 ### Caching
@@ -224,7 +241,7 @@ const { IPinfoWrapper } = require("node-ipinfo");
 
 const ipinfoWrapper = new IPinfoWrapper("MY_TOKEN");
 
-const ips = ["1.1.1.1", "8.8.8.8", "1.2.3.4"]; 
+const ips = ["1.1.1.1", "8.8.8.8", "1.2.3.4"];
 ipinfoWrapper.getMap(ips).then(response => {
     console.log(response);
 });
@@ -239,7 +256,7 @@ const { IPinfoWrapper } = require("node-ipinfo");
 
 const ipinfoWrapper = new IPinfoWrapper("MY_TOKEN");
 
-const ips = ["1.1.1.1", "8.8.8.8", "1.2.3.4/country"]; 
+const ips = ["1.1.1.1", "8.8.8.8", "1.2.3.4/country"];
 
 ipinfoWrapper
     .getBatch(ips)
