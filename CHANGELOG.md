@@ -1,6 +1,10 @@
 # CHANGELOG
 
-## 4.0.0
+## 4.1.0
+
+- Add support for IPinfo Lite API
+
+## 4.0.0 / 4.0.1
 
 Version 4 is a major version bump due to changing internals 
 (from http(s) to node-fetch) which consumers may depend on.
