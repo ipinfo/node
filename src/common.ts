@@ -2,6 +2,7 @@ export const HOST: string = "ipinfo.io";
 export const HOST_LITE: string = "api.ipinfo.io/lite";
 export const HOST_CORE: string = "api.ipinfo.io/lookup";
 export const HOST_PLUS: string = "api.ipinfo.io/lookup";
+export const HOST_RES_PROXY: string = "ipinfo.io/resproxy";
 
 // cache version
 export const CACHE_VSN: string = "1";
@@ -200,6 +201,13 @@ export interface IPinfoPlus {
     is_hosting: boolean;
     is_mobile: boolean;
     is_satellite: boolean;
+}
+
+export interface IPinfoResProxy {
+    ip: string;
+    service: string;
+    last_seen: string;
+    percent_days_seen: number;
 }
 
 export interface Prefix {

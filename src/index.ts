@@ -2,6 +2,7 @@ import IPinfoWrapper from "./ipinfoWrapper";
 import IPinfoLiteWrapper from "./ipinfoLiteWrapper";
 import IPinfoCoreWrapper from "./ipinfoCoreWrapper";
 import IPinfoPlusWrapper from "./ipinfoPlusWrapper";
+import IPinfoResProxyWrapper from "./ipinfoResProxyWrapper";
 import Cache from "./cache/cache";
 import LruCache from "./cache/lruCache";
 import ApiLimitError from "./errors/apiLimitError";
@@ -15,6 +16,7 @@ export {
     IPinfoLiteWrapper,
     IPinfoCoreWrapper,
     IPinfoPlusWrapper,
+    IPinfoResProxyWrapper,
     ApiLimitError
 };
 export {
@@ -27,6 +29,7 @@ export {
     IPinfo,
     IPinfoCore,
     IPinfoPlus,
+    IPinfoResProxy,
     Prefix,
     Prefixes6,
     AsnResponse,
