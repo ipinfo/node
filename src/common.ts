@@ -2,6 +2,7 @@ export const HOST: string = "ipinfo.io";
 export const HOST_LITE: string = "api.ipinfo.io/lite";
 export const HOST_CORE: string = "api.ipinfo.io/lookup";
 export const HOST_PLUS: string = "api.ipinfo.io/lookup";
+export const HOST_RESPROXY: string = "ipinfo.io/resproxy";
 
 // cache version
 export const CACHE_VSN: string = "1";
@@ -242,6 +243,13 @@ export interface AsnResponse {
 export interface MapResponse {
     status: string;
     reportUrl: string;
+}
+
+export interface Resproxy {
+    ip: string;
+    last_seen: string;
+    percent_days_seen: number;
+    service: string;
 }
 
 export interface BatchResponse {

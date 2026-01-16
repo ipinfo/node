@@ -1,5 +1,5 @@
 import * as dotenv from "dotenv";
-import { AsnResponse, IPinfo } from "../src/common";
+import { AsnResponse, IPinfo, Resproxy } from "../src/common";
 import IPinfoWrapper from "../src/ipinfoWrapper";
 
 let ipinfoWrapper: IPinfoWrapper;
@@ -193,6 +193,24 @@ describe("IPinfoWrapper", () => {
         const data: IPinfo = await ipinfoWrapper.lookupIp("198.51.100.1");
         expect(data.ip).toEqual("198.51.100.1");
         expect(data.bogon).toEqual(true);
+    });
+
+    test("lookupResproxy", async () => {
+        // test multiple times for cache.
+        for (let i = 0; i < 5; i++) {
+            const data: Resproxy = await ipinfoWrapper.lookupResproxy(
+                "175.107.211.204"
+            );
+            expect(data.ip).toEqual("175.107.211.204");
+            expect(data.last_seen).toEqual("2026-01-14");
+            expect(data.percent_days_seen).toEqual(50);
+            expect(data.service).toEqual("DataImpulse");
+        }
+    });
+
+    test("lookupResproxyEmpty", async () => {
+        const data: Resproxy = await ipinfoWrapper.lookupResproxy("8.8.8.8");
+        expect(data).toEqual({});
     });
 
     test("Error is thrown for invalid token", async () => {

@@ -31,7 +31,8 @@ export {
     Prefixes6,
     AsnResponse,
     MapResponse,
-    BatchResponse
+    BatchResponse,
+    Resproxy
 } from "./common";
 
 export default IPinfoWrapper;
