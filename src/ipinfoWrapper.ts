@@ -16,6 +16,7 @@ import {
     AsnResponse,
     MapResponse,
     BatchResponse,
+    Resproxy,
     BATCH_MAX_SIZE,
     BATCH_REQ_TIMEOUT_DEFAULT,
     REQUEST_TIMEOUT_DEFAULT,
@@ -212,6 +213,26 @@ export default class IPinfoWrapper {
 
             this.cache.set(IPinfoWrapper.cacheKey(asn), asnResp);
             return asnResp;
+        });
+    }
+
+    /**
+     * Lookup residential proxy information using the IP.
+     *
+     * @param ip IP address to check for residential proxy information.
+     * @return Response containing Resproxy data if the IP is a residential proxy.
+     */
+    public async lookupResproxy(ip: string): Promise<Resproxy> {
+        const cacheKey = `resproxy:${ip}`;
+        const data = await this.cache.get(IPinfoWrapper.cacheKey(cacheKey));
+        if (data) {
+            return data;
+        }
+
+        return this.fetchApi(`resproxy/${ip}`).then(async (response) => {
+            const resproxy = (await response.json()) as Resproxy;
+            this.cache.set(IPinfoWrapper.cacheKey(cacheKey), resproxy);
+            return resproxy;
         });
     }
 

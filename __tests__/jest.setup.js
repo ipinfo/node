@@ -32,6 +32,22 @@ module.exports = async function globalSetup() {
                 method: "POST",
                 path: "/tools/map",
                 response: path.resolve(__dirname, "./fixtures/tools/map.json")
+            },
+            {
+                method: "GET",
+                path: "/resproxy/175.107.211.204",
+                response: path.resolve(
+                    __dirname,
+                    "./fixtures/resproxy/175.107.211.204.json"
+                )
+            },
+            {
+                method: "GET",
+                path: "/resproxy/8.8.8.8",
+                response: path.resolve(
+                    __dirname,
+                    "./fixtures/resproxy/8.8.8.8.json"
+                )
             }
         ]
     };
