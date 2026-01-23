@@ -123,6 +123,61 @@ console.log(ipinfo.country)
 // United States
 ```
 
+### Core API
+
+The library also supports the [Core API](https://ipinfo.io/developers/data-types#core-data), which provides city-level geolocation with nested geo and AS objects. Authentication with your token is required.
+
+```typescript
+import { IPinfoCoreWrapper } from "node-ipinfo";
+
+const ipinfoWrapper = new IPinfoCoreWrapper("MY_TOKEN");
+const ipinfo = await ipinfoWrapper.lookupIp("8.8.8.8");
+console.log(ipinfo.ip);
+// 8.8.8.8
+console.log(ipinfo.geo);
+// { city: 'Mountain View', region: 'California', regionCode: 'CA', country: 'United States', countryCode: 'US', ... }
+console.log(ipinfo.as);
+// { asn: 'AS15169', name: 'Google LLC', domain: 'google.com', type: 'hosting', ... }
+```
+
+### Plus API
+
+The library also supports the [Plus API](https://ipinfo.io/developers/data-types#plus-data), which provides enhanced data including mobile carrier info and privacy detection. Authentication with your token is required.
+
+```typescript
+import { IPinfoPlusWrapper } from "node-ipinfo";
+
+const ipinfoWrapper = new IPinfoPlusWrapper("MY_TOKEN");
+const ipinfo = await ipinfoWrapper.lookupIp("8.8.8.8");
+console.log(ipinfo.ip);
+// 8.8.8.8
+console.log(ipinfo.geo);
+// { city: 'Mountain View', region: 'California', regionCode: 'CA', country: 'United States', countryCode: 'US', ... }
+console.log(ipinfo.mobile);
+// { carrier: ..., mcc: ..., mnc: ... }
+console.log(ipinfo.anonymous);
+// { isProxy: false, isRelay: false, isTor: false, ... }
+```
+
+### Residential Proxy API
+
+The library also supports the [Residential Proxy API](https://ipinfo.io/developers/residential-proxy-api), which allows you to check if an IP address is a residential proxy. Authentication with your token is required.
+
+```typescript
+import { IPinfoWrapper } from "node-ipinfo";
+
+const ipinfoWrapper = new IPinfoWrapper("MY_TOKEN");
+const resproxy = await ipinfoWrapper.lookupResproxy("175.107.211.204");
+console.log(resproxy.ip);
+// 175.107.211.204
+console.log(resproxy.lastSeen);
+// 2025-01-20
+console.log(resproxy.percentDaysSeen);
+// 0.85
+console.log(resproxy.service);
+// Bright Data
+```
+
 ### Caching
 
 This library uses an LRU cache (deletes the least-recently-used items).
