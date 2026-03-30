@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 4.4.0
+
+- Update Bulgaria currency from BGN to EUR
+- Upgrade dependencies
+
 ## 4.2.0
 
 - Add support for IPinfo Core API
